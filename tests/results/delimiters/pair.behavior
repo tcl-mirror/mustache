@@ -1,0 +1,3 @@
+- lit '('
+- var/escaped 14 'text'
+- lit ')'

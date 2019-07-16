@@ -1,0 +1,3 @@
+- lit 'These\scharacters\sshould\sbe\sHTML\sescaped:\s'
+- var/escaped 43 'forbidden'
+- lit '\n'

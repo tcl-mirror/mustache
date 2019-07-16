@@ -1,0 +1,5 @@
+- lit '[\s'
+- partial 5 'include'
+- lit '\s]\n[\s.'
+- var/escaped 22 'value'
+- lit '.\s\s.|value|.\s]\n'

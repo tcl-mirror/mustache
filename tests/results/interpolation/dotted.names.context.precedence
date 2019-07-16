@@ -1,0 +1,3 @@
+- section 'a'
+  - section 'b'
+    - var/escaped 8 'c'

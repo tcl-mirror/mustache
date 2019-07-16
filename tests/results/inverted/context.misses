@@ -1,0 +1,4 @@
+- lit '['
+- isection 'missing'
+  - lit 'Cannot\sfind\skey\s'missing'!'
+- lit ']'

@@ -1,0 +1,6 @@
+- lit '"'
+- section 'a'
+  - section 'b'
+    - section 'c'
+      - var/escaped 3 'name'
+- lit '"\s==\s""'

@@ -1,0 +1,4 @@
+- lit '['
+- section 'missing'
+  - lit 'Found\skey\s'missing'!'
+- lit ']'

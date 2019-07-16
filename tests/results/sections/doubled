@@ -1,0 +1,8 @@
+- section 'bool'
+  - lit '\n*\sfirst\n'
+- lit '\n*\s'
+- var/escaped 32 'two'
+- lit '\n'
+- section 'bool'
+  - lit '\n*\sthird\n'
+- lit '\n'

@@ -1,0 +1,6 @@
+- lit '"'
+- section 'list'
+  - lit '('
+  - dot 14 ''
+  - lit ')'
+- lit '"'

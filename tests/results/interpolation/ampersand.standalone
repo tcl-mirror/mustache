@@ -1,0 +1,3 @@
+- lit '\s\s'
+- var 5 'string'
+- lit '\n'

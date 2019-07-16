@@ -1,0 +1,5 @@
+- lit '[\s'
+- partial 5 'include'
+- lit '\s]\n[\s'
+- partial 33 'include'
+- lit '\s]\n'

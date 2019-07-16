@@ -1,0 +1,7 @@
+- lit '\s'
+- isection 'boolean'
+  - lit 'NO'
+- lit '\n\s'
+- isection 'boolean'
+  - lit 'WAY'
+- lit '\n'

@@ -1,0 +1,4 @@
+- lit '"'
+- section 'list'
+  - var/escaped 12 'item'
+- lit '"'

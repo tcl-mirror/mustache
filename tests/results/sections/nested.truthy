@@ -1,0 +1,7 @@
+- lit '|\sA\s'
+- section 'bool'
+  - lit 'B\s'
+  - section 'bool'
+    - lit 'C'
+  - lit '\sD'
+- lit '\sE\s|'

@@ -1,0 +1,4 @@
+- lit '|\sThis\sIs\n'
+- isection 'boolean'
+  - lit '\n|\n'
+- lit '\n|\sA\sLine\n'

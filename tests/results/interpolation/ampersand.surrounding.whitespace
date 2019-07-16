@@ -1,0 +1,3 @@
+- lit '|\s'
+- var 5 'string'
+- lit '\s|'

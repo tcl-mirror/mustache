@@ -1,0 +1,3 @@
+- lit 'I\s('
+- var/escaped 5 'cannot'
+- lit ')\sbe\sseen!'

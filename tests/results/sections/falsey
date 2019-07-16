@@ -1,0 +1,4 @@
+- lit '"'
+- section 'boolean'
+  - lit 'This\sshould\snot\sbe\srendered.'
+- lit '"'
