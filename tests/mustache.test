@@ -1,53 +1,36 @@
-return
 # -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
 ## (c) 2019 Andreas Kupries
 # # ## ### ##### ######## ############# #####################
 ## Execute all the mustache tests of the original testsuite.
 ## This code is inspired by the script `tests.tcl` of project
 ## `mustache.tcl` (gh@ianka/mustache.tcl, BSD licensed)
-
+return
 kt check Tcl     8.5
 kt check tcltest 2
 
 kt local testing mustache::parse
+kt local testing mustache::context
+kt local testing mustache::frame
+kt local testing mustache::render
 kt local testing mustache
 
-# # ## ### ##### ######## ############# #####################
-
-package require yaml ;# Original tests declared via yaml structures.
-package require fileutil
-
-proc td {} { tcltest::testsDirectory }
+kt source support/util.tcl
 
 # # ## ### ##### ######## ############# #####################
 
-foreach specfile [glob -directory [td]/assets *.yml] {
+foreach specfile [Specs] {
+    lassign [Tests $specfile] label tests
 
-    set tests [::yaml::yaml2dict [fileutil::cat $specfile]]
-    set label [file rootname [file tail $specfile]]
-
-    foreach spec [dict get $tests tests] {
+    foreach spec $tests {
 	incr k
 
-	dict with spec {}
-	# - name	Name identifying the test
-	# - desc	Longer description
-	# - data	Input data
-	# - template	Template to apply the data to
-	# - expected	Expected result
-	# - partials	(optional)
+	Frame $spec name desc data template expected
 
-	tcltest::test ${label}-${name}-$k $desc -setup {
-	    # TODO: partials
-	    #if {[info exists partials]} { foreach {partial ptemplate} $partials { set $partial $ptemplate } }
-	} -cleanup {
-	    #if {[info exists partials]} { foreach {partial dummy} $partials { unset $partial } }
-	} -body {
-	    # TODO: wrap data into proper context
-	    ::mustache::mustache $template //$data
+	tcltest::test ${label}-${k}-${name} $desc -body {
+	    ::mustache::mustache $template $data
 	} -result $expected
 
-	unset -nocomplain name desc data template expected partials
+	unset -nocomplain name desc data template expected
     }
 
     unset k

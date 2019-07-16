@@ -4,94 +4,35 @@
 ## Execute all the mustache tests of the original testsuite.
 ## This code is inspired by the script `tests.tcl` of project
 ## `mustache.tcl` (gh@ianka/mustache.tcl, BSD licensed)
-
+return
 kt check Tcl     8.5
 kt check tcltest 2
 
 kt local testing mustache::parse
 
-# # ## ### ##### ######## ############# #####################
-
-package require yaml ;# Original tests declared via yaml structures.
-package require fileutil
-
-proc S {label template} {
-    # Comment the following return to save the test input templates
-    # and what ruby makes of them => For comparison of ruby structures
-    # to my tree structure. Around the handling of standalone. Not
-    # required for builders and installers.
-    return
-    #
-    set dst [file join [file dirname [td]] _work specs ${label}.mustache]
-    file mkdir [file dirname $dst]
-    fileutil::writeFile $dst $template
-    exec mustache --token $dst > [file rootname $dst].rb
-    return
-}
-
-proc td {} { tcltest::testsDirectory }
-
-proc v {label args} { V $label $args }
-
-proc V {label map} {
-    set path [P $label]
-    if {[file exists $path]} {
-	return [M $map [tcltest::viewFile $path]]
-    } else {
-	return {}
-    }
-}
-proc M  {map x}  { string map $map $x }
-proc M' {x args} { string map $args $x }
-proc P  {label}  { return [td]/results/${label} }
-
-proc F {tree} { string trimright [F' {} $tree] \n }
-proc F' {indent tree} {
-    set r ""
-    foreach el $tree {
-	lassign $el cmd pos detail children
-	if {$cmd in {section isection}} {
-	    append r $indent "- " $cmd " " '$detail' \n
-	    append r [F' "$indent  " $children]
-	} elseif {$cmd eq "lit"} {
-	    # detail is in pos, no pos information for literals
-	    append r $indent "- " $cmd " " '[X $pos]' \n
-	} else {
-	    append r $indent "- " $cmd " " $pos " " '$detail' \n
-	}
-    }
-    return $r
-}
-proc X {x} { string map  [list \n \\n \r \\r { } \\s \t \\t] $x }
+kt source support/util.tcl
 
 # # ## ### ##### ######## ############# #####################
 
-foreach specfile [lsort -dict [glob -directory [td]/assets *.yml]] {
-
-    set tests [::yaml::yaml2dict [fileutil::cat $specfile]]
-    set label [string trim [file rootname [file tail $specfile]] {./~}]
+foreach specfile [Specs] {
+    lassign [Tests $specfile] label tests
     
-    foreach spec [dict get $tests tests] {
+    foreach spec $tests {
 	incr k
 
-	dict with spec {}
-	# - name	Name identifying the test
-	# - desc	Longer description
-	# - data	Input data
-	# - template	Template to apply the data to
-	# - expected	Expected result
-	# - partials	(optional)
-	set dname [string map {
-	    .-. .
-	    (   {}
-	    )   {}
-	} [string tolower [join $name .]]]
+	Decode $spec name desc data template expected partials
 
-	S $label/[format %02d ${k}]-$dname $template
-
-	tcltest::test ${label}-${k}-${dname} $desc -body {
+	puts Z\t__________________________________________________________
+	puts ZN\t$name
+	puts ZD\t$desc
+	#puts ZI\t[X $data]
+	puts ZT\t[X $template]
+	puts ZE\t[X $expected]
+	#puts ZP\t$partials
+	
+	tcltest::test ${label}-${k}-${name} $desc -body {
 	    F [::mustache::parse $template]
-	} -result [v $label/$dname]
+	} -result [v $label/$name]
 
 	unset -nocomplain name desc data template expected partials
     }

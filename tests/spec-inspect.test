@@ -1,0 +1,61 @@
+# -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
+## (c) 2019 Andreas Kupries
+# # ## ### ##### ######## ############# #####################
+##
+# Process all the mustache tests of the original testsuite for
+# expansion. This code is inspired by the script `tests.tcl` of
+# project `mustache.tcl` (gh@ianka/mustache.tcl, BSD licensed)
+##
+# Comment the following return to save the exploded test input
+# templates and what ruby makes of them into a directory hierarchy.
+# This is useful for comparing the original ruby structures to my tree
+# structure. Especially around the handling of standalone tags. Not
+# required for builders and installers.
+return
+
+kt check Tcl     8.5
+kt check tcltest 2
+
+kt local testing mustache::parse
+
+kt source support/util.tcl
+
+proc SaveExpanded {label template data expected partials desc} {
+    set dstroot [file join [file dirname [td]] _work specs ${label}]
+    file mkdir $dstroot
+
+    fileutil::writeFile $dstroot/template.mustache $template
+    fileutil::writeFile $dstroot/context.txt       $data
+    fileutil::writeFile $dstroot/expected.txt      $expected
+    fileutil::writeFile $dstroot/partials.txt      $partials
+    fileutil::writeFile $dstroot/description.txt   $desc
+
+    # Baseline parsing structures from the original ruby mustache
+    #exec mustache --token $dstroot/template.mustache > $dstroot/template.rb
+    return
+}
+
+# # ## ### ##### ######## ############# #####################
+
+foreach specfile [Specs] {
+    lassign [Tests $specfile] label tests
+    
+    foreach spec $tests {
+	incr k
+
+	Decode $spec name desc data template expected partials
+	if {![info exists partials]} { set partials {} }
+
+	SaveExpanded $label/[format %02d ${k}]-$name \
+	    $template $data $expected $partials $desc
+
+	unset -nocomplain name desc data template expected partials
+    }
+
+    #break
+    unset k
+}
+
+# # ## ### ##### ######## ############# #####################
+cleanupTests
+return

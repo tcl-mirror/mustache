@@ -1,9 +1,9 @@
 ## -*- tcl -*-
-# # ## ### ##### ######## #############
+# # ## ### ##### ######## ############# #####################
 ## (c) 2019 Andreas Kupries
 
 # @@ Meta Begin
-# Package mustache::parse 0
+# Package mustache::context 0
 # Meta author      {Andreas Kupries}
 # Meta category    Template Processing
 # Meta description Implementation of mustache, context
@@ -17,12 +17,13 @@
 # @@ Meta End
 
 package require Tcl 8.5
+package require TclOO
 package require debug
 package require debug::caller
 
 package provide mustache::context 0
 
-# # ## ### ##### ######## #############
+# # ## ### ##### ######## ############# #####################
 
 namespace eval ::mustache {
     namespace export context
@@ -31,29 +32,14 @@ namespace eval ::mustache {
 
 # # ## ### ##### ######## ############# #####################
 
-debug define mustache/parse
-debug level  mustache/parse
-debug prefix mustache/parse {[debug caller] | }
+debug define mustache/context
+debug level  mustache/context
+debug prefix mustache/context {[debug caller] | }
 
-# # ## ### ##### ######## #############
+# # ## ### ##### ######## ############# #####################
 ## API
 
-# mustache context
-##
-
-# Methods
-# - focus K	Make field with name K the new "dot" (current focus)
-# - has? K	Do you know a field with name K
-
-# - iterable?   Is "dot" a non-empty list ? (check nil? first)
-# - nil?        Is "dot" false, or an empty list ?
-# - pop         Return to previous "dot"
-# - push F      Make frame F the new "dot"
-# - value       Return "dot"'s value.
-# - template? K Do you know a template with name K
-# - template K  Get template render structure with name K
-##
-# Frame methods
+## Frame methods
 # - field K	Get frame for field with name K
 # - has? K	Do you know a field with name K
 # - iter C S    Iterate your children, run script S with each child
@@ -62,37 +48,41 @@ debug prefix mustache/parse {[debug caller] | }
 # - nil?        Are you false, or an empty list ?
 # - value       Return your value
 
-package require TclOO
-
 oo::class create ::mustache::context {
 
-    # State
-# - A Stack Of Frames
-# - A Current Frame (Top Of Stack) - Term "dot".
+    # - - -- --- ----- -------- -------------
+    ## State
+    # - A Stack Of Frames
+    # - A Current Frame (Top Of Stack) - Term "dot".
+    # - The last frame searched for and found (name, and object)
+    # - A dictionary of sub-ordinate named templates ready for inclusion.
 
+    # - - -- --- ----- -------- -------------
+    ## API
+    # - focus K		Make field with name K the new "dot" (current focus)
+    # - has? K		Do you know a field with name K
+    # - iter S		Invoke S for all children of "dot"
+    # - iterable?	Is "dot" a non-empty list ? (check nil? first)
+    # - nil?		Is "dot" false, or an empty list ?
+    # - pop		Return to previous "dot"
+    # - push F		Make frame F the new "dot"
+    # - template K	Get template ?(render structure) with name K
+    # - template: K T	Declare template named K, and unparsed definition T.
+    # - template? K	Do you know a template with name K
+    # - value		Return "dot"'s value.
 
-
-
-
+    # - - -- --- ----- -------- -------------
+    ## API implementation
     
     constructor {rootframe} {
-	((TODO)) - templates for inclusion (partials)
-	((TODO)) - partials parsed lazy, memoized
-	
+	debug.mustache/context {}
 	my push $rootframe
 	my __clear
 	return
     }
-
-    method __found {field frame} {
-	set lastfield $field
-	set lastframe $frame
-    }
-    method __clear {field frame} {
-	my __found {} {}
-    }
     
     method focus {field} {
+	debug.mustache/context {}
 	if {$field ne $lastfield} {
 	    if {![my has? $field]} {
 		return -code error \
@@ -106,6 +96,7 @@ oo::class create ::mustache::context {
     }
 
     method has? {field} {
+	debug.mustache/context {}
 	foreach frame [lreverse $frames] {
 	    if {![{*}$frame has? $field]} continue
 	    __found $field [{*}$frame field $field]
@@ -114,27 +105,84 @@ oo::class create ::mustache::context {
 	return 0
     }
 
-    method iter {script} {}
-
-    method iterable? {} { {*}$dot iterable? }
-    method nil?      {} { {*}$dot nil?      }
+    # iter, iterable?, nil?, value
+    # - While it would be nice, we cannot simply forward, as `dot` is
+    #   dynamically changing.
+    
+    method iter {script} {
+	debug.mustache/context {}
+	{*}$dot iter [self] {
+	    uplevel 1 $script
+	}
+    }
+    
+    method iterable? {} {
+	debug.mustache/context {}
+	{*}$dot iterable?
+    }
+    
+    method nil? {} {
+	debug.mustache/context {}
+	{*}$dot nil?
+    }
 
     method pop {} {
+	debug.mustache/context {}
 	set frames [lreplace $frames end end]
 	set dot    [lindex   $frames end]
 	return
     }
 
     method push {frame} {
+	debug.mustache/context {}
 	lappend frames $frame
 	set     dot    $frame
 	return
     }
-    
-    method value {} { {*}$dot value }
 
-    variable frames
-    variable dot
-    variable lastfield
-    variable lastframe    
+    method template {name} {
+	debug.mustache/context {}
+	return [dict get $parts $name]
+    }
+
+    method template: {name template} {
+	debug.mustache/context {}
+	dict set parts $name $template
+	return
+    }
+
+    method template? {name} {
+	debug.mustache/context {}
+	return [dict exists $parts $name]
+    }
+
+    method value {} {
+	debug.mustache/context {}
+	{*}$dot value
+    }
+    
+    # - - -- --- ----- -------- -------------
+    ## State variables
+
+    variable frames	;# stack of frame(object)s, TOS at end
+    variable dot	;# TOS frame(object)
+    variable lastfield	;# Name   of last field/frame searched for and found.
+    variable lastframe  ;# Object of ...
+    variable parts	;# Map: name -> template (partials, includables)
+    
+    # - - -- --- ----- -------- -------------
+    ## Internal helpers
+    
+    method __found {field frame} {
+	set lastfield $field
+	set lastframe $frame
+    }
+    method __clear {field frame} {
+	my __found {} {}
+    }
+
+    # - - -- --- ----- -------- -------------
 }
+
+# # ## ### ##### ######## ############# #####################
+return
