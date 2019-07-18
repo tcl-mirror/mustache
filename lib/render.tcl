@@ -29,7 +29,8 @@ namespace eval ::mustache {
     namespace ensemble create
 }
 namespace eval ::mustache::R {
-    namespace export all lit var var/escaped dot section isection
+    namespace export all lit var var.dot var/escaped.dot dot \
+	section isection partial
     namespace ensemble create
 }
 
@@ -52,13 +53,17 @@ proc ::mustache::render {template context writer} {
     # Each tree tag ((node|leaf)-cmd) is implemented as procedure in
     # the internal R namespace/ensemble.
     ##
-    # [ok] lit
-    # [ok] var
-    # [ok] var/escaped
-    # [ok] dot
-    # [ok] section
+    # [ok] dot			Leaf
     # [ok] isection
+    # [..] isection.dot
+    # [ok] lit			Leaf
     # [ok] partial
+    # [ok] section
+    # [..] section.dot
+    # [ok] var			Leaf
+    # [ok] var.dot		Leaf
+    # [ok] var/escaped		Leaf
+    # [ok] var/escaped.dot	Leaf
 
     R all $template $context $writer
     return
@@ -92,12 +97,34 @@ proc ::mustache::R::var {field context writer} {
     return
 }
 
+proc ::mustache::R::var.dot {field context writer} {
+    debug.mustache/render {}
+    # Ignore missing field
+    if {![D $context has.dot? $field]} return
+    # Write field value, it is dot for but a moment.
+    D $context focus.dot $field
+    D $writer [D $context value]
+    D $context pop
+    return
+}
+
 proc ::mustache::R::var/escaped {field context writer} {
     debug.mustache/render {}
     # Ignore missing field
     if {![D $context has? $field]} return
     # Write field value, it is dot for but a moment.
     D $context focus $field
+    D $writer [HTMLEscape [D $context value]]
+    D $context pop
+    return
+}
+
+proc ::mustache::R::var/escaped.dot {field context writer} {
+    debug.mustache/render {}
+    # Ignore missing field
+    if {![D $context has.dot? $field]} return
+    # Write field value, it is dot for but a moment.
+    D $context focus.dot $field
     D $writer [HTMLEscape [D $context value]]
     D $context pop
     return

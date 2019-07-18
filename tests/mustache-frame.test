@@ -56,9 +56,9 @@ tcltest::test frame-fromTags-2.0 "fromTags" -cleanup {
     $o destroy
     unset o
 } -body {
-    set o [mustache frame fromTags [v z_context/root]]
+    set o [mustache frame fromTags [v context/root]]
     $o value
-} -result {FIELD V FALSE 0 NIL {} SEQ {1 2 3} NOSEQ {} NOMAP {} SUB {CHILD X}}
+} -result {FIELD V< FALSE 0 NIL {} SEQ {1 2 3} NOSEQ {} NOMAP {} SUB {CHILD X}}
 
 # # ## ### ##### ######## ############# #####################
 cleanupTests

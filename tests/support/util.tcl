@@ -50,7 +50,7 @@ proc X {x} { string map  [list \n \\n \r \\r { } \\s \t \\t] $x }
 
 
 proc Specs {} {
-    lsort -dict [glob -directory [td]/assets *.yml]
+    lsort -dict [glob -directory [td]/inputs/spec *.yml]
 }
 
 proc Tests {specfile} {

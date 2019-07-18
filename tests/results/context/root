@@ -1,5 +1,5 @@
 mapping {
-	{scalar FIELD} {scalar V}
+	{scalar FIELD} {scalar V<}
 	{scalar FALSE} {scalar 0}
 	{scalar NIL} {scalar {}}
 	{scalar SEQ} {sequence {

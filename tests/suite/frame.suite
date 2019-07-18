@@ -13,8 +13,8 @@ dict with fdata {}
 # - _fd   - field query result, and additional test options.
 # - _id   - iter result, and additional test options.
 
-proc VAL  {} { global fkind _vc ; {*}$_vc [v z_frame/$fkind] }
-proc VALs {} { global fkind     ;          v z_frame/$fkind.to_s }
+proc VAL  {} { global fkind _vc ; {*}$_vc [v frame/$fkind] }
+proc VALs {} { global fkind     ;          v frame/$fkind.to_s }
 
 # [ok] constructor V
 # [ok] field K

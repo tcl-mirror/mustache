@@ -32,7 +32,7 @@ foreach specfile [Specs] {
 
 	tcltest::test ${label}-${k}-${name} $desc -body {
 	    F [::mustache::parse $template]
-	} -result [v $label/$name]
+	} -result [v spec/$label/$name]
 
 	unset -nocomplain name desc data template expected partials
     }

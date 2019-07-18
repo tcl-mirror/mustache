@@ -13,7 +13,7 @@ kt source support/util.tcl
 
 # # ## ### ##### ######## ############# #####################
 
-proc RF {} { mustache frame fromTags [v z_context/root] }
+proc RF {} { mustache frame fromTags [v context/root] }
 
 # # ## ### ##### ######## ############# #####################
 
@@ -90,7 +90,7 @@ tcltest::test context-focus-2.1 "focus, known field, no has? cache" -setup {
 } -body {
     CTX focus FIELD
     list [CTX depth] [CTX value]
-} -result {2 V}
+} -result {2 V<}
 
 tcltest::test context-focus-2.2 "focus, known field, no has? cache, not in dot" -setup {
     mustache context create CTX [RF]
@@ -100,7 +100,7 @@ tcltest::test context-focus-2.2 "focus, known field, no has? cache, not in dot" 
 } -body {
     CTX focus FIELD
     list [CTX depth] [CTX value]
-} -result {3 V}
+} -result {3 V<}
 
 tcltest::test context-focus-3.0 "focus, unknown field, has? cache match" -setup {
     mustache context create CTX [RF]
@@ -119,7 +119,7 @@ tcltest::test context-focus-3.1 "focus, known field, has? cache match" -setup {
 } -body {
     CTX focus FIELD
     list [CTX depth] [CTX value]
-} -result {2 V}
+} -result {2 V<}
 
 tcltest::test context-focus-4.0 "focus, unknown field, has? cache mismatch" -setup {
     mustache context create CTX [RF]
@@ -138,7 +138,7 @@ tcltest::test context-focus-4.1 "focus, known field, has? cache mismatch" -setup
 } -body {
     CTX focus FIELD
     list [CTX depth] [CTX value]
-} -result {2 V}
+} -result {2 V<}
 
 # # ## ### ##### ######## ############# #####################
 ## focus.dot
@@ -176,7 +176,7 @@ tcltest::test context-focus.dot-2.1 "focus.dot, known field, no has.dot? cache" 
 } -body {
     CTX focus.dot FIELD
     list [CTX depth] [CTX value]
-} -result {2 V}
+} -result {2 V<}
 
 tcltest::test context-focus.dot-2.2 "focus.dot, known field, no has.dot? cache, not in dot" -setup {
     mustache context create CTX [RF]
@@ -204,7 +204,7 @@ tcltest::test context-focus.dot-3.1 "focus.dot, known field, has.dot? cache matc
 } -body {
     CTX focus.dot FIELD
     list [CTX depth] [CTX value]
-} -result {2 V}
+} -result {2 V<}
 
 tcltest::test context-focus.dot-4.0 "focus.dot, unknown field, has.dot? cache mismatch" -setup {
     mustache context create CTX [RF]
@@ -223,7 +223,7 @@ tcltest::test context-focus.dot-4.1 "focus.dot, known field, has.dot? cache mism
 } -body {
     CTX focus.dot FIELD
     list [CTX depth] [CTX value]
-} -result {2 V}
+} -result {2 V<}
 
 # # ## ### ##### ######## ############# #####################
 ## has?
@@ -672,7 +672,7 @@ tcltest::test context-value-2.0 "value, mapping" -setup {
     CTX destroy
 } -body {
     CTX value
-} -result {FIELD V FALSE 0 NIL {} SEQ {1 2 3} NOSEQ {} NOMAP {} SUB {CHILD X}}
+} -result {FIELD V< FALSE 0 NIL {} SEQ {1 2 3} NOSEQ {} NOMAP {} SUB {CHILD X}}
 
 tcltest::test context-value-2.1 "value, scalar" -setup {
     mustache context create CTX [RF]
@@ -681,7 +681,7 @@ tcltest::test context-value-2.1 "value, scalar" -setup {
     CTX destroy
 } -body {
     CTX value
-} -result V
+} -result V<
 
 tcltest::test context-value-2.2 "value, sequence" -setup {
     mustache context create CTX [RF]
