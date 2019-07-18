@@ -75,13 +75,18 @@ proc ::mustache::frame::FT::mapping {v} {
 
 proc ::mustache::frame::FT::arg-sequence {v} {
     debug.mustache/frame {}
-    lmap el $v { {*}$el }
+    lmap el $v {
+	debug.mustache/frame {- ($el)}
+	{*}$el
+    }
 }
 
 proc ::mustache::frame::FT::arg-mapping {v} {
     debug.mustache/frame {}
+    set tmp {}
     foreach {k val} $v {
 	set k [lindex $k end]	;# assumed scalar
+	debug.mustache/frame {- ($k) --> ($val)}
 	dict set tmp $k [{*}$val]
     }
     return $tmp
@@ -108,11 +113,16 @@ oo::class create ::mustache::frame::scalar {
 	return
     }
 
+    destructor {
+	debug.mustache/frame {}
+	return
+    }
+    
     method field {k} {
 	debug.mustache/frame {}
 	return -code error \
 	    -errorcode {MUSTACHE FRAME SCALAR FIELD} \
-	    "Scalar value has no fields"
+	    "Scalar has no fields"
     }
     
     method has? {k} {
@@ -124,12 +134,12 @@ oo::class create ::mustache::frame::scalar {
 	debug.mustache/frame {}
 	return -code error \
 	    -errorcode {MUSTACHE FRAME SCALAR ITER} \
-	    "Scalar value cannot be iterated over"
+	    "Scalar cannot be iterated over"
     }
     
     method iterable? {} {
 	debug.mustache/frame {}
-	return no
+	return 0
     }
 
     method nil? {} {
@@ -158,16 +168,24 @@ oo::class create ::mustache::frame::sequence {
     
     constructor {val} {
 	# val :: list (frame-object)
+	# Container owns the objects given to it.
 	debug.mustache/frame {}
 	set value $val
 	return
     }
 
+    destructor {
+	# Container destroys the owned elements.
+	debug.mustache/frame {}
+	foreach el $value { $el destroy }
+	return
+    }
+    
     method field {k} {
 	debug.mustache/frame {}
 	return -code error \
 	    -errorcode {MUSTACHE FRAME SEQUENCE FIELD} \
-	    "Sequence value has no fields"
+	    "Sequence has no fields"
     }
     
     method has? {k} {
@@ -218,7 +236,15 @@ oo::class create ::mustache::frame::mapping {
     constructor {val} {
 	debug.mustache/frame {}
 	# val :: dict (key -> frame-object)
+	# Container owns the objects given to it.
 	set value $val
+	return
+    }
+
+    destructor {
+	# Container destroys the owned elements.
+	debug.mustache/frame {}
+	dict for {k el} $value { $el destroy }
 	return
     }
 
@@ -241,7 +267,7 @@ oo::class create ::mustache::frame::mapping {
 	debug.mustache/frame {}
 	return -code error \
 	    -errorcode {MUSTACHE FRAME MAPPING ITER} \
-	    "Unordered mapping cannot be iterated over"
+	    "Mapping cannot be iterated over"
     }
     
     method iterable? {} {
@@ -258,6 +284,7 @@ oo::class create ::mustache::frame::mapping {
     method value {} {
 	debug.mustache/frame {}
 	# stringify - memoize ?
+	set r {}
 	dict for {k v} $value { lappend r $k [$v value] }
 	return $r
     }

@@ -10,37 +10,37 @@ dict with fdata {}
 # - _it   - iterable? result
 # - _nl   - nil? result
 # - _vc   - cons value, post processor for raw value
-# - _val  - cons value, final value, DERIVED from kind, and _vc
-# - _vals - cons value, stringified
 # - _fd   - field query result, and additional test options.
 # - _id   - iter result, and additional test options.
 
-set _val  [{*}$_vc [v z_frame/$fkind]]
-set _vals [v          z_frame/$fkind.to_s]
+proc VAL  {} { global fkind _vc ; {*}$_vc [v z_frame/$fkind] }
+proc VALs {} { global fkind     ;          v z_frame/$fkind.to_s }
 
 # [ok] constructor V
 # [ok] field K
 # [ok] has? K
-# [..] iter C S
+# [ok] iter C S
 # [ok] iterable?
 # [ok] nil?
 # [ok] value
 
+# [..] TODO destructor (confirm that owned objects (children) are destroyed as well)
+
 # # ## ### ##### ######## ############# #####################
 ## Constructor
 
-tcltest::test ${fkind}-cons-1.0 "cons, wrong args, not enough" -body {
+tcltest::test frame-${fkind}-cons-1.0 "cons, wrong args, not enough" -body {
     mustache frame $fkind new
 } -returnCodes error \
     -result [M' {wrong # args: should be "mustache frame @ new val"} @ $fkind]
 
-tcltest::test ${fkind}-cons-1.1 "cons, wrong args, too many" -body {
-    mustache frame $fkind new $_val X
+tcltest::test frame-${fkind}-cons-1.1 "cons, wrong args, too many" -body {
+    mustache frame $fkind new [VAL] X
 } -returnCodes error \
     -result [M' {wrong # args: should be "mustache frame @ new val"} @ $fkind]
 
-tcltest::test ${fkind}-cons-2.0 "cons" -body {
-    set o [mustache frame $fkind new $_val]
+tcltest::test frame-${fkind}-cons-2.0 "cons" -body {
+    set o [mustache frame $fkind new [VAL]]
 } -cleanup {
     $o destroy
     unset -nocomplain o
@@ -49,24 +49,24 @@ tcltest::test ${fkind}-cons-2.0 "cons" -body {
 # # ## ### ##### ######## ############# #####################
 ## has?
 
-tcltest::test ${fkind}-has?-1.0 "has?, wrong args, not enough" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-has?-1.0 "has?, wrong args, not enough" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
     FR has?
 } -returnCodes error -result {wrong # args: should be "FR has? k"}
 
-tcltest::test ${fkind}-has?-1.1 "has?, wrong args, too many" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-has?-1.1 "has?, wrong args, too many" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
     FR has? FIELD X
 } -returnCodes error -result {wrong # args: should be "FR has? k"}
 
-tcltest::test ${fkind}-has?-2.0 "has?, result" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-has?-2.0 "has?, result" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
@@ -76,16 +76,16 @@ tcltest::test ${fkind}-has?-2.0 "has?, result" -setup {
 # # ## ### ##### ######## ############# #####################
 ## iterable?
 
-tcltest::test ${fkind}-iterable?-1.0 "iterable?, wrong args, too many" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-iterable?-1.0 "iterable?, wrong args, too many" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
     FR iterable? X
 } -returnCodes error -result {wrong # args: should be "FR iterable?"}
 
-tcltest::test ${fkind}-iterable?-2.0 "iterable?, result" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-iterable?-2.0 "iterable?, result" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
@@ -95,16 +95,16 @@ tcltest::test ${fkind}-iterable?-2.0 "iterable?, result" -setup {
 # # ## ### ##### ######## ############# #####################
 ## nil?
 
-tcltest::test ${fkind}-nil?-1.0 "nil?, wrong args, too many" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-nil?-1.0 "nil?, wrong args, too many" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
     FR nil? X
 } -returnCodes error -result {wrong # args: should be "FR nil?"}
 
-tcltest::test ${fkind}-nil?-2.0 "nil?, result" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-nil?-2.0 "nil?, result" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
@@ -114,43 +114,43 @@ tcltest::test ${fkind}-nil?-2.0 "nil?, result" -setup {
 # # ## ### ##### ######## ############# #####################
 ## value
 
-tcltest::test ${fkind}-value-1.0 "value, wrong args, too many" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-value-1.0 "value, wrong args, too many" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
     FR value X
 } -returnCodes error -result {wrong # args: should be "FR value"}
 
-tcltest::test ${fkind}-value-2.0 "value, result" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-value-2.0 "value, result" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
     FR value
-} -result $_vals
+} -result [VALs]
 
 # # ## ### ##### ######## ############# #####################
 ## field
 
-tcltest::test ${fkind}-field-1.0 "field, wrong args, not enough" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-field-1.0 "field, wrong args, not enough" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
     FR field
 } -returnCodes error -result {wrong # args: should be "FR field k"}
 
-tcltest::test ${fkind}-field-1.1 "field, wrong args, too many" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-field-1.1 "field, wrong args, too many" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
     FR field FIELD X
 } -returnCodes error -result {wrong # args: should be "FR field k"}
 
-tcltest::test ${fkind}-field-2.0 "field, result" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-field-2.0 "field, result" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
@@ -160,32 +160,32 @@ tcltest::test ${fkind}-field-2.0 "field, result" -setup {
 # # ## ### ##### ######## ############# #####################
 ## iter
 
-tcltest::test ${fkind}-iter-1.0 "iter, wrong args, not enough" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-iter-1.0 "iter, wrong args, not enough" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
     FR iter
 } -returnCodes error -result {wrong # args: should be "FR iter context script"}
 
-tcltest::test ${fkind}-iter-1.1 "iter, wrong args, not enough" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-iter-1.1 "iter, wrong args, not enough" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
     FR iter C
 } -returnCodes error -result {wrong # args: should be "FR iter context script"}
 
-tcltest::test ${fkind}-iter-1.2 "iter, wrong args, too many" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-iter-1.2 "iter, wrong args, too many" -setup {
+    mustache frame $fkind create FR [VAL]
 } -cleanup {
     FR destroy
 } -body {
     FR iter C S X
 } -returnCodes error -result {wrong # args: should be "FR iter context script"}
 
-tcltest::test ${fkind}-iter-2.0 "iter, result" -setup {
-    mustache frame $fkind create FR $_val
+tcltest::test frame-${fkind}-iter-2.0 "iter, result" -setup {
+    mustache frame $fkind create FR [VAL]
     set _trace {}
     proc C {args} { lappend ::_trace $args }
 } -cleanup {
@@ -198,5 +198,7 @@ tcltest::test ${fkind}-iter-2.0 "iter, result" -setup {
 } -result {*}$_id
 
 # # ## ### ##### ######## ############# #####################
-unset -nocomplain _hq _it _nl _fd _val _vc _vals
+unset -nocomplain _hq _it _nl _fd _vc
+rename VAL {}
+rename VALs {}
 return
