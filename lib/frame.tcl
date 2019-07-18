@@ -106,7 +106,7 @@ proc ::mustache::frame::FT::arg-mapping {v} {
 
 oo::class create ::mustache::frame::scalar {
     # Scalar value.
-    
+
     constructor {val} {
 	debug.mustache/frame {}
 	set value $val
@@ -117,14 +117,14 @@ oo::class create ::mustache::frame::scalar {
 	debug.mustache/frame {}
 	return
     }
-    
+
     method field {k} {
 	debug.mustache/frame {}
 	return -code error \
 	    -errorcode {MUSTACHE FRAME SCALAR FIELD} \
 	    "Scalar has no fields"
     }
-    
+
     method has? {k} {
 	debug.mustache/frame {}
 	return 0
@@ -136,7 +136,7 @@ oo::class create ::mustache::frame::scalar {
 	    -errorcode {MUSTACHE FRAME SCALAR ITER} \
 	    "Scalar cannot be iterated over"
     }
-    
+
     method iterable? {} {
 	debug.mustache/frame {}
 	return 0
@@ -152,7 +152,7 @@ oo::class create ::mustache::frame::scalar {
 	debug.mustache/frame {}
 	return $value
     }
-    
+
     # - - -- --- ----- -------- -------------
     ## State variables
 
@@ -165,7 +165,7 @@ oo::class create ::mustache::frame::scalar {
 
 oo::class create ::mustache::frame::sequence {
     # List/sequence value. Of frames.
-    
+
     constructor {val} {
 	# val :: list (frame-object)
 	# Container owns the objects given to it.
@@ -180,14 +180,14 @@ oo::class create ::mustache::frame::sequence {
 	foreach el $value { $el destroy }
 	return
     }
-    
+
     method field {k} {
 	debug.mustache/frame {}
 	return -code error \
 	    -errorcode {MUSTACHE FRAME SEQUENCE FIELD} \
 	    "Sequence has no fields"
     }
-    
+
     method has? {k} {
 	debug.mustache/frame {}
 	return 0
@@ -202,7 +202,7 @@ oo::class create ::mustache::frame::sequence {
 	}
 	return
     }
-    
+
     method iterable? {} {
 	debug.mustache/frame {}
 	expr {!![llength $value]}
@@ -219,7 +219,7 @@ oo::class create ::mustache::frame::sequence {
 	# stringify - memoize ?
 	return [lmap v $value { $v value }]
     }
-    
+
     # - - -- --- ----- -------- -------------
     ## State variables
 
@@ -232,7 +232,7 @@ oo::class create ::mustache::frame::sequence {
 
 oo::class create ::mustache::frame::mapping {
     # Dictionary/map value. Keys mapping to frames.
-    
+
     constructor {val} {
 	debug.mustache/frame {}
 	# val :: dict (key -> frame-object)
@@ -257,7 +257,7 @@ oo::class create ::mustache::frame::mapping {
 	}
 	return [dict get $value $k]
     }
-    
+
     method has? {k} {
 	debug.mustache/frame {}
 	dict exists $value $k
@@ -269,7 +269,7 @@ oo::class create ::mustache::frame::mapping {
 	    -errorcode {MUSTACHE FRAME MAPPING ITER} \
 	    "Mapping cannot be iterated over"
     }
-    
+
     method iterable? {} {
 	debug.mustache/frame {}
 	return 0
@@ -288,7 +288,7 @@ oo::class create ::mustache::frame::mapping {
 	dict for {k v} $value { lappend r $k [$v value] }
 	return $r
     }
-    
+
     # - - -- --- ----- -------- -------------
     ## State variables
 

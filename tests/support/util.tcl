@@ -1,4 +1,4 @@
-# -*- tcl -*- 
+# -*- tcl -*-
 ## (c) 2019 Andreas Kupries
 # # ## ### ##### ######## ############# #####################
 ## Utility functions for the tests.
@@ -56,7 +56,7 @@ proc Specs {} {
 proc Tests {specfile} {
     set spec  [lindex [tclyaml readTags file $specfile] 0 0]
     set tests [lindex [dict get [lindex $spec end] {scalar tests}] end]
-    
+
     lappend r [string trim [file rootname [file tail $specfile]] {./~}]
     lappend r $tests
     return $r
@@ -81,7 +81,7 @@ proc Frame {spec args} {
 	set partval  [lindex $partval  end]
 	$data template: $partname $partval
     }
-    return    
+    return
 }
 
 proc Decode {spec args} {

@@ -66,7 +66,7 @@ oo::class create ::mustache::context {
 
     # - - -- --- ----- -------- -------------
     ## API implementation
-    
+
     constructor {frame} {
 	debug.mustache/context {}
 	# The context now owns the frame.
@@ -148,19 +148,19 @@ oo::class create ::mustache::context {
     # iter, iterable?, nil?, value
     # - While it would be nice, we cannot simply forward, as `dot` is
     #   dynamically changing.
-    
+
     method iter {script} {
 	debug.mustache/context {}
 	{*}$dot iter [self] {
 	    uplevel 1 $script
 	}
     }
-    
+
     method iterable? {} {
 	debug.mustache/context {}
 	{*}$dot iterable?
     }
-    
+
     method nil? {} {
 	debug.mustache/context {}
 	{*}$dot nil?
@@ -210,7 +210,7 @@ oo::class create ::mustache::context {
 	debug.mustache/context {}
 	{*}$dot value
     }
-    
+
     # - - -- --- ----- -------- -------------
     ## State variables
 
@@ -221,7 +221,7 @@ oo::class create ::mustache::context {
     variable lastdotfield  ;# Name   of last field searched in dot and found.
     variable lastdotframe  ;# Object of ...
     variable parts	   ;# Map: name -> template (partials, includables)
-    
+
     # - - -- --- ----- -------- -------------
     ## Internal helpers
 

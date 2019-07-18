@@ -72,7 +72,7 @@ proc mustache::ParseS {template} {
     set stack {} ; # stack of partials trees, for all open sections.
     #            ; # element :: list (tree match cmd pos)
     set lit   "" ; # accumulator of literal sequences
-    
+
     foreach el $template {
 	lassign $el cmd pos detail
 	if {($cmd ne "lit") && [string length $lit]} {
@@ -94,7 +94,7 @@ proc mustache::ParseS {template} {
 		# used to indicate that field search is restricted to
 		# the previous field, it cannot be searched in the
 		# general context. That unlimited search is limited to
-		# the start of the dotted chain.		
+		# the start of the dotted chain.
 		#
 		# Note that ParseL has already ensured that a field
 		# will not start with a dot.
@@ -136,7 +136,7 @@ proc mustache::ParseS {template} {
 		# Add the now-complete tree to the previous partial
 		# and make the partial current again.
 		# Note, we expand dotted fields for the (i)section.
-		
+
 		if {[string first . $detail] >= 0} {
 		    set args {}
 		    set chain [lreverse [lassign [split $detail .] first]]
@@ -151,7 +151,7 @@ proc mustache::ParseS {template} {
 		}
 
 		lassign [lindex $stack end] tree match mcmd mpos
-		
+
 		lappend tree $node
 
 		set stack [lreplace $stack end end]
@@ -202,7 +202,7 @@ proc mustache::ParseL {template opener closer} {
     ValidateDelimiters " at start"
 
     # ASSERT: olen > 0 && clen > 0
-    
+
     # Phase I. Split the template into a series of literals and tags.
     set start  0
     set result {} ;# list of literals and tags.
@@ -215,14 +215,14 @@ proc mustache::ParseL {template opener closer} {
     # :: tag     = list(cmd   pos param)
 
     puts "% % %% %%% %%%%% %%%%%%%%"
-    
+
     while 1 {
 	# start points to a location after a tag.
 	debug.mustache/parse {@$start}
 	puts "- - -- --- -----"
 	puts "- @$start [expr {$standalone ? "(standalone)" : ""}]"
 	puts "- ([X [string range $template $start end]])"
-	
+
 	set tagstart [string first $opener $template $start]
 
         debug.mustache/parse {- $tagstart ($opener)}
@@ -242,7 +242,7 @@ proc mustache::ParseL {template opener closer} {
 
 	    puts "- Prefix. $litstart"
 	    puts "- Prefix. '[X $litprefix]'"
-	    
+
 	    # Strip leading whitespace if tag looks to be alone on the line.
 	    if {[regexp -indices -- {\r?\n(\s*)$} $litprefix -> padding] ||
 		[regexp -indices -- {^(\s+)?$}    $litprefix -> padding]} {
@@ -262,7 +262,7 @@ proc mustache::ParseL {template opener closer} {
 	set tagclose [string first $closer $template $tagstart]
 
 	puts "- ($closer) @$tagclose"
-	
+
 	if {$tagclose < 0} {
 	    E "Unclosed tag at index $tagstart" \
 		MISSING CLOSE $tagstart
@@ -272,7 +272,7 @@ proc mustache::ParseL {template opener closer} {
 	set cmd [CommandOf [string index $template $tagstart]]
 
 	puts "- C $cmd"
-	
+
 	# Determine tag parameter
 	if {$cmd ne "var/escaped"} {
 	    incr tagstart ; # move beyond the command character
@@ -281,9 +281,9 @@ proc mustache::ParseL {template opener closer} {
 	set param [string trim [string range $template $tagstart ${tagclose}-1]]
 
 	puts "- P ([X $param])"
-	
+
 	# Parameter checks
-	
+
 	if {($cmd ne "comment") &&
 	    ([string first \n $param] >= 0)} {
 	    # Only comment tags are allowed to be multi-line.
@@ -297,7 +297,7 @@ proc mustache::ParseL {template opener closer} {
 	    E "Bad field '$param' beginning with dot, at index $tagstart" \
 		ILLEGAL PARAM FIELD $tagstart $param
 	}
-	
+
 	# Move starting point of next round beyond the current closer.
 	set  start $tagclose
 	incr start $clen
@@ -305,9 +305,9 @@ proc mustache::ParseL {template opener closer} {
 	    incr start
 	    set cmd "var"
 	}
-	
+
 	puts "- > $start"
-	
+
 	if {[string match var* $cmd] && ($param eq ".")} {
 	    set cmd [string map {var dot} $cmd]
 	}
@@ -335,12 +335,12 @@ puts "  - C ($closer)"
 	# all remaining whitespace after it is stripped. Otherwise we
 	# re-add all padding we may have stored for the prefix, to the
 	# prefix.
-	
+
 	if {$standalone && (0)} {
 	    if {($cmd ne "var") &&
 		[regexp -start $start -indices -- {^(\r?\n)} $template -> peek]} {
 		puts "- skip for standalone"
-		
+
 		set  start [lindex $peek end]
 		incr start
 	    } else {
@@ -350,7 +350,7 @@ puts "  - C ($closer)"
 	}
 
 	Lit $litstart $litprefix
-	
+
 	# Hide special commands from the higher layers.
 	if {$cmd in {delim comment}} {
 	    continue

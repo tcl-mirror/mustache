@@ -59,7 +59,7 @@ proc ::mustache::render {template context writer} {
     # [ok] section
     # [ok] isection
     # [ok] partial
-    
+
     R all $template $context $writer
     return
 }

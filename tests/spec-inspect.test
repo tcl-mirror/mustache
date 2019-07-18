@@ -39,7 +39,7 @@ proc SaveExpanded {label template data expected partials desc} {
 
 foreach specfile [Specs] {
     lassign [Tests $specfile] label tests
-    
+
     foreach spec $tests {
 	incr k
 
