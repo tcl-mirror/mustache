@@ -41,7 +41,24 @@ foreach {fkind fdata} {
     kt source suite/frame.suite
 }
 
-# fromTags...
+# # ## ### ##### ######## ############# #####################
+## fromTags...
+
+tcltest::test frame-fromTags-1.0 "fromTags, wrong args, not enough" -body {
+    mustache frame fromTags
+} -returnCodes error -result {wrong # args: should be "mustache frame fromTags spec"}
+
+tcltest::test frame-fromTags-1.1 "fromTags, wrong args, too many" -body {
+    mustache frame fromTags SPEC X
+} -returnCodes error -result {wrong # args: should be "mustache frame fromTags spec"}
+
+tcltest::test frame-fromTags-2.0 "fromTags" -cleanup {
+    $o destroy
+    unset o
+} -body {
+    set o [mustache frame fromTags [v z_context/root]]
+    $o value
+} -result {FIELD V FALSE 0 NIL {} SEQ {1 2 3} NOSEQ {} NOMAP {} SUB {CHILD X}}
 
 # # ## ### ##### ######## ############# #####################
 cleanupTests
