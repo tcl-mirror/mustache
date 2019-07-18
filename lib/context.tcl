@@ -49,7 +49,12 @@ oo::class create ::mustache::context {
     # - A dictionary of sub-ordinate named templates ready for inclusion.
 
     # - - -- --- ----- -------- -------------
-    ## API
+    ## API to support testing
+    # - depth		Depth of frame stack
+    # - dot		Return the dot object
+
+    # - - -- --- ----- -------- -------------
+    ## Public API
     # - focus K		Make field with name K the new "dot" (current focus)
     # - focus.dot K	Make field of dot with name K the new "dot" (current focus)
     # - has? K		Do you know a field with name K ?
@@ -209,6 +214,19 @@ oo::class create ::mustache::context {
     method value {} {
 	debug.mustache/context {}
 	{*}$dot value
+    }
+
+    # - - -- --- ----- -------- -------------
+    ## Test support
+
+    method depth {} {
+	debug.mustache/context {}
+	return [llength $frames]
+    }
+
+    method dot {} {
+	debug.mustache/context {}
+	return $dot
     }
 
     # - - -- --- ----- -------- -------------

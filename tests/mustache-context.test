@@ -89,10 +89,8 @@ tcltest::test context-focus-2.1 "focus, known field, no has? cache" -setup {
     CTX destroy
 } -body {
     CTX focus FIELD
-    CTX value
-    # TODO: consider inspection commands for depth of context.
-    # TODO: consider inspection commands for retrieval of dot object.
-} -result V
+    list [CTX depth] [CTX value]
+} -result {2 V}
 
 tcltest::test context-focus-2.2 "focus, known field, no has? cache, not in dot" -setup {
     mustache context create CTX [RF]
@@ -101,10 +99,8 @@ tcltest::test context-focus-2.2 "focus, known field, no has? cache, not in dot" 
     CTX destroy
 } -body {
     CTX focus FIELD
-    CTX value
-    # TODO: consider inspection commands for depth of context.
-    # TODO: consider inspection commands for retrieval of dot object.
-} -result V
+    list [CTX depth] [CTX value]
+} -result {3 V}
 
 tcltest::test context-focus-3.0 "focus, unknown field, has? cache match" -setup {
     mustache context create CTX [RF]
@@ -122,10 +118,8 @@ tcltest::test context-focus-3.1 "focus, known field, has? cache match" -setup {
     CTX destroy
 } -body {
     CTX focus FIELD
-    CTX value
-    # TODO: consider inspection commands for depth of context.
-    # TODO: consider inspection commands for retrieval of dot object.
-} -result V
+    list [CTX depth] [CTX value]
+} -result {2 V}
 
 tcltest::test context-focus-4.0 "focus, unknown field, has? cache mismatch" -setup {
     mustache context create CTX [RF]
@@ -143,10 +137,8 @@ tcltest::test context-focus-4.1 "focus, known field, has? cache mismatch" -setup
     CTX destroy
 } -body {
     CTX focus FIELD
-    CTX value
-    # TODO: consider inspection commands for depth of context.
-    # TODO: consider inspection commands for retrieval of dot object.
-} -result V
+    list [CTX depth] [CTX value]
+} -result {2 V}
 
 # # ## ### ##### ######## ############# #####################
 ## focus.dot
@@ -183,10 +175,8 @@ tcltest::test context-focus.dot-2.1 "focus.dot, known field, no has.dot? cache" 
     CTX destroy
 } -body {
     CTX focus.dot FIELD
-    CTX value
-    # TODO: consider inspection commands for depth of context.
-    # TODO: consider inspection commands for retrieval of dot object.
-} -result V
+    list [CTX depth] [CTX value]
+} -result {2 V}
 
 tcltest::test context-focus.dot-2.2 "focus.dot, known field, no has.dot? cache, not in dot" -setup {
     mustache context create CTX [RF]
@@ -213,10 +203,8 @@ tcltest::test context-focus.dot-3.1 "focus.dot, known field, has.dot? cache matc
     CTX destroy
 } -body {
     CTX focus.dot FIELD
-    CTX value
-    # TODO: consider inspection commands for depth of context.
-    # TODO: consider inspection commands for retrieval of dot object.
-} -result V
+    list [CTX depth] [CTX value]
+} -result {2 V}
 
 tcltest::test context-focus.dot-4.0 "focus.dot, unknown field, has.dot? cache mismatch" -setup {
     mustache context create CTX [RF]
@@ -234,10 +222,8 @@ tcltest::test context-focus.dot-4.1 "focus.dot, known field, has.dot? cache mism
     CTX destroy
 } -body {
     CTX focus.dot FIELD
-    CTX value
-    # TODO: consider inspection commands for depth of context.
-    # TODO: consider inspection commands for retrieval of dot object.
-} -result V
+    list [CTX depth] [CTX value]
+} -result {2 V}
 
 # # ## ### ##### ######## ############# #####################
 ## has?
@@ -514,14 +500,15 @@ tcltest::test context-pop-2.0 "pop, underflow" -setup {
 } -returnCodes error -result {Stack underflow, cannot pop root frame}
 
 tcltest::test context-pop-2.1 "pop, ok" -setup {
-    mustache context create CTX [RF]
+    mustache context create CTX [set rf [RF]]
     CTX focus NOSEQ
 } -cleanup {
     CTX destroy
+    unset rf
 } -body {
     CTX pop
-    # TODO: consider dot retrieval method, to check current/expected.
-} -result {}
+    list [CTX depth] [string equal $rf [CTX dot]]
+} -result {1 1}
 
 # # ## ### ##### ######## ############# #####################
 ## push
@@ -549,9 +536,9 @@ tcltest::test context-pop-2.0 "push, ok" -setup {
 } -cleanup {
     CTX destroy
 } -body {
-    CTX push SOMETHING
-    # TODO: consider dot retrieval method, to check current/expected.
-} -result {}
+    CTX push {some object command prefix}
+    list [CTX depth] [CTX dot]
+} -result {2 {some object command prefix}}
 
 # # ## ### ##### ######## ############# #####################
 ## template
