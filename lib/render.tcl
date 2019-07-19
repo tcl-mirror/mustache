@@ -191,7 +191,7 @@ proc ::mustache::R::partial {pos field context writer} {
 }
 
 proc ::mustache::R::D {prefix args} {
-    uplevel #0 [list {*}$prefix {*}$args]
+    uplevel 1 [list {*}$prefix {*}$args]
 }
 
 proc ::mustache::R::HTMLEscape {text} {

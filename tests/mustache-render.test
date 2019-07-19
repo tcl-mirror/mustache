@@ -73,7 +73,7 @@ foreach test [lsort -dict [glob -nocomplain -directory [td]/inputs/render *]] {
     if {[file exists $prefile]} {
 	set pre [tcltest::viewFile $prefile]
     }
-    
+
     incr k
     tcltest::test render-2.${k}-$name "render, $name" -setup {
 	set context [mustache context new [mustache frame fromTags $cdata]]
@@ -83,7 +83,7 @@ foreach test [lsort -dict [glob -nocomplain -directory [td]/inputs/render *]] {
 	$context destroy
 	unset context result
     } -body {
-	mustache render $input $context {append result}
+	mustache render $input $context {::append ::result}
 	set result
     } -returnCodes $code -result $expected
 
