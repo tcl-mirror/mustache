@@ -31,7 +31,7 @@ proc SaveExpanded {label template data expected partials desc} {
     fileutil::writeFile $dstroot/description.txt   $desc
 
     # Baseline parsing structures from the original ruby mustache
-    #exec mustache --token $dstroot/template.mustache > $dstroot/template.rb
+    exec mustache --token $dstroot/template.mustache > $dstroot/template.rb
     return
 }
 

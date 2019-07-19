@@ -46,7 +46,9 @@ proc F' {indent tree} {
     }
     return $r
 }
-proc X {x} { string map  [list \n \\n \r \\r { } \\s \t \\t] $x }
+
+# Escape specials for better readability.
+proc X {x} { string map [list \f \\f \v \\v \n \\n \r \\r { } \\s \t \\t] $x }
 
 
 proc Specs {} {

@@ -138,14 +138,14 @@ proc mustache::ParseS {template} {
 		# Note, we expand dotted fields for the (i)section.
 
 		if {[string first . $detail] >= 0} {
-		    set args {}
+		    set args  [list $tree]
 		    set chain [lreverse [lassign [split $detail .] first]]
 		    foreach field $chain {
 			set node [list $mcmd.dot $mpos $field {*}$args]
 			set args [list [list $node]]
 			set mcmd section
 		    }
-		    set node [list $cmd $mpos $first {*}$args]
+		    set node [list $mcmd $mpos $first {*}$args]
 		} else {
 		    set node [list $mcmd $mpos $match $tree]
 		}
@@ -209,6 +209,7 @@ proc mustache::ParseL {template opener closer} {
 
     # Trim state for standalone tags.
     set standalone 0
+    set max [string length $template]
 
     # :: list(literal|tag)
     # :: literal = list('lit' pos text)
@@ -219,8 +220,8 @@ proc mustache::ParseL {template opener closer} {
     while 1 {
 	# start points to a location after a tag.
 	debug.mustache/parse {@$start}
-	puts "- - -- --- -----"
-	puts "- @$start [expr {$standalone ? "(standalone)" : ""}]"
+	puts "- - -- --- ----- -------- ------------- \\"
+	puts "- @$start/$max"
 	puts "- ([X [string range $template $start end]])"
 
 	set tagstart [string first $opener $template $start]
@@ -236,24 +237,53 @@ proc mustache::ParseL {template opener closer} {
 	}
 
 	# tag intro, get preceding literal, if any
+	set standalone no
+	set litstart   $start
 	if {$tagstart > $start} {
 	    set litprefix [string range $template $start ${tagstart}-1]
-	    set litstart $start
+	    set padding ""
 
-	    puts "- Prefix. $litstart"
-	    puts "- Prefix. '[X $litprefix]'"
+	    puts "- Prefix @  $litstart"
+	    puts "- Prefix Rw '[X $litprefix]'"
 
-	    # Strip leading whitespace if tag looks to be alone on the line.
-	    if {[regexp -indices -- {\r?\n(\s*)$} $litprefix -> padding] ||
-		[regexp -indices -- {^(\s+)?$}    $litprefix -> padding]} {
-		set standalone yes
+	    # Strip leading whitespace. May be added back later.
+	    if {[regexp -indices -- {([ \t]+)$} $litprefix -> padding]} {
 		lassign $padding ps pe
 		set padding   [string range $litprefix {*}$padding]
 		set litprefix [string range $litprefix 0 ${ps}-1]
 
-		puts "- Prefix' '[X $litprefix]'"
-		puts "- Padding '[X $padding]'"
+		puts "- Prefix St '[X $litprefix]'"
+		puts "- Prefix Pd '[X $padding]' (${ps}..$pe)"
+	    } else {
+		set ps [string length $litprefix]
 	    }
+
+	    # Determine if tag looks to be alone on the line.  For
+	    # this we look in the template, at the character just
+	    # before the padding.  We cannot look in the litprefix,
+	    # because that may not contain the EOL in question, due to
+	    # having been skipped by the suffix processing of the
+	    # previous tag.
+
+	    set eolc [expr {$start + $ps - 1}]
+	    puts "- Prefix EL @$eolc ($start+$ps '[X [string range $template ${eolc}-2 ${eolc}+2]]' ('[X [string index $template $eolc]]')"
+
+	    if {($eolc < 0) || ([string index $template $eolc] eq "\n")} {
+		puts "- Prefix.. Standalone"
+		set standalone yes
+	    }
+
+	    # Restore stripped whitespace if we are not at the
+	    # beginning of a new line.
+	    if {!$standalone} {
+		append litprefix $padding
+		set padding ""
+
+		puts "- Prefix Re '[X $litprefix]'"
+		puts "- Prefix Pd '[X $padding]'"
+	    }
+	} else {
+	    set litprefix ""
 	}
 
 	incr tagstart $olen
@@ -336,15 +366,19 @@ puts "  - C ($closer)"
 	# re-add all padding we may have stored for the prefix, to the
 	# prefix.
 
-	if {$standalone && (0)} {
-	    if {($cmd ne "var") &&
-		[regexp -start $start -indices -- {^(\r?\n)} $template -> peek]} {
-		puts "- skip for standalone"
+	if {$standalone && ($start < $max)} {
+	    puts "- Suffix.. SkipCmd=[expr {$cmd ne "var"}]"
+	    puts "- Suffix.. @$start '[X [string range $template $start end]]'"
+	    puts "- Suffix.. LeadEol=[regexp -start $start -indices -- {\A(\r?\n)} $template -> peek]"
+
+	    if {($cmd ni {var var/escaped}) &&
+		[regexp -start $start -indices -- {\A(\r?\n)} $template -> peek]} {
+		puts "- Suffix.. - Skip to [expr {[lindex $peek end]+1}]"
 
 		set  start [lindex $peek end]
 		incr start
 	    } else {
-		puts "- Re-pad prefix"
+		puts "- Suffix.. Re-pad prefix '[X $padding]'"
 		append litprefix $padding
 	    }
 	}
@@ -360,9 +394,9 @@ puts "  - C ($closer)"
 	Tag $tagstart $cmd $param
     }
 
-    puts "- - -- --- -----"
+    puts "- - -- --- ----- -------- ------------- /"
     puts @\t[join [lmap x $result { lreplace $x end end [X [lindex $x end]] }] \n@\t]
-    puts "- - -- --- -----"
+    puts "- - -- --- ----- -------- ------------- *"
 
     return $result
 }
@@ -394,7 +428,7 @@ puts "  - C ($closer)"
 # \n includes \r\n digraph.
 
 proc mustache::X {x} {
-    string map  [list \n \\n \r \\r { } \\s \t \\t] $x
+    string map  [list \f \\f \v \\v \n \\n \r \\r { } \\s \t \\t] $x
 }
 
 proc mustache::CommandOf {c} {

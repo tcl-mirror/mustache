@@ -4,13 +4,13 @@
 ## Execute all the mustache tests of the original testsuite.
 ## This code is inspired by the script `tests.tcl` of project
 ## `mustache.tcl` (gh@ianka/mustache.tcl, BSD licensed)
-return
+#return
 kt check Tcl     8.5
 kt check tcltest 2
 
-kt local testing mustache::parse
 kt local testing mustache::context
 kt local testing mustache::frame
+kt local testing mustache::parse
 kt local testing mustache::render
 kt local testing mustache
 
@@ -26,9 +26,12 @@ foreach specfile [Specs] {
 
 	Frame $spec name desc data template expected
 
+	# TODO XXX ignore tests with partials, not supported yet.
+	if {[string match *partial* $name]} continue
+
 	tcltest::test ${label}-${k}-${name} $desc -body {
-	    ::mustache::mustache $template $data
-	} -result $expected
+	    X [::mustache::mustache $template $data]
+	} -result [X $expected]
 
 	unset -nocomplain name desc data template expected
     }

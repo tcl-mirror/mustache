@@ -56,10 +56,10 @@ proc ::mustache::render {template context writer} {
     # [ok] partial		:: list (tag pos field)
     # [ok] section		:: list (tag pos field children)
     # [ok] section.dot		:: list (tag pos field children)
-    # [ok] var			:: list (tag field)
-    # [ok] var.dot		:: list (tag field)
-    # [ok] var/escaped		:: list (tag field)
-    # [ok] var/escaped.dot	:: list (tag field)
+    # [ok] var			:: list (tag _ field)
+    # [ok] var.dot		:: list (tag _ field)
+    # [ok] var/escaped		:: list (tag _ field)
+    # [ok] var/escaped.dot	:: list (tag _ field)
     ##
     # Each tag see above is implemented as a procedure in the internal
     # helper namespace/ensemble, `R`.
@@ -86,7 +86,7 @@ proc ::mustache::R::lit {text context writer} {
     return
 }
 
-proc ::mustache::R::var {field context writer} {
+proc ::mustache::R::var {_ field context writer} {
     debug.mustache/render {}
     # Ignore missing field
     if {![D $context has? $field]} return
@@ -97,7 +97,7 @@ proc ::mustache::R::var {field context writer} {
     return
 }
 
-proc ::mustache::R::var.dot {field context writer} {
+proc ::mustache::R::var.dot {_ field context writer} {
     debug.mustache/render {}
     # Ignore missing field
     if {![D $context has.dot? $field]} return
@@ -108,7 +108,7 @@ proc ::mustache::R::var.dot {field context writer} {
     return
 }
 
-proc ::mustache::R::var/escaped {field context writer} {
+proc ::mustache::R::var/escaped {_ field context writer} {
     debug.mustache/render {}
     # Ignore missing field
     if {![D $context has? $field]} return
@@ -119,7 +119,7 @@ proc ::mustache::R::var/escaped {field context writer} {
     return
 }
 
-proc ::mustache::R::var/escaped.dot {field context writer} {
+proc ::mustache::R::var/escaped.dot {_ field context writer} {
     debug.mustache/render {}
     # Ignore missing field
     if {![D $context has.dot? $field]} return
@@ -209,7 +209,7 @@ proc ::mustache::R::partial {pos field context writer} {
 
 proc ::mustache::R::Section {children context writer} {
     debug.mustache/render {}
-    
+
     # section behaviour:
     # false? - skip                \ nil?
     # true? - list? - empty ? skip /
