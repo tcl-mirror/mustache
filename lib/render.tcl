@@ -46,24 +46,24 @@ debug prefix mustache/render {[debug caller] | }
 proc ::mustache::render {template context writer} {
     debug.mustache/render {}
     # template :: children
-    # children :: list (node|leaf)
-    # node :: list (node-cmd pos field children)
-    # leaf :: list (leaf-cmd details...)
+    # children :: list (node)
+    # node     :: list (tag args...)
+    # tag in:
+    # [ok] dot			:: list (tag _)
+    # [ok] isection		:: list (tag pos field children)
+    # [ok] isection.dot		:: list (tag pos field children)
+    # [ok] lit			:: list (tag literal-text)
+    # [ok] partial		:: list (tag pos field)
+    # [ok] section		:: list (tag pos field children)
+    # [ok] section.dot		:: list (tag pos field children)
+    # [ok] var			:: list (tag field)
+    # [ok] var.dot		:: list (tag field)
+    # [ok] var/escaped		:: list (tag field)
+    # [ok] var/escaped.dot	:: list (tag field)
     ##
-    # Each tree tag ((node|leaf)-cmd) is implemented as procedure in
-    # the internal R namespace/ensemble.
+    # Each tag see above is implemented as a procedure in the internal
+    # helper namespace/ensemble, `R`.
     ##
-    # [ok] dot			Leaf
-    # [ok] isection
-    # [..] isection.dot
-    # [ok] lit			Leaf
-    # [ok] partial
-    # [ok] section
-    # [..] section.dot
-    # [ok] var			Leaf
-    # [ok] var.dot		Leaf
-    # [ok] var/escaped		Leaf
-    # [ok] var/escaped.dot	Leaf
 
     R all $template $context $writer
     return
@@ -144,6 +144,72 @@ proc ::mustache::R::section {pos field children context writer} {
     # The field is the new context.
     D $context focus $field
 
+    Section $children $context $writer
+    return
+}
+
+proc ::mustache::R::section.dot {pos field children context writer} {
+    debug.mustache/render {}
+    # For a missing field skip the section.
+    if {![D $context has.dot? $field]} return
+
+    # The field is the new context.
+    D $context focus.dot $field
+
+    Section $children $context $writer
+    return
+}
+
+proc ::mustache::R::isection {pos field children context writer} {
+    debug.mustache/render {}
+    # Render once if field missing, false, or empty list.
+    if {[D $context has? $field]} {
+	D $context focus $field
+	if {![D $context nil?]} {
+	    D $context pop
+	    return
+	}
+	D $context pop
+    }
+
+    all $children $context $writer
+    return
+}
+
+proc ::mustache::R::isection.dot {pos field children context writer} {
+    debug.mustache/render {}
+    # Render once if field missing, false, or empty list.
+    if {[D $context has.dot? $field]} {
+	D $context focus.dot $field
+	if {![D $context nil?]} {
+	    D $context pop
+	    return
+	}
+	D $context pop
+    }
+
+    all $children $context $writer
+    return
+}
+
+proc ::mustache::R::partial {pos field context writer} {
+    debug.mustache/render {}
+
+    # field = symbolic name of template to insert and render here.
+    if {![D $context template? $field]} return
+    D $writer __NYI__
+    return
+    #
+    all [D $context template $field] $context $writer
+    return
+}
+
+# # ## ### ##### ######## #############
+## Shared behaviour
+
+proc ::mustache::R::Section {children context writer} {
+    debug.mustache/render {}
+    
     # section behaviour:
     # false? - skip                \ nil?
     # true? - list? - empty ? skip /
@@ -168,29 +234,11 @@ proc ::mustache::R::section {pos field children context writer} {
     return
 }
 
-proc ::mustache::R::isection {pos field children context writer} {
-    debug.mustache/render {}
-    # Render once if field missing, false, or empty list.
-    if {[D $context has? $field]} {
-	D $context focus $field
-	if {![D $context nil?]} return
-	D $context pop
-    }
-
-    all $children $context $writer
-    return
-}
-
-proc ::mustache::R::partial {pos field context writer} {
-    debug.mustache/render {}
-
-    # field = symbolic name of template to insert and render here.
-    if {![D $context template? $field]} return
-    all [D $context template $field] $context $writer
-    return
-}
+# # ## ### ##### ######## #############
+## Internal support
 
 proc ::mustache::R::D {prefix args} {
+    debug.mustache/render {}
     uplevel 1 [list {*}$prefix {*}$args]
 }
 
