@@ -110,7 +110,7 @@ oo::class create ::mustache::frame::scalar {
     constructor {val} {
 	debug.mustache/frame {}
 	# Treat doubles as numbers.
-	if {[string is double -strict $val]} { set val [expr $val] } 
+	if {[string is double -strict $val]} { set val [expr $val] }
 	set value $val
 	return
     }

@@ -50,6 +50,7 @@ proc ::mustache::render {template context writer} {
     # node     :: list (tag args...)
     # tag in:
     # [ok] dot			:: list (tag _)
+    # [ok] dot/escaped		:: list (tag _)
     # [ok] isection		:: list (tag pos field children)
     # [ok] isection.dot		:: list (tag pos field children)
     # [ok] lit			:: list (tag literal-text)
@@ -130,7 +131,13 @@ proc ::mustache::R::var/escaped.dot {_ field context writer} {
     return
 }
 
-proc ::mustache::R::dot {_ context writer} {
+proc ::mustache::R::dot {_ _ context writer} {
+    debug.mustache/render {}
+    D $writer [D $context value]
+    return
+}
+
+proc ::mustache::R::dot/escaped {_ _ context writer} {
     debug.mustache/render {}
     D $writer [HTMLEscape [D $context value]]
     return
@@ -138,6 +145,14 @@ proc ::mustache::R::dot {_ context writer} {
 
 proc ::mustache::R::section {pos field children context writer} {
     debug.mustache/render {}
+
+    if {$field eq "."} {
+	# Special operation when the section
+	# refers to dot, i.e. the current focus.
+	Section $children $context $writer
+	return
+    }
+
     # For a missing field skip the section.
     if {![D $context has? $field]} return
 
@@ -145,6 +160,8 @@ proc ::mustache::R::section {pos field children context writer} {
     D $context focus $field
 
     Section $children $context $writer
+
+    D $context pop
     return
 }
 
@@ -157,6 +174,8 @@ proc ::mustache::R::section.dot {pos field children context writer} {
     D $context focus.dot $field
 
     Section $children $context $writer
+
+    D $context pop
     return
 }
 
@@ -224,13 +243,11 @@ proc ::mustache::R::Section {children context writer} {
 	D $context iter {
 	    all $children $context $writer
 	}
-	D $context pop
 	return
     }
 
     # Not a list, not false either => Render once
     all $children $context $writer
-    D $context pop
     return
 }
 

@@ -19,6 +19,7 @@ kt source support/util.tcl
 ## Tags to render
 #
 # [ok] dot
+# [..] dot/escaped
 # [ok] isection
 # [ok] isection.dot
 # [ok] lit
