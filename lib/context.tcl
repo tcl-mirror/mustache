@@ -56,9 +56,7 @@ oo::class create ::mustache::context {
     # - - -- --- ----- -------- -------------
     ## Public API
     # - focus K		Make field with name K the new "dot" (current focus)
-    # - focus.dot K	Make field of dot with name K the new "dot" (current focus)
     # - has? K		Do you know a field with name K ?
-    # - has.dot? K	Does dot know a field with name K ?
     # - iter S		Invoke S for all children of "dot"
     # - iterable?	Is "dot" a non-empty list ? (check nil? first)
     # - nil?		Is "dot" false, or an empty list ?
@@ -77,7 +75,6 @@ oo::class create ::mustache::context {
 	# The context now owns the frame.
 	my push $frame
 	my __clear
-	my __clear.dot
 	set parts {}
 	return
     }
@@ -106,6 +103,9 @@ oo::class create ::mustache::context {
 
     method focus {field} {
 	debug.mustache/context {}
+	# Fast bail OK for reference to dot. No stack changes.
+	if {$field eq "."} { return }
+
 	if {(($field ne $lastfield) && ![my has? $field]) ||
 	    (($field eq $lastfield) && ($lastframe eq {}))} {
 	    my __unknown $field
@@ -115,39 +115,41 @@ oo::class create ::mustache::context {
 	return
     }
 
-    method focus.dot {field} {
-	debug.mustache/context {}
-	if {(($field ne $lastdotfield) && ![my has.dot? $field]) ||
-	    (($field eq $lastdotfield) && ($lastdotframe eq {}))} {
-	    my __unknown $field
-	}
-	my push $lastdotframe
-	my __clear.dot
-	return
-    }
-
     method has? {field} {
 	debug.mustache/context {}
-	# Search for field in frames from TOS/dot to bottom.
-	foreach frame [lreverse $frames] {
-	    if {![{*}$frame has? $field]} continue
-	    my __found $field [{*}$frame field $field]
-	    return 1
-	}
-	my __found $field {}
-	return 0
-    }
 
-    method has.dot? {field} {
-	debug.mustache/context {}
-	# Search for field in dot alone
-	if {[{*}$dot has? $field]} {
-	    my __found.dot $field [{*}$dot field $field]
-	    return 1
-	} else {
-	    my __found.dot $field {}
-	    return 0
+puts "RESOLVE      _ _ __ ___ _____ ________ _____________"
+puts "RESOLVE      |$field|"
+
+	# Fast bail OK for reference to dot.
+	if {$field eq "."} { return 1 }
+
+	if {[string first . $field] >= 0} {
+	    set nested [lassign [split $field .] first]
+	    if {[my __find $first]} {
+		# Process each nested field relative to the `last` in
+		# the cache, i.e. its parent.
+		foreach child $nested {
+    puts "RESOLVE WALK |$child| (IN $lastframe)"
+		    if {![{*}$lastframe has? $child]} {
+			my __found $field {}
+    puts "RESOLVE MISS"
+			return 0
+		    }
+		    # Walk into the child
+		    my __found $field [{*}$lastframe field $child]
+    puts "RESOLVE MOVE |$field| (=> $lastframe)"
+		}
+    puts "RESOLVE OK"
+		return 1
+	    } else {
+    puts "RESOLVE MISS/"
+		return 0
+	    }
 	}
+
+    puts "RESOLVE SIMPLE"
+	return [my __find $field]
     }
 
     # iter, iterable?, nil?, value
@@ -236,12 +238,29 @@ oo::class create ::mustache::context {
     variable dot	   ;# TOS frame(object)
     variable lastfield	   ;# Name   of last field searched in all frames and found.
     variable lastframe	   ;# Object of ...
-    variable lastdotfield  ;# Name   of last field searched in dot and found.
-    variable lastdotframe  ;# Object of ...
     variable parts	   ;# Map: name -> template (partials, includables)
 
     # - - -- --- ----- -------- -------------
     ## Internal helpers
+
+    method __find {field} {
+puts "RESOLVE FIND |$field|"
+	debug.mustache/context {}
+	# Basic search through the entire stack of frames, from dot on down to the root.
+	# Assumes an undotted field name.
+	# Leaves the result in the `last`-cache.
+	foreach frame [lreverse $frames] {
+puts "RESOLVE CHCK |$field| (IN $frame)"
+	    if {![{*}$frame has? $field]} continue
+	    my __found $field [{*}$frame field $field]
+puts "RESOLVE HAVE |$field| (=> $lastframe)"
+	    return 1
+	}
+	my __found $field {}
+puts "RESOLVE NONE"
+	return 0
+    }
+
 
     method __unknown {field} {
 	return -code error \
@@ -254,17 +273,8 @@ oo::class create ::mustache::context {
 	set lastframe $frame
     }
 
-    method __found.dot {field frame} {
-	set lastdotfield $field
-	set lastdotframe $frame
-    }
-
     method __clear {} {
 	my __found {} {}
-    }
-
-    method __clear.dot {} {
-	my __found.dot {} {}
     }
 
     # - - -- --- ----- -------- -------------

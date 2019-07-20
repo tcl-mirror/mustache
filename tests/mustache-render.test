@@ -19,17 +19,13 @@ kt source support/util.tcl
 ## Tags to render
 #
 # [ok] dot
-# [..] dot/escaped
+# [ok] dot/escaped
 # [ok] isection
-# [ok] isection.dot
 # [ok] lit
 # [..] partial
 # [ok] section
-# [ok] section.dot
 # [ok] var
-# [ok] var.dot
 # [ok] var/escaped
-# [ok] var/escaped.dot
 
 # # ## ### ##### ######## ############# #####################
 ## render

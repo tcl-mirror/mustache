@@ -52,15 +52,11 @@ proc ::mustache::render {template context writer} {
     # [ok] dot			:: list (tag _)
     # [ok] dot/escaped		:: list (tag _)
     # [ok] isection		:: list (tag pos field children)
-    # [ok] isection.dot		:: list (tag pos field children)
     # [ok] lit			:: list (tag literal-text)
     # [ok] partial		:: list (tag pos field)
     # [ok] section		:: list (tag pos field children)
-    # [ok] section.dot		:: list (tag pos field children)
     # [ok] var			:: list (tag _ field)
-    # [ok] var.dot		:: list (tag _ field)
     # [ok] var/escaped		:: list (tag _ field)
-    # [ok] var/escaped.dot	:: list (tag _ field)
     ##
     # Each tag see above is implemented as a procedure in the internal
     # helper namespace/ensemble, `R`.
@@ -98,34 +94,12 @@ proc ::mustache::R::var {_ field context writer} {
     return
 }
 
-proc ::mustache::R::var.dot {_ field context writer} {
-    debug.mustache/render {}
-    # Ignore missing field
-    if {![D $context has.dot? $field]} return
-    # Write field value, it is dot for but a moment.
-    D $context focus.dot $field
-    D $writer [D $context value]
-    D $context pop
-    return
-}
-
 proc ::mustache::R::var/escaped {_ field context writer} {
     debug.mustache/render {}
     # Ignore missing field
     if {![D $context has? $field]} return
     # Write field value, it is dot for but a moment.
     D $context focus $field
-    D $writer [HTMLEscape [D $context value]]
-    D $context pop
-    return
-}
-
-proc ::mustache::R::var/escaped.dot {_ field context writer} {
-    debug.mustache/render {}
-    # Ignore missing field
-    if {![D $context has.dot? $field]} return
-    # Write field value, it is dot for but a moment.
-    D $context focus.dot $field
     D $writer [HTMLEscape [D $context value]]
     D $context pop
     return
@@ -150,6 +124,7 @@ proc ::mustache::R::section {pos field children context writer} {
 	# Special operation when the section
 	# refers to dot, i.e. the current focus.
 	Section $children $context $writer
+	# TODO Consider to re-inline
 	return
     }
 
@@ -160,20 +135,7 @@ proc ::mustache::R::section {pos field children context writer} {
     D $context focus $field
 
     Section $children $context $writer
-
-    D $context pop
-    return
-}
-
-proc ::mustache::R::section.dot {pos field children context writer} {
-    debug.mustache/render {}
-    # For a missing field skip the section.
-    if {![D $context has.dot? $field]} return
-
-    # The field is the new context.
-    D $context focus.dot $field
-
-    Section $children $context $writer
+    # TODO Consider to re-inline
 
     D $context pop
     return
@@ -184,22 +146,6 @@ proc ::mustache::R::isection {pos field children context writer} {
     # Render once if field missing, false, or empty list.
     if {[D $context has? $field]} {
 	D $context focus $field
-	if {![D $context nil?]} {
-	    D $context pop
-	    return
-	}
-	D $context pop
-    }
-
-    all $children $context $writer
-    return
-}
-
-proc ::mustache::R::isection.dot {pos field children context writer} {
-    debug.mustache/render {}
-    # Render once if field missing, false, or empty list.
-    if {[D $context has.dot? $field]} {
-	D $context focus.dot $field
 	if {![D $context nil?]} {
 	    D $context pop
 	    return

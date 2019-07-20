@@ -86,29 +86,6 @@ proc mustache::ParseS {template} {
 	    }
 	    var         -
 	    var/escaped {
-		# Check for dotted fields and transform into properly
-		# nested sections. A field like a.b.c roughly
-		# transforms into (*section a (*section.dot b (var*.dot c)))
-		#
-		# The `.dot` variants of `*section` and `var*` tags is
-		# used to indicate that field search is restricted to
-		# the previous field, it cannot be searched in the
-		# general context. That unlimited search is limited to
-		# the start of the dotted chain.
-		#
-		# Note that ParseL has already ensured that a field
-		# will not start with a dot.
-
-		if {[string first . $detail] >= 0} {
-		    set args {}
-		    set chain [lreverse [lassign [split $detail .] first]]
-		    foreach field $chain {
-			set el   [list $cmd.dot $pos $field {*}$args]
-			set args [list [list $el]]
-			set cmd  section
-		    }
-		    set el [list $cmd $pos $first {*}$args]
-		}
 		lappend tree $el
 	    }
 	    dot         -
@@ -136,27 +113,13 @@ proc mustache::ParseS {template} {
 		}
 		# Add the now-complete tree to the previous partial
 		# and make the partial current again.
-		# Note, we expand dotted fields for the (i)section.
-		# An exception is dot itself.
-		if {($detail ne ".") &&
-		    ([string first . $detail] >= 0)} {
-		    set args  [list $tree]
-		    set chain [lreverse [lassign [split $detail .] first]]
-		    foreach field $chain {
-			set node [list $mcmd.dot $mpos $field {*}$args]
-			set args [list [list $node]]
-			set mcmd section
-		    }
-		    set node [list $mcmd $mpos $first {*}$args]
-		} else {
-		    set node [list $mcmd $mpos $match $tree]
-		}
+
+		set node [list $mcmd $mpos $match $tree]
 
 		lassign [lindex $stack end] tree match mcmd mpos
+		set stack [lreplace $stack end end]
 
 		lappend tree $node
-
-		set stack [lreplace $stack end end]
 
 		#puts Z_restored\t$mcmd/$match/$mpos
 		#/D
@@ -177,15 +140,11 @@ proc mustache::ParseS {template} {
     # - 'lit'		text
     # - 'partial'	pos identifier
     # - 'var'		pos identifier
-    # - 'var.dot'	pos identifier
     # - 'var/escaped'	pos identifier
-    # - 'var/escaped.dot' pos identifier
     #
     # Node types
     # - 'isection'	pos identifier children
-    # - 'isection.dot'	pos identifier children
     # - 'section'	pos identifier children
-    # - 'section.dot'	pos identifier children
     #
     # where children :: list (node|leaf)
     #

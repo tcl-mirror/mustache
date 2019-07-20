@@ -19,9 +19,7 @@ proc RF {} { mustache frame fromTags [v context/root] }
 
 ## [ok] cons FRAME
 ## [ok] focus NAME
-## [..] focus.dot NAME
 ## [ok] has? NAME
-## [ok] has.dot? NAME
 ## [ok] iter SCRIPT
 ## [ok] iterable?
 ## [ok] nil?
@@ -141,91 +139,6 @@ tcltest::test context-focus-4.1 "focus, known field, has? cache mismatch" -setup
 } -result {2 V<}
 
 # # ## ### ##### ######## ############# #####################
-## focus.dot
-
-tcltest::test context-focus.dot-1.0 "focus.dot, wrong args, not enough" -setup {
-    mustache context create CTX [RF]
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX focus.dot
-} -returnCodes error \
-    -result {wrong # args: should be "CTX focus.dot field"}
-
-tcltest::test context-focus.dot-1.1 "focus.dot, wrong args, too many" -setup {
-    mustache context create CTX [RF]
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX focus.dot FIELD X
-} -returnCodes error \
-    -result {wrong # args: should be "CTX focus.dot field"}
-
-tcltest::test context-focus.dot-2.0 "focus.dot, unknown field, no has.dot? cache" -setup {
-    mustache context create CTX [RF]
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX focus.dot X
-} -returnCodes error -result {Unable to focus on unknown field "X"}
-
-tcltest::test context-focus.dot-2.1 "focus.dot, known field, no has.dot? cache" -setup {
-    mustache context create CTX [RF]
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX focus.dot FIELD
-    list [CTX depth] [CTX value]
-} -result {2 V<}
-
-tcltest::test context-focus.dot-2.2 "focus.dot, known field, no has.dot? cache, not in dot" -setup {
-    mustache context create CTX [RF]
-    CTX focus.dot SUB
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX focus.dot FIELD
-} -returnCodes error -result {Unable to focus on unknown field "FIELD"}
-
-tcltest::test context-focus.dot-3.0 "focus.dot, unknown field, has.dot? cache match" -setup {
-    mustache context create CTX [RF]
-    CTX has.dot? X
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX focus.dot X
-} -returnCodes error -result {Unable to focus on unknown field "X"}
-
-tcltest::test context-focus.dot-3.1 "focus.dot, known field, has.dot? cache match" -setup {
-    mustache context create CTX [RF]
-    CTX has.dot? FIELD
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX focus.dot FIELD
-    list [CTX depth] [CTX value]
-} -result {2 V<}
-
-tcltest::test context-focus.dot-4.0 "focus.dot, unknown field, has.dot? cache mismatch" -setup {
-    mustache context create CTX [RF]
-    CTX has.dot? SEQ
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX focus.dot X
-} -returnCodes error -result {Unable to focus on unknown field "X"}
-
-tcltest::test context-focus.dot-4.1 "focus.dot, known field, has.dot? cache mismatch" -setup {
-    mustache context create CTX [RF]
-    CTX has.dot? SEQ
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX focus.dot FIELD
-    list [CTX depth] [CTX value]
-} -result {2 V<}
-
-# # ## ### ##### ######## ############# #####################
 ## has?
 
 tcltest::test context-has?-1.0 "has?, wrong args, not enough" -setup {
@@ -270,52 +183,6 @@ tcltest::test context-has?-2.2 "has?, known field, not in dot" -setup {
 } -body {
     CTX has? FIELD
 } -result 1
-
-# # ## ### ##### ######## ############# #####################
-## has.dot?
-
-tcltest::test context-has.dot?-1.0 "has.dot?, wrong args, not enough" -setup {
-    mustache context create CTX [RF]
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX has.dot?
-} -returnCodes error \
-    -result {wrong # args: should be "CTX has.dot? field"}
-
-tcltest::test context-has.dot?-1.1 "has.dot?, wrong args, too many" -setup {
-    mustache context create CTX [RF]
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX has.dot? FIELD X
-} -returnCodes error \
-    -result {wrong # args: should be "CTX has.dot? field"}
-
-tcltest::test context-has.dot?-2.0 "has.dot?, unknown field" -setup {
-    mustache context create CTX [RF]
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX has.dot? X
-} -result 0
-
-tcltest::test context-has.dot?-2.1 "has.dot?, known field" -setup {
-    mustache context create CTX [RF]
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX has.dot? FIELD
-} -result 1
-
-tcltest::test context-has.dot?-2.2 "has.dot?, known field, not in dot" -setup {
-    mustache context create CTX [RF]
-    CTX focus SUB
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX has.dot? FIELD
-} -result 0
 
 # # ## ### ##### ######## ############# #####################
 ## iter
