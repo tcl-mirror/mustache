@@ -1,3 +1,4 @@
 - lit '\s|\s'
 - section 'boolean'
+  - lit '\s\n\s'
 - lit '\s|\s\n'

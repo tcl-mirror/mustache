@@ -2,6 +2,6 @@
 - section 'list'
   - lit '('
   - section '.'
-    - dot 20 ''
+    - dot/escaped 19 '.'
   - lit ')'
 - lit '"'

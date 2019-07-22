@@ -1,6 +1,5 @@
 - lit '"'
-- section 'person'
-  - var/escaped 3 'name'
+- var/escaped 3 'person.name'
 - lit '"\s==\s"'
 - section 'person'
   - var/escaped 35 'name'

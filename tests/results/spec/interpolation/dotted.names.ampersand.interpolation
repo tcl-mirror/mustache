@@ -1,6 +1,5 @@
 - lit '"'
-- section 'person'
-  - var 4 'name'
+- var 4 'person.name'
 - lit '"\s==\s"'
 - section 'person'
   - var 37 'name'

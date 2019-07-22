@@ -1,3 +1,2 @@
 - section 'a'
-  - section 'b'
-    - var/escaped 8 'c'
+  - var/escaped 8 'b.c'

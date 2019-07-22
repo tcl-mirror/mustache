@@ -3,6 +3,7 @@
   - lit '\s\s'
   - var/escaped 19 'data'
   - lit '\n\s\s|data|\n'
+- lit '\n'
 - section 'section'
   - lit '\s\s{{data}}\n\s\s'
   - var/escaped 86 'data'

@@ -4,7 +4,7 @@
 ## Execute all the mustache tests of the original testsuite.
 ## This code is inspired by the script `tests.tcl` of project
 ## `mustache.tcl` (gh@ianka/mustache.tcl, BSD licensed)
-return
+#return
 kt check Tcl     8.5
 kt check tcltest 2
 
@@ -22,13 +22,13 @@ foreach specfile [Specs] {
 
 	Decode $spec name desc data template expected partials
 
-	puts Z\t__________________________________________________________
-	puts ZN\t$name
-	puts ZD\t$desc
-	#puts ZI\t[X $data]
-	puts ZT\t[X $template]
-	puts ZE\t[X $expected]
-	#puts ZP\t$partials
+	# puts Z\t__________________________________________________________
+	# puts ZN\t$name
+	# puts ZD\t$desc
+	# #puts ZI\t[X $data]
+	# puts ZT\t[X $template]
+	# puts ZE\t[X $expected]
+	# #puts ZP\t$partials
 
 	tcltest::test ${label}-${k}-${name} $desc -body {
 	    F [::mustache::parse $template]
