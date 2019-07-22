@@ -22,7 +22,7 @@ kt source support/util.tcl
 # [ok] dot/escaped
 # [ok] isection
 # [ok] lit
-# [..] partial
+# [ok] partial
 # [ok] section
 # [ok] var
 # [ok] var/escaped
