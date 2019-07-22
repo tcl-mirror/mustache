@@ -277,6 +277,8 @@ mustache::frame \- Mustache - Data frames with fields
 .SH SYNOPSIS
 package require \fBmustache::frame \fR
 .sp
+\fB::mustache::frame::fromTags\fR \fIspec\fR
+.sp
 \fB::mustache::frame::scalar\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
 .sp
 \fB::mustache::frame::scalar\fR \fBnew\fR \fIvalue\fR
@@ -317,6 +319,50 @@ sequences, and mappings\&.
 Note however that any command prefix supporting the
 \fBInstance API\fR will be suitable\&.
 .SH "CLASS API"
+.TP
+\fB::mustache::frame::fromTags\fR \fIspec\fR
+Converts the tagged nested data structure in \fIspec\fR, representing
+a hierarchy of mappings, sequences, and scalar values, into an
+equivalent hierarchy of data frame objects\&.
+.sp
+Returns the root object of the generated data frame hierarchy\&.
+.sp
+The \fIspec\fR has to be a 2-element list of tag and value, in
+this order\&. The accepted tags and the associated values are
+.RS
+.TP
+\fBscalar\fR
+The value is an arbitrary string\&.
+.TP
+\fBsequence\fR
+The value is a Tcl list containing nested specs\&.
+.TP
+\fBmapping\fR
+The value is a Tcl dictionary whose keys and values are nested
+specs\&. Note however that it is expected that keys are always
+tagged as scalars\&.
+.RE
+.sp
+Note that the \fBTclYAML\fR package is able to generate
+this type of tagged structure\&.
+.sp
+Example:
+.CS
+
+
+mapping {
+	{scalar FIELD} {scalar VAL}
+	{scalar SEQ} {sequence {
+		{scalar 1}
+		{scalar 2}
+		{scalar 3}
+	}}
+	{scalar SUB} {mapping {
+		{scalar CHILD} {scalar X}
+	}}
+}
+
+.CE
 .TP
 \fB::mustache::frame::scalar\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
 .TP

@@ -126,18 +126,19 @@
 <li>package require <b class="pkgname">mustache::frame</b></li>
 </ul>
 <ul class="doctools_syntax">
-<li><a href="#1"><b class="cmd">::mustache::frame::scalar</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
-<li><a href="#2"><b class="cmd">::mustache::frame::scalar</b> <b class="method">new</b> <i class="arg">value</i></a></li>
-<li><a href="#3"><b class="cmd">::mustache::frame::sequence</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
-<li><a href="#4"><b class="cmd">::mustache::frame::sequence</b> <b class="method">new</b> <i class="arg">value</i></a></li>
-<li><a href="#5"><b class="cmd">::mustache::frame::mapping</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
-<li><a href="#6"><b class="cmd">::mustache::frame::mapping</b> <b class="method">new</b> <i class="arg">value</i></a></li>
-<li><a href="#7"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">has?</b> <i class="arg">field</i></a></li>
-<li><a href="#8"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">field</b> <i class="arg">field</i></a></li>
-<li><a href="#9"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iter</b> <i class="arg">context</i> <i class="arg">script</i></a></li>
-<li><a href="#10"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iterable?</b></a></li>
-<li><a href="#11"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">nil?</b></a></li>
-<li><a href="#12"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">value</b></a></li>
+<li><a href="#1"><b class="cmd">::mustache::frame::fromTags</b> <i class="arg">spec</i></a></li>
+<li><a href="#2"><b class="cmd">::mustache::frame::scalar</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
+<li><a href="#3"><b class="cmd">::mustache::frame::scalar</b> <b class="method">new</b> <i class="arg">value</i></a></li>
+<li><a href="#4"><b class="cmd">::mustache::frame::sequence</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
+<li><a href="#5"><b class="cmd">::mustache::frame::sequence</b> <b class="method">new</b> <i class="arg">value</i></a></li>
+<li><a href="#6"><b class="cmd">::mustache::frame::mapping</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
+<li><a href="#7"><b class="cmd">::mustache::frame::mapping</b> <b class="method">new</b> <i class="arg">value</i></a></li>
+<li><a href="#8"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">has?</b> <i class="arg">field</i></a></li>
+<li><a href="#9"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">field</b> <i class="arg">field</i></a></li>
+<li><a href="#10"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iter</b> <i class="arg">context</i> <i class="arg">script</i></a></li>
+<li><a href="#11"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iterable?</b></a></li>
+<li><a href="#12"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">nil?</b></a></li>
+<li><a href="#13"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">value</b></a></li>
 </ul>
 </div>
 </div>
@@ -153,15 +154,49 @@ sequences, and mappings.</p>
 </div>
 <div id="section2" class="doctools_section"><h2><a name="section2">Class API</a></h2>
 <dl class="doctools_definitions">
-<dt><a name="1"><b class="cmd">::mustache::frame::scalar</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
+<dt><a name="1"><b class="cmd">::mustache::frame::fromTags</b> <i class="arg">spec</i></a></dt>
+<dd><p>Converts the tagged nested data structure in <i class="arg">spec</i>, representing
+a hierarchy of mappings, sequences, and scalar values, into an
+equivalent hierarchy of data frame objects.</p>
+<p>Returns the root object of the generated data frame hierarchy.</p>
+<p>The <i class="arg">spec</i> has to be a 2-element list of tag and value, in
+this order. The accepted tags and the associated values are</p>
+<dl class="doctools_definitions">
+<dt><b class="const">scalar</b></dt>
+<dd><p>The value is an arbitrary string.</p></dd>
+<dt><b class="const">sequence</b></dt>
+<dd><p>The value is a Tcl list containing nested specs.</p></dd>
+<dt><b class="const">mapping</b></dt>
+<dd><p>The value is a Tcl dictionary whose keys and values are nested
+	specs. Note however that it is expected that keys are always
+	tagged as scalars.</p></dd>
+</dl>
+<p>Note that the <b class="package">TclYAML</b> package is able to generate
+this type of tagged structure.</p>
+<p>Example:</p>
+<pre class="doctools_example">
+mapping {
+	{scalar FIELD} {scalar VAL}
+	{scalar SEQ} {sequence {
+		{scalar 1}
+		{scalar 2}
+		{scalar 3}
+	}}
+	{scalar SUB} {mapping {
+		{scalar CHILD} {scalar X}
+	}}
+}
+</pre>
+</dd>
+<dt><a name="2"><b class="cmd">::mustache::frame::scalar</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
 <dd></dd>
-<dt><a name="2"><b class="cmd">::mustache::frame::scalar</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
+<dt><a name="3"><b class="cmd">::mustache::frame::scalar</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
 <dd><p>These constructor commands create a new scalar data frame, initializes
 it using the <i class="arg">value</i> and returns the fully qualified name of that
 instance.</p></dd>
-<dt><a name="3"><b class="cmd">::mustache::frame::sequence</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
+<dt><a name="4"><b class="cmd">::mustache::frame::sequence</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
 <dd></dd>
-<dt><a name="4"><b class="cmd">::mustache::frame::sequence</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
+<dt><a name="5"><b class="cmd">::mustache::frame::sequence</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
 <dd><p>These constructor commands create a new sequence data frame,
 initialize it using the <i class="arg">value</i> and return the fully qualified
 name of that instance.</p>
@@ -169,9 +204,9 @@ name of that instance.</p>
 <p><em>Attention:</em> The new sequence takes over ownership of the
 data frames in the list, and they will be destroyed when the sequence
 is destroyed.</p></dd>
-<dt><a name="5"><b class="cmd">::mustache::frame::mapping</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
+<dt><a name="6"><b class="cmd">::mustache::frame::mapping</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
 <dd></dd>
-<dt><a name="6"><b class="cmd">::mustache::frame::mapping</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
+<dt><a name="7"><b class="cmd">::mustache::frame::mapping</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
 <dd><p>These constructor commands create a new mapping data frame, initialize
 it using the <i class="arg">value</i> and return the fully qualified name of that
 instance.</p>
@@ -189,18 +224,18 @@ values. It should be noted that it actually does not care about the
 specific type of a value, only about the behaviour it supports, which
 can be queried (See methods <b class="method">nil?</b> and <b class="method">iterable?</b>).</p>
 <dl class="doctools_definitions">
-<dt><a name="7"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">has?</b> <i class="arg">field</i></a></dt>
+<dt><a name="8"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">has?</b> <i class="arg">field</i></a></dt>
 <dd><p>Checks if the value has the named <i class="arg">field</i>.</p>
 <p>Returns a boolean value indicating either success
 (<b class="const">true</b>) or failure (<b class="const">false</b>) of the search.</p>
 <p>Note that scalars and sequences do not have fields, searching
 them always fails.</p></dd>
-<dt><a name="8"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">field</b> <i class="arg">field</i></a></dt>
+<dt><a name="9"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">field</b> <i class="arg">field</i></a></dt>
 <dd><p>Returns the data frame for the named <i class="arg">field</i>.</p>
 <p>Scalars and sequences throw an error, as they do not have
 fields. A mapping will throw an error only if the named <i class="arg">field</i>
 is not known.</p></dd>
-<dt><a name="9"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iter</b> <i class="arg">context</i> <i class="arg">script</i></a></dt>
+<dt><a name="10"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iter</b> <i class="arg">context</i> <i class="arg">script</i></a></dt>
 <dd><p>Interates over the elements of the frame and invokes the <i class="arg">script</i>
 for each of them.
 During the execution of the <i class="arg">script</i> the active element will be
@@ -208,14 +243,14 @@ pushed into the <i class="arg">context</i>, and popped again after.</p>
 <p>Returns the empty string.</p>
 <p>Scalars and mappings will throw an error, as they cannot be
 itereated over.</p></dd>
-<dt><a name="10"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iterable?</b></a></dt>
+<dt><a name="11"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iterable?</b></a></dt>
 <dd><p>Asks the frame if it can be iterated over. In other words, if it is a
 non-empty sequence of values.</p>
 <p>Returns a boolean value. <b class="const">true</b> signals that the frame
 can be iterated over.</p>
 <p>Scalars and mapping always return <b class="const">false</b>. Sequences
 return <b class="const">false</b> only if they are mpty.</p></dd>
-<dt><a name="11"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">nil?</b></a></dt>
+<dt><a name="12"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">nil?</b></a></dt>
 <dd><p>Asks the frame if it is nil, false, empty, etc.</p>
 <p>Returns a boolean value. <b class="const">true</b> signals that the frame's
 value is indeed nil, empty, false, etc.</p>
@@ -223,7 +258,7 @@ value is indeed nil, empty, false, etc.</p>
 boolean <b class="const">false</b>.</p>
 <p>Sequences and mapping are nil if they are empty, i.e of length
 or size <b class="const">0</b>.</p></dd>
-<dt><a name="12"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">value</b></a></dt>
+<dt><a name="13"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">value</b></a></dt>
 <dd><p>Returns the value of the frame. Supported by all types.</p>
 <p>Sequences and mappings return stringifications of their list or
 dictionary, respectively. This will recurse through nested structures.</p></dd>
