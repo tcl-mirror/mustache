@@ -138,6 +138,33 @@ tcltest::test context-focus-4.1 "focus, known field, has? cache mismatch" -setup
     list [CTX depth] [CTX value]
 } -result {2 V<}
 
+tcltest::test context-focus-5.0 "focus, unknown field, dotted" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus SUB.X
+} -returnCodes error -result {Unable to focus on unknown field "SUB.X"}
+
+tcltest::test context-focus-5.1 "focus, known field, dotted" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus SUB.CHILD
+    list [CTX depth] [CTX value]
+} -result {2 X}
+
+tcltest::test context-focus-5.2 "focus, dot" -setup {
+    mustache context create CTX [RF]
+    CTX focus SEQ
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus .
+    list [CTX depth] [CTX value]
+} -result {2 {1 2 3}}
+
 # # ## ### ##### ######## ############# #####################
 ## has?
 
@@ -182,6 +209,30 @@ tcltest::test context-has?-2.2 "has?, known field, not in dot" -setup {
     CTX destroy
 } -body {
     CTX has? FIELD
+} -result 1
+
+tcltest::test context-has?-2.3 "has?, unknown field, dotted" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX has? SUB.X
+} -result 0
+
+tcltest::test context-has?-2.4 "has?, known field, dotted" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX has? SUB.CHILD
+} -result 1
+
+tcltest::test context-has?-2.5 "has?, dot" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX has? .
 } -result 1
 
 # # ## ### ##### ######## ############# #####################
