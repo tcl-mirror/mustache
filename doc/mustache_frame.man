@@ -21,6 +21,53 @@ sequences, and mappings.
 
 [list_begin definitions]
 [comment {- - -- --- ----- -------- -------------}]
+[call [cmd ::mustache::frame::fromTags] [arg spec]]
+
+Converts the tagged nested data structure in [arg spec], representing
+a hierarchy of mappings, sequences, and scalar values, into an
+equivalent hierarchy of data frame objects.
+
+[para] Returns the root object of the generated data frame hierarchy.
+
+[para] The [arg spec] has to be a 2-element list of tag and value, in
+this order. The accepted tags and the associated values are
+
+[list_begin definitions]
+[def [const scalar]]
+
+	The value is an arbitrary string.
+
+[def [const sequence]]
+
+	The value is a Tcl list containing nested specs.
+
+[def [const mapping]]
+
+	The value is a Tcl dictionary whose keys and values are nested
+	specs. Note however that it is expected that keys are always
+	tagged as scalars.
+
+[list_end]
+
+[para] Note that the [package TclYAML] package is able to generate
+this type of tagged structure.
+
+[para] Example:
+[example {
+mapping {
+	{scalar FIELD} {scalar VAL}
+	{scalar SEQ} {sequence {
+		{scalar 1}
+		{scalar 2}
+		{scalar 3}
+	}}
+	{scalar SUB} {mapping {
+		{scalar CHILD} {scalar X}
+	}}
+}
+}]
+
+[comment {- - -- --- ----- -------- -------------}]
 [call [cmd ::mustache::frame::scalar] [method create] [arg obj] [arg value]]
 [call [cmd ::mustache::frame::scalar] [method new] [arg value]]
 
