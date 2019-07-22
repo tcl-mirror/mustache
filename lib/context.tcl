@@ -117,10 +117,6 @@ oo::class create ::mustache::context {
 
     method has? {field} {
 	debug.mustache/context {}
-
-puts "RESOLVE      _ _ __ ___ _____ ________ _____________"
-puts "RESOLVE      |$field|"
-
 	# Fast bail OK for reference to dot.
 	if {$field eq "."} { return 1 }
 
@@ -130,25 +126,25 @@ puts "RESOLVE      |$field|"
 		# Process each nested field relative to the `last` in
 		# the cache, i.e. its parent.
 		foreach child $nested {
-    puts "RESOLVE WALK |$child| (IN $lastframe)"
+		    debug.mustache/context {walk to '$child' (in $lastframe)}
 		    if {![{*}$lastframe has? $child]} {
 			my __found $field {}
-    puts "RESOLVE MISS"
+			debug.mustache/context {miss}
 			return 0
 		    }
 		    # Walk into the child
 		    my __found $field [{*}$lastframe field $child]
-    puts "RESOLVE MOVE |$field| (=> $lastframe)"
+		    debug.mustache/context {move to '$field' (=> $lastframe)}
 		}
-    puts "RESOLVE OK"
+		debug.mustache/context {hit}
 		return 1
 	    } else {
-    puts "RESOLVE MISS/"
+		debug.mustache/context {}
 		return 0
 	    }
 	}
 
-    puts "RESOLVE SIMPLE"
+	debug.mustache/context {no dots, simple}
 	return [my __find $field]
     }
 
@@ -244,20 +240,19 @@ puts "RESOLVE      |$field|"
     ## Internal helpers
 
     method __find {field} {
-puts "RESOLVE FIND |$field|"
 	debug.mustache/context {}
 	# Basic search through the entire stack of frames, from dot on down to the root.
 	# Assumes an undotted field name.
 	# Leaves the result in the `last`-cache.
 	foreach frame [lreverse $frames] {
-puts "RESOLVE CHCK |$field| (IN $frame)"
+	    debug.mustache/context {check '$field' (in $frame)}
 	    if {![{*}$frame has? $field]} continue
 	    my __found $field [{*}$frame field $field]
-puts "RESOLVE HAVE |$field| (=> $lastframe)"
+	    debug.mustache/context {hit (=> $lastframe)}
 	    return 1
 	}
 	my __found $field {}
-puts "RESOLVE NONE"
+	debug.mustache/context {miss}
 	return 0
     }
 
