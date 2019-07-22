@@ -3,7 +3,7 @@
 ## (c) 2019 Andreas Kupries
 
 # @@ Meta Begin
-# Package mustache::frame 0
+# Package mustache::frame 1
 # Meta author      {Andreas Kupries}
 # Meta category    Template Processing
 # Meta description Implementation of mustache, data frames
@@ -21,7 +21,7 @@ package require TclOO
 package require debug
 package require debug::caller
 
-package provide mustache::frame 0
+package provide mustache::frame 1
 
 # # ## ### ##### ######## ############# #####################
 

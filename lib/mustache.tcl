@@ -3,7 +3,7 @@
 ## (c) 2019 Andreas Kupries
 
 # @@ Meta Begin
-# Package mustache 0
+# Package mustache 1
 # Meta author      {Andreas Kupries}
 # Meta category    Template Processing
 # Meta description Implementation of mustache, user commands
@@ -14,16 +14,18 @@
 # Meta require     {Tcl 8.5-}
 # Meta require     debug
 # Meta require     debug::caller
+# Meta require     mustache::parse
+# Meta require     mustache::render
 # @@ Meta End
 
 package require Tcl 8.5
 package require debug
 package require debug::caller
 
-package require mustache::parse
-package require mustache::render
+package require mustache::parse  1
+package require mustache::render 1
 
-package provide mustache 0
+package provide mustache 1
 
 # # ## ### ##### ######## #############
 

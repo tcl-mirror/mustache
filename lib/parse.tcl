@@ -3,7 +3,7 @@
 ## (c) 2019 Andreas Kupries
 
 # @@ Meta Begin
-# Package mustache::parse 0
+# Package mustache::parse 1
 # Meta author      {Andreas Kupries}
 # Meta category    Template Processing
 # Meta description Implementation of mustache, parsing
@@ -20,7 +20,7 @@ package require Tcl 8.5
 package require debug
 package require debug::caller
 
-package provide mustache::parse 0
+package provide mustache::parse 1
 
 # # ## ### ##### ######## #############
 
