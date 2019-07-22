@@ -157,6 +157,7 @@ oo::class create ::mustache::context {
 	{*}$dot iter [self] {
 	    uplevel 1 $script
 	}
+	return
     }
 
     method iterable? {} {

@@ -1,0 +1,66 @@
+# -*- tcl -*- tcl.tk//DSL diagram//EN//1.0
+# Atom Architecture Diagram
+
+set counter 0
+if {![info exists mark]} { set mark -1 }
+
+proc xbox {args} {
+    variable mark
+    variable counter
+
+    if {$mark == $counter} {
+	lappend args color red stroke 2
+    }
+    incr counter
+    return [uplevel 1 [list box {*}$args]]
+}
+
+proc public {args} {
+    {*}$args color blue stroke 2
+}
+
+proc private {args} {
+    {*}$args dashed
+}
+
+proc area {label args} {
+    set E [xbox fillcolor lightyellow {*}$args]
+    group {
+	text text $label with nw at [last box nw]
+    }
+    return $E
+}
+
+down
+set boxwidth [100 mm]
+set movelength [2 mm]
+
+set M [area "Main"         height [25 mm]] ; move
+set C [area "Core"         height [25 mm]] ; move
+set S [area "Support"      height [25 mm]]
+
+block {
+    set fillcolor white
+    set boxheight [10 mm]
+    set boxwidth  [20 mm]
+
+    public xbox "mustache"
+} at $M
+
+block {
+    set fillcolor white
+    set boxheight [10 mm]
+    set boxwidth  [35 mm]
+    east
+    public xbox "mustache::parse" ; move
+    public xbox "mustache::render"
+} at $C
+
+block {
+    set fillcolor white
+    set boxheight [10 mm]
+    set boxwidth  [35 mm]
+    east
+    public xbox "mustache::context" ; move
+    public xbox "mustache::frame"
+} at $S

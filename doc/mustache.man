@@ -1,0 +1,53 @@
+[comment {-*- tcl -*- doctools manpage}]
+[include parts/definitions.inc]
+[vset VERSION 1]
+[manpage_begin [vset LABEL_MUSTACHE] [vset MAN_SECTION] [vset VERSION]]
+[include parts/module.inc]
+[require mustache]
+[titledesc [vset TITLE_MUSTACHE]]
+[description]
+[include parts/welcome.inc]
+
+[package [vset PROJECT]] is the highest-level package provided by the
+project. It provides a number of convenience commands encapsulating
+common usecases.
+
+[para] For not-so common cases it is necessary to directly use the
+lower-level packages, i.e. [package mustache::parse], and
+[package mustache::render]
+
+[section Commands]
+
+The exported commands are:
+
+[list_begin definitions]
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd ::mustache] [method mustache] [arg template] [arg context]]
+
+Parses the [uri https://mustache.github.io/ mustache] [arg template],
+renders it using the [arg context] as the source of the data to
+interpolate, and returns the result.
+
+[para] The command throws errors when the template cannot be parsed.
+
+[para] The command expects [arg context] to be command prefix
+supporting the API of [package mustache::context] objects.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd ::mustache] [method mustache/pt] [arg template] [arg context]]
+
+Renders the pre-parsed [arg template] using the [arg context] as the
+source of the data to interpolate, and returns the result.
+
+[para] This is useful if the same template has to be applied to many
+different contexts, as the template will be parsed only once. Which
+the caller is responsible for, using the [package mustache::parse]
+package.
+
+[para] The command expects [arg context] to be command prefix
+supporting the API of [package mustache::context] objects.
+
+[list_end]
+
+[include parts/feedback.inc]
+[manpage_end]

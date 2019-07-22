@@ -1,0 +1,170 @@
+[comment {-*- tcl -*- doctools manpage}]
+[include parts/definitions.inc]
+[vset VERSION 1]
+[manpage_begin [vset LABEL_CONTEXT] [vset MAN_SECTION] [vset VERSION]]
+[include parts/module.inc]
+[require mustache::context]
+[titledesc [vset TITLE_CONTEXT]]
+[description]
+[include parts/welcome.inc]
+
+The render command provided by package [package mustache::render]
+requires a context as the source of the strings to interpolate into
+the template it is invoked with.
+
+[para] This package provides a suitable TclOO class.
+
+[para] Note however that any command prefix supporting the
+[sectref {Instance API}] will be suitable.
+
+[section {Class API}]
+
+[list_begin definitions]
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd ::mustache::context] [method create] [arg obj] [arg frame]]
+
+This constructor command creates a new instance [arg obj] of the
+class, initializes it using the data [arg frame] and returns the fully
+qualified name of that instance.
+
+[para] The [arg frame] command prefix has to support the API of
+[package mustache::frame] objects.
+
+[para][emph Attention:] The [arg frame] object becomes owned by the
+context, and will be destroyed when the context is destroyed.
+
+[para] Additional initialization, i.e. definition of [term partials]
+(aka [term parts], aka [term includes]) can be done via the
+[method template:] instance method.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd ::mustache::context] [method new] [arg frame]]
+
+This constructor command creates a new instance of the class,
+initializes it using the data [arg frame] and returns the fully
+qualified name of that instance.
+
+[para] The [arg frame] command prefix has to support the API of
+[package mustache::frame] objects.
+
+[para][emph Attention:] The [arg frame] object becomes owned by the
+context, and will be destroyed when the context is destroyed.
+
+[para] Additional initialization, i.e. definition of [term partials]
+(aka [term parts], aka [term includes]) can be done via the
+[method template:] instance method.
+
+[list_end]
+
+[section {Instance API}]
+
+[para] Contexts are what the mustache renderer delegates field
+resolution to, and retrieves the values to interpolate from.
+
+[para] From its point of view a context is a stack of
+[term {data frames}] from which it can pull values. The data frame at
+the top of the stack is called [term dot]. Any search for named fields
+starts at [term dot], moving deeper into the stack only on misses.
+
+[para] During rendering data frames are pushed on and popped of the
+stack at the behest of the renderer, as it walks the template
+structure.
+
+[list_begin definitions]
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <contextcmd>] [cmd has?] [arg field]]
+
+Searches the context for the named [arg field].
+
+Returns a boolean value indicating either success ([const true]) or
+failure ([const false]) of the search.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <contextcmd>] [cmd focus] [arg field]]
+
+Searches the context for the named [arg field].
+
+Throws an error when the field is not found.
+
+When found the data frame associated with the field is pushed on the
+search stack, i.e. made [term dot].
+
+[para] Returns the empty string.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <contextcmd>] [cmd pop]]
+
+Removes the data frame at the top of the search stack.
+
+Throws an error when trying to pop the root data frame. That is the
+[arg frame] supplied during construction of the context.
+
+[para] Returns the empty string.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <contextcmd>] [cmd push] [arg frame]]
+
+Pushed the [arg frame] on top of the search stack.
+
+[para] The [arg frame] command prefix has to support the API of
+[package mustache::frame] objects.
+
+[para] Returns the empty string.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <contextcmd>] [cmd iterable?]]
+
+Asks [term dot] if it can be iterated over. In other words, if it is a
+non-empty sequence of values.
+
+[para] Returns a boolean value. [const true] signals that [term dot]
+can be iterated over.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <contextcmd>] [cmd nil?]]
+
+Asks [term dot] if it is nil, false, empty, etc.
+
+[para] Returns a boolean value. [const true] signals that [term dot]
+is indeed nil, empty, false, etc.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <contextcmd>] [cmd value]]
+
+Asks [term dot] for its value, and returns it.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <contextcmd>] [cmd iter] [arg script]]
+
+Iterates over the elements of [term dot] and invokes the [arg script]
+for each element. During the execution of the [arg script] the active
+element will be [term dot].
+
+[para] Returns the empty string.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <contextcmd>] [cmd template?] [arg name]]
+
+Checks if the context knows abut the [arg name]d template.
+
+Returns a boolean value indicating either success ([const true]) or
+failure ([const false]) of the search.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <contextcmd>] [cmd template:] [arg name] [arg specification]]
+
+Defines a new template with [arg name] and [arg specification].
+
+[para] Returns the empty string.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <contextcmd>] [cmd template] [arg name]]
+
+Returns the specification of the [arg name]d template.
+
+Throws an error when a template of the [arg name] is not known.
+
+[list_end]
+
+[include parts/feedback.inc]
+[manpage_end]
