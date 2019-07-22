@@ -15,6 +15,9 @@ kt source support/util.tcl
 # # ## ### ##### ######## ############# #####################
 
 foreach specfile [Specs] {
+    # puts Z\t__________________________________________________________
+    # puts ZN\t$specfile
+
     lassign [Tests $specfile] label tests
 
     foreach spec $tests {
@@ -25,10 +28,10 @@ foreach specfile [Specs] {
 	# puts Z\t__________________________________________________________
 	# puts ZN\t$name
 	# puts ZD\t$desc
-	# #puts ZI\t[X $data]
+	# puts ZI\t$data\t'[X [$data value]]'
 	# puts ZT\t[X $template]
 	# puts ZE\t[X $expected]
-	# #puts ZP\t$partials
+	# puts ZP\t$partials
 
 	tcltest::test ${label}-${k}-${name} $desc -body {
 	    F [::mustache::parse $template]

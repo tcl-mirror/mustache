@@ -28,4 +28,4 @@ tests:
       d: 'D!'
     template: ' {{> c }}'
     expected: '  D!D!'
-);
+

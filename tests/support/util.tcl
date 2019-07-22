@@ -77,10 +77,12 @@ proc Frame {spec args} {
     if {![info exists partials]} return
 
     # Extend the context with partials, if any.
-    set partials [lindex $partials end]
+    #puts P:\t($partials)
     foreach {partname partval} $partials {
 	set partname [lindex $partname end]
 	set partval  [lindex $partval  end]
+	#puts PN:<<'$partname'>>
+	#puts PV:<<'$partval'>>
 	$data template: $partname $partval
     }
     return

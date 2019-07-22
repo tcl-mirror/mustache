@@ -1,0 +1,7 @@
+- section 'chars'
+  - var/escaped 12 'char'
+  - section 'hasdigit'
+    - lit ':'
+    - section 'digits'
+      - var/escaped 45 'digit'
+    - lit ';'

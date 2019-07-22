@@ -33,13 +33,14 @@ namespace eval ::mustache {
 
 debug define mustache/parse
 debug level  mustache/parse
-debug prefix mustache/parse {[debug caller] | }
+#debug prefix mustache/parse {[debug caller] | }
+debug prefix mustache/parse {}
 
 # # ## ### ##### ######## #############
 ## API
 
 proc mustache::parse {template {delim {}}} {
-    debug.mustache/parse {}
+    debug.mustache/parse {parse T '[X $template]' D '[X $delim]'}
     if {[llength [info level 0]] < 3} {
 	set opener \{\{
 	set closer \}\}
@@ -54,7 +55,7 @@ proc mustache::parse {template {delim {}}} {
 ## Internals
 
 proc mustache::ParseS {template} {
-    debug.mustache/parse {}
+    debug.mustache/parse {ParseS ($template)}
     # The incoming template is a pre-parsed list of literals and tags.
     # Comments are gone, as are delimiter changes.
 
@@ -141,12 +142,12 @@ proc mustache::ParseS {template} {
     # where children :: list (node|leaf)
     #
 
-    debug.mustache/parse {%*	[join $tree \n%*\t]}
+    debug.mustache/parse {ParseS %*	[join $tree "\nParseS %*\t"]}
     return $tree
 }
 
 proc mustache::ParseL {template opener closer} {
-    debug.mustache/parse {}
+    debug.mustache/parse {ParseL T '[X $template]' O '[X $opener]' C '[X $closer]'}
 
     set olen [string length $opener]
     set clen [string length $closer]
@@ -166,22 +167,22 @@ proc mustache::ParseL {template opener closer} {
     # :: literal = list('lit' pos text)
     # :: tag     = list(cmd   pos param)
 
-    debug.mustache/parse {% % %% %%% %%%%% %%%%%%%%}
+    debug.mustache/parse {ParseL % % %% %%% %%%%% %%%%%%%%}
 
     while 1 {
 	# start points to a location after a tag.
-	debug.mustache/parse {- - -- --- ----- -------- ------------- \\}
-	debug.mustache/parse {@$start/$max}
-	debug.mustache/parse {- ([X [string range $template $start end]])}
+	debug.mustache/parse {ParseL - - -- --- ----- -------- ------------- \\}
+	debug.mustache/parse {ParseL @$start/$max}
+	debug.mustache/parse {ParseL - ([X [string range $template $start end]])}
 
 	set tagstart [string first $opener $template $start]
 
-        debug.mustache/parse {- ($opener) @$tagstart}
+        debug.mustache/parse {ParseL - ($opener) @$tagstart}
 
 	if {$tagstart < 0} {
 	    # no tag intro found, remainder is literal
 	    Lit $start [string range $template $start end]
-	    debug.mustache/parse {- STOP}
+	    debug.mustache/parse {ParseL - STOP}
 	    break
 	}
 
@@ -190,8 +191,8 @@ proc mustache::ParseL {template opener closer} {
 	set litstart   $start
 	set litprefix  [string range $template $start ${tagstart}-1]
 
-	debug.mustache/parse {- Prefix @  $litstart}
-	debug.mustache/parse {- Prefix Rw '[X $litprefix]'}
+	debug.mustache/parse {ParseL - Prefix @  $litstart}
+	debug.mustache/parse {ParseL - Prefix Rw '[X $litprefix]'}
 
 	# Strip leading whitespace. May be added back later.
 	if {[regexp -indices -- {([ \t]+)$} $litprefix -> padding]} {
@@ -199,8 +200,8 @@ proc mustache::ParseL {template opener closer} {
 	    set padding   [string range $litprefix {*}$padding]
 	    set litprefix [string range $litprefix 0 ${ps}-1]
 
-	    debug.mustache/parse {- Prefix St '[X $litprefix]'}
-	    debug.mustache/parse {- Prefix Pd '[X $padding]' (${ps}..$pe)}
+	    debug.mustache/parse {ParseL - Prefix St '[X $litprefix]'}
+	    debug.mustache/parse {ParseL - Prefix Pd '[X $padding]' (${ps}..$pe)}
 	} else {
 	    set padding ""
 	    set ps      [string length $litprefix]
@@ -213,10 +214,10 @@ proc mustache::ParseL {template opener closer} {
 	# by the suffix processing of the previous tag.
 
 	set eolc [expr {$start + $ps - 1}]
-	debug.mustache/parse {- Prefix EL @$eolc ($start+$ps-1) '[X [string range $template ${eolc}-2 ${eolc}+2]]' ('[X [string index $template $eolc]]')}
+	debug.mustache/parse {ParseL - Prefix EL @$eolc ($start+$ps-1) '[X [string range $template ${eolc}-2 ${eolc}+2]]' ('[X [string index $template $eolc]]')}
 
 	if {($eolc < 0) || ([string index $template $eolc] eq "\n")} {
-	    debug.mustache/parse {- Prefix !! Standalone}
+	    debug.mustache/parse {ParseL - Prefix !! Standalone}
 	    set standalone yes
 	}
 
@@ -226,8 +227,8 @@ proc mustache::ParseL {template opener closer} {
 	    append litprefix $padding
 	    set padding ""
 
-	    debug.mustache/parse {- Prefix Re '[X $litprefix]'}
-	    debug.mustache/parse {- Prefix Pd '[X $padding]'}
+	    debug.mustache/parse {ParseL - Prefix Re '[X $litprefix]'}
+	    debug.mustache/parse {ParseL - Prefix Pd '[X $padding]'}
 	}
 
 	incr tagstart $olen
@@ -235,7 +236,7 @@ proc mustache::ParseL {template opener closer} {
 	# determine end of tag element
 	set tagclose [string first $closer $template $tagstart]
 
-	debug.mustache/parse {- ($closer) @$tagclose}
+	debug.mustache/parse {ParseL - ($closer) @$tagclose}
 
 	if {$tagclose < 0} {
 	    E "Unclosed tag at index $tagstart" \
@@ -244,7 +245,7 @@ proc mustache::ParseL {template opener closer} {
 
 	# Determine tag command.
 	set cmd [CommandOf [string index $template $tagstart]]
-	debug.mustache/parse {- C $cmd}
+	debug.mustache/parse {ParseL - C $cmd}
 
 	# Determine tag parameter
 	if {$cmd ne "var/escaped"} {
@@ -252,7 +253,7 @@ proc mustache::ParseL {template opener closer} {
 	}
 
 	set param [string trim [string range $template $tagstart ${tagclose}-1]]
-	debug.mustache/parse {- P ([X $param])}
+	debug.mustache/parse {ParseL - P ([X $param])}
 
 	# Parameter checks
 
@@ -278,7 +279,7 @@ proc mustache::ParseL {template opener closer} {
 	    set cmd "var"
 	}
 
-	debug.mustache/parse {- > $start}
+	debug.mustache/parse {ParseL - > $start}
 
 	if {[string match var* $cmd] && ($param eq ".")} {
 	    set cmd [string map {var dot} $cmd]
@@ -291,13 +292,13 @@ proc mustache::ParseL {template opener closer} {
 	    # Note: We chop the last param character, is (expected to
 	    # be) `=`, and is not part of the new delimiter.
 	    set delim [split [string trim [string range $param 0 end-1]] { }]
-	    debug.mustache/parse {- D ($delim)}
+	    debug.mustache/parse {ParseL - D ($delim)}
 
 	    # No lassign, have to handle padded internal space
 	    set opener [lindex $delim 0]
 	    set closer [lindex $delim end]
-	    debug.mustache/parse {  - O ($opener)}
-	    debug.mustache/parse {  - C ($closer)}
+	    debug.mustache/parse {ParseL   - O ($opener)}
+	    debug.mustache/parse {ParseL   - C ($closer)}
 
 	    set olen [string length $opener]
 	    set clen [string length $closer]
@@ -311,21 +312,28 @@ proc mustache::ParseL {template opener closer} {
 	# prefix.
 
 	if {$standalone && ($start < $max)} {
-	    debug.mustache/parse {- Suffix .. SkipCmd=[expr {$cmd ne "var"}]}
-	    debug.mustache/parse {- Suffix @  $start '[X [string range $template $start end]]'}
-	    debug.mustache/parse {- Suffix .. LeadEol=[regexp -start $start -indices -- {\A(\r?\n)} $template -> peek]}
+	    debug.mustache/parse {ParseL - Suffix .. SkipCmd=[expr {$cmd ne "var"}]}
+	    debug.mustache/parse {ParseL - Suffix @  $start '[X [string range $template $start end]]'}
+	    debug.mustache/parse {ParseL - Suffix .. LeadEol=[regexp -start $start -indices -- {\A(\r?\n)} $template -> peek]}
 
 	    if {($cmd ni {var var/escaped}) &&
 		[regexp -start $start -indices -- {\A(\r?\n)} $template -> peek]} {
-		debug.mustache/parse {- Suffix s2 [expr {[lindex $peek end]+1}]}
+		debug.mustache/parse {ParseL - Suffix s2 [expr {[lindex $peek end]+1}]}
 
 		set  start [lindex $peek end]
 		incr start
 	    } else {
-		debug.mustache/parse {- Suffix .. Re-pad prefix '[X $padding]'}
+		debug.mustache/parse {ParseL - Suffix .. Re-pad prefix '[X $padding]'}
 
 		append litprefix $padding
+		set padding {}
 	    }
+	}
+
+	set more {}
+	if {$cmd eq "partial"} {
+	    # The lines of a partial are indented as per the location of the calling tag.
+	    lappend more $padding
 	}
 
 	Lit $litstart $litprefix
@@ -336,12 +344,12 @@ proc mustache::ParseL {template opener closer} {
 	}
 
 	# Save token
-	Tag $tagstart $cmd $param
+	Tag $tagstart $cmd $param {*}$more
     }
 
-    debug.mustache/parse {- - -- --- ----- -------- ------------- /}
-    debug.mustache/parse {@	[join [lmap x $result { lreplace $x end end [X [lindex $x end]] }] \n@\t]}
-    debug.mustache/parse {- - -- --- ----- -------- ------------- *}
+    debug.mustache/parse {ParseL - - -- --- ----- -------- ------------- /}
+    debug.mustache/parse {ParseL @	[join [lmap x $result { lreplace $x end end [X [lindex $x end]] }] "\nParseL @\t"]}
+    debug.mustache/parse {ParseL - - -- --- ----- -------- ------------- *}
 
     return $result
 }
@@ -406,7 +414,7 @@ proc ::mustache::ValidateDelimiters {{at {}}} {
 }
 
 proc mustache::E {msg args} {
-    debug.mustache/parse {}
+    debug.mustache/parse {[debug::caller]}
     return \
 	-code error \
 	-errorcode [linsert $args 0 MUSTACHE SYNTAX] \
@@ -414,16 +422,16 @@ proc mustache::E {msg args} {
 }
 
 proc mustache::Lit {pos detail} {
-    debug.mustache/parse {}
+    debug.mustache/parse {Lit '[X $detail]'}
     upvar 1 result result
     lappend result [list lit $pos $detail]
     return
 }
 
-proc mustache::Tag {pos cmd detail} {
-    debug.mustache/parse {}
+proc mustache::Tag {pos cmd detail args} {
+    debug.mustache/parse {Tag $pos $cmd '[X $detail]'}
     upvar 1 result result
-    lappend result [list $cmd $pos $detail]
+    lappend result [list $cmd $pos $detail {*}$args]
     return
 }
 

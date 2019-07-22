@@ -16,9 +16,15 @@ kt local testing mustache
 
 kt source support/util.tcl
 
+#debug on mustache/parse  "" stdout
+#debug on mustache/render "" stdout
+
 # # ## ### ##### ######## ############# #####################
 
 foreach specfile [Specs] {
+    #puts Z\t__________________________________________________________
+    #puts ZN\t$specfile
+
     lassign [Tests $specfile] label tests
 
     foreach spec $tests {
@@ -26,8 +32,12 @@ foreach specfile [Specs] {
 
 	Frame $spec name desc data template expected
 
-	# TODO XXX ignore tests with partials, not supported yet.
-	if {[string match *partial* $name]} continue
+	# puts Z\t__________________________________________________________
+	# puts ZN\t$name
+	# puts ZD\t$desc
+	# puts ZI\t$data\t'[X [$data value]]'
+	# puts ZT\t[X $template]
+	# puts ZE\t[X $expected]
 
 	tcltest::test ${label}-${k}-${name} $desc -body {
 	    X [::mustache::mustache $template $data]

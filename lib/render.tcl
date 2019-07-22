@@ -19,6 +19,7 @@
 package require Tcl 8.5
 package require debug
 package require debug::caller
+package require mustache::parse
 
 package provide mustache::render 0
 
@@ -157,15 +158,32 @@ proc ::mustache::R::isection {pos field children context writer} {
     return
 }
 
-proc ::mustache::R::partial {pos field context writer} {
+proc ::mustache::R::partial {pos field padding context writer} {
     debug.mustache/render {}
 
-    # field = symbolic name of template to insert and render here.
+    # field = symbolic name of the template to render here.
     if {![D $context template? $field]} return
-    D $writer __NYI__
-    return
-    #
-    all [D $context template $field] $context $writer
+
+    # TODO: handle different delimiters.
+    # TODO: memoize part (per delimiter) to avoid re-parsing.
+
+    # Get the part, parse it, render it.
+    set part [D $context template $field]
+    debug.mustache/render {raw => '[mustache::X $part]'}
+
+    # Note: Prevent indenting after a trailing EOL.
+    set restore 0
+    if {[string index $part end] eq "\n"} {
+	set restore 1
+	set part [string range $part 0 end-1]
+    }
+    set part [string map [list \n \n$padding] $part]
+    if {$restore} { append part \n }
+
+    debug.mustache/render {pad => '[mustache::X $part]'}
+
+    set part [mustache parse $padding$part]
+    all $part $context $writer
     return
 }
 
