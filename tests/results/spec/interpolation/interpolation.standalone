@@ -1,0 +1,3 @@
+- lit '\s\s'
+- var/escaped 4 'string'
+- lit '\n'

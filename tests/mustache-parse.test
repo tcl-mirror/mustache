@@ -1,0 +1,49 @@
+# -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
+## (c) 2019 Andreas Kupries
+# # ## ### ##### ######## ############# #####################
+## Execute all the mustache tests of the original testsuite.
+## This code is inspired by the script `tests.tcl` of project
+## `mustache.tcl` (gh@ianka/mustache.tcl, BSD licensed)
+#return
+kt check Tcl     8.5
+kt check tcltest 2
+
+kt local testing mustache::parse
+
+kt source support/util.tcl
+
+# # ## ### ##### ######## ############# #####################
+
+foreach specfile [Specs] {
+    # puts Z\t__________________________________________________________
+    # puts ZN\t$specfile
+
+    lassign [Tests $specfile] label tests
+
+    foreach spec $tests {
+	incr k
+
+	Decode $spec name desc data template expected partials
+
+	# puts Z\t__________________________________________________________
+	# puts ZN\t$name
+	# puts ZD\t$desc
+	# puts ZI\t$data\t'[X [$data value]]'
+	# puts ZT\t[X $template]
+	# puts ZE\t[X $expected]
+	# puts ZP\t$partials
+
+	tcltest::test ${label}-${k}-${name} $desc -body {
+	    F [::mustache::parse $template]
+	} -result [v spec/$label/$name]
+
+	unset -nocomplain name desc data template expected partials
+    }
+
+    #break
+    unset k
+}
+
+# # ## ### ##### ######## ############# #####################
+cleanupTests
+return

@@ -1,0 +1,616 @@
+# -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
+## (c) 2019 Andreas Kupries
+# # ## ### ##### ######## ############# #####################
+## Check the behaviour of contexts.
+#return
+kt check Tcl     8.5
+kt check tcltest 2
+
+kt local testing mustache::frame
+kt local testing mustache::context
+
+kt source support/util.tcl
+
+# # ## ### ##### ######## ############# #####################
+
+proc RF {} { mustache frame fromTags [v context/root] }
+
+# # ## ### ##### ######## ############# #####################
+
+## [ok] cons FRAME
+## [ok] focus NAME
+## [ok] has? NAME
+## [ok] iter SCRIPT
+## [ok] iterable?
+## [ok] nil?
+## [ok] pop
+## [ok] push FRAME
+## [ok] template NAME
+## [ok] template: NAME SPEC
+## [ok] template? NAME
+## [ok] value
+
+## [..] TODO destructor (confirm that the owned frames are destroyed as well)
+
+# # ## ### ##### ######## ############# #####################
+## constructor
+
+tcltest::test context-cons-1.0 "cons, wrong args, not enough" -body {
+    mustache context new
+} -returnCodes error \
+    -result {wrong # args: should be "mustache context new frame"}
+
+tcltest::test context-cons-1.1 "cons, wrong args, too many" -body {
+    mustache context new FRAME X
+} -returnCodes error \
+    -result {wrong # args: should be "mustache context new frame"}
+
+tcltest::test context-cons-2.0 "cons" -body {
+    set o [mustache context new [RF]]
+} -cleanup {
+    $o destroy
+    unset -nocomplain o
+} -result {::oo::Obj*} -match glob
+
+# # ## ### ##### ######## ############# #####################
+## focus
+
+tcltest::test context-focus-1.0 "focus, wrong args, not enough" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus
+} -returnCodes error \
+    -result {wrong # args: should be "CTX focus field"}
+
+tcltest::test context-focus-1.1 "focus, wrong args, too many" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus FIELD X
+} -returnCodes error \
+    -result {wrong # args: should be "CTX focus field"}
+
+tcltest::test context-focus-2.0 "focus, unknown field, no has? cache" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus X
+} -returnCodes error -result {Unable to focus on unknown field "X"}
+
+tcltest::test context-focus-2.1 "focus, known field, no has? cache" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus FIELD
+    list [CTX depth] [CTX value]
+} -result {2 V<}
+
+tcltest::test context-focus-2.2 "focus, known field, no has? cache, not in dot" -setup {
+    mustache context create CTX [RF]
+    CTX focus SUB
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus FIELD
+    list [CTX depth] [CTX value]
+} -result {3 V<}
+
+tcltest::test context-focus-3.0 "focus, unknown field, has? cache match" -setup {
+    mustache context create CTX [RF]
+    CTX has? X
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus X
+} -returnCodes error -result {Unable to focus on unknown field "X"}
+
+tcltest::test context-focus-3.1 "focus, known field, has? cache match" -setup {
+    mustache context create CTX [RF]
+    CTX has? FIELD
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus FIELD
+    list [CTX depth] [CTX value]
+} -result {2 V<}
+
+tcltest::test context-focus-4.0 "focus, unknown field, has? cache mismatch" -setup {
+    mustache context create CTX [RF]
+    CTX has? SEQ
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus X
+} -returnCodes error -result {Unable to focus on unknown field "X"}
+
+tcltest::test context-focus-4.1 "focus, known field, has? cache mismatch" -setup {
+    mustache context create CTX [RF]
+    CTX has? SEQ
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus FIELD
+    list [CTX depth] [CTX value]
+} -result {2 V<}
+
+tcltest::test context-focus-5.0 "focus, unknown field, dotted" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus SUB.X
+} -returnCodes error -result {Unable to focus on unknown field "SUB.X"}
+
+tcltest::test context-focus-5.1 "focus, known field, dotted" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus SUB.CHILD
+    list [CTX depth] [CTX value]
+} -result {2 X}
+
+tcltest::test context-focus-5.2 "focus, dot" -setup {
+    mustache context create CTX [RF]
+    CTX focus SEQ
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX focus .
+    list [CTX depth] [CTX value]
+} -result {2 {1 2 3}}
+
+# # ## ### ##### ######## ############# #####################
+## has?
+
+tcltest::test context-has?-1.0 "has?, wrong args, not enough" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX has?
+} -returnCodes error \
+    -result {wrong # args: should be "CTX has? field"}
+
+tcltest::test context-has?-1.1 "has?, wrong args, too many" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX has? FIELD X
+} -returnCodes error \
+    -result {wrong # args: should be "CTX has? field"}
+
+tcltest::test context-has?-2.0 "has?, unknown field" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX has? X
+} -result 0
+
+tcltest::test context-has?-2.1 "has?, known field" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX has? FIELD
+} -result 1
+
+tcltest::test context-has?-2.2 "has?, known field, not in dot" -setup {
+    mustache context create CTX [RF]
+    CTX focus SUB
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX has? FIELD
+} -result 1
+
+tcltest::test context-has?-2.3 "has?, unknown field, dotted" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX has? SUB.X
+} -result 0
+
+tcltest::test context-has?-2.4 "has?, known field, dotted" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX has? SUB.CHILD
+} -result 1
+
+tcltest::test context-has?-2.5 "has?, dot" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX has? .
+} -result 1
+
+# # ## ### ##### ######## ############# #####################
+## iter
+
+tcltest::test context-iter-1.0 "iter, wrong args, not enough" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX iter
+} -returnCodes error \
+    -result {wrong # args: should be "CTX iter script"}
+
+tcltest::test context-iter-1.1 "iter, wrong args, too many" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX iter FIELD X
+} -returnCodes error \
+    -result {wrong # args: should be "CTX iter script"}
+
+tcltest::test context-iterable?-2.0 "iter, mapping" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX iter {}
+} -returnCodes error -result {Mapping cannot be iterated over}
+
+tcltest::test context-iterable?-2.1 "iter, scalar" -setup {
+    mustache context create CTX [RF]
+    CTX focus FIELD
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX iter {}
+} -returnCodes error -result {Scalar cannot be iterated over}
+
+tcltest::test context-iterable?-2.2 "iter, sequence" -setup {
+    mustache context create CTX [RF]
+    CTX focus SEQ
+    set _trace {}
+} -cleanup {
+    CTX destroy
+    unset _trace
+} -body {
+    CTX iter { lappend _trace .[CTX value]. }
+    set _trace
+} -result {.1. .2. .3.}
+
+# # ## ### ##### ######## ############# #####################
+## iterable?
+
+tcltest::test context-iterable?-1.0 "iterable?, wrong args, too many" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX iterable? X
+} -returnCodes error \
+    -result {wrong # args: should be "CTX iterable?"}
+
+tcltest::test context-iterable?-2.0 "iterable?, mapping" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX iterable?
+} -result 0
+
+tcltest::test context-iterable?-2.1 "iterable?, scalar" -setup {
+    mustache context create CTX [RF]
+    CTX focus FIELD
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX iterable?
+} -result 0
+
+tcltest::test context-iterable?-2.0 "iterable?, sequence" -setup {
+    mustache context create CTX [RF]
+    CTX focus SEQ
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX iterable?
+} -result 1
+
+# # ## ### ##### ######## ############# #####################
+## nil?
+
+tcltest::test context-nil?-1.0 "nil?, wrong args, too many" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX nil? X
+} -returnCodes error \
+    -result {wrong # args: should be "CTX nil?"}
+
+tcltest::test context-nil?-2.0 "nil?, mapping" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX nil?
+} -result 0
+
+tcltest::test context-nil?-2.1 "nil?, mapping, empty" -setup {
+    mustache context create CTX [RF]
+    CTX focus NOMAP
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX nil?
+} -result 1
+
+tcltest::test context-nil?-3.0 "nil?, scalar" -setup {
+    mustache context create CTX [RF]
+    CTX focus FIELD
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX nil?
+} -result 0
+
+tcltest::test context-nil?-3.1 "nil?, scalar, false" -setup {
+    mustache context create CTX [RF]
+    CTX focus FALSE
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX nil?
+} -result 1
+
+tcltest::test context-nil?-3.2 "nil?, scalar, empty" -setup {
+    mustache context create CTX [RF]
+    CTX focus NIL
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX nil?
+} -result 1
+
+tcltest::test context-nil?-4.0 "nil?, sequence" -setup {
+    mustache context create CTX [RF]
+    CTX focus SEQ
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX nil?
+} -result 0
+
+tcltest::test context-nil?-4.1 "nil?, sequence, empty" -setup {
+    mustache context create CTX [RF]
+    CTX focus NOSEQ
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX nil?
+} -result 1
+
+# # ## ### ##### ######## ############# #####################
+## pop
+
+tcltest::test context-pop-1.0 "pop, wrong args, too many" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX pop X
+} -returnCodes error \
+    -result {wrong # args: should be "CTX pop"}
+
+tcltest::test context-pop-2.0 "pop, underflow" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX pop
+} -returnCodes error -result {Stack underflow, cannot pop root frame}
+
+tcltest::test context-pop-2.1 "pop, ok" -setup {
+    mustache context create CTX [set rf [RF]]
+    CTX focus NOSEQ
+} -cleanup {
+    CTX destroy
+    unset rf
+} -body {
+    CTX pop
+    list [CTX depth] [string equal $rf [CTX dot]]
+} -result {1 1}
+
+# # ## ### ##### ######## ############# #####################
+## push
+
+tcltest::test context-push-1.0 "push, wrong args, not enough" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX push
+} -returnCodes error \
+    -result {wrong # args: should be "CTX push frame"}
+
+tcltest::test context-push-1.1 "push, wrong args, too many" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX push FIELD X
+} -returnCodes error \
+    -result {wrong # args: should be "CTX push frame"}
+
+tcltest::test context-pop-2.0 "push, ok" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX push {some object command prefix}
+    list [CTX depth] [CTX dot]
+} -result {2 {some object command prefix}}
+
+# # ## ### ##### ######## ############# #####################
+## template
+
+tcltest::test context-template-1.0 "template, wrong args, not enough" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX template
+} -returnCodes error \
+    -result {wrong # args: should be "CTX template name"}
+
+tcltest::test context-template-1.1 "template, wrong args, too many" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX template FIELD X
+} -returnCodes error \
+    -result {wrong # args: should be "CTX template name"}
+
+tcltest::test context-template-2.0 "template, unknown name" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX template X
+} -returnCodes error -result {Template "X" not known}
+
+tcltest::test context-template-2.1 "template, known name" -setup {
+    mustache context create CTX [RF]
+    CTX template: T TX
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX template T
+} -result TX
+
+# # ## ### ##### ######## ############# #####################
+## template:
+
+tcltest::test context-template:-1.0 "template:, wrong args, not enough" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX template:
+} -returnCodes error \
+    -result {wrong # args: should be "CTX template: name template"}
+
+tcltest::test context-template:-1.1 "template:, wrong args, not enough" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX template: NAME
+} -returnCodes error \
+    -result {wrong # args: should be "CTX template: name template"}
+
+tcltest::test context-template:-1.2 "template:, wrong args, too many" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX template: NAME TEMPLATE X
+} -returnCodes error \
+    -result {wrong # args: should be "CTX template: name template"}
+
+tcltest::test context-template:-2.0 "template:, ok" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    list [CTX template? X] [CTX template: X SPEC] [CTX template? X]
+} -result {0 {} 1}
+
+# # ## ### ##### ######## ############# #####################
+## template?
+
+tcltest::test context-template?-1.0 "template?, wrong args, not enough" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX template?
+} -returnCodes error \
+    -result {wrong # args: should be "CTX template? name"}
+
+tcltest::test context-template?-1.1 "template?, wrong args, too many" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX template? FIELD X
+} -returnCodes error \
+    -result {wrong # args: should be "CTX template? name"}
+
+tcltest::test context-template?-2.0 "template?, unknown name" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX template? X
+} -result 0
+
+tcltest::test context-template?-2.1 "template?, known name" -setup {
+    mustache context create CTX [RF]
+    CTX template: T TX
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX template? T
+} -result 1
+
+# # ## ### ##### ######## ############# #####################
+## value
+
+tcltest::test context-value-1.0 "value, wrong args, too many" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX value X
+} -returnCodes error \
+    -result {wrong # args: should be "CTX value"}
+
+tcltest::test context-value-2.0 "value, mapping" -setup {
+    mustache context create CTX [RF]
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX value
+} -result {FIELD V< FALSE 0 NIL {} SEQ {1 2 3} NOSEQ {} NOMAP {} SUB {CHILD X}}
+
+tcltest::test context-value-2.1 "value, scalar" -setup {
+    mustache context create CTX [RF]
+    CTX focus FIELD
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX value
+} -result V<
+
+tcltest::test context-value-2.2 "value, sequence" -setup {
+    mustache context create CTX [RF]
+    CTX focus SEQ
+} -cleanup {
+    CTX destroy
+} -body {
+    CTX value
+} -result {1 2 3}
+
+# # ## ### ##### ######## ############# #####################
+rename RF {}
+cleanupTests
+return

@@ -1,0 +1,7 @@
+- isection 'bool'
+  - lit '*\sfirst\n'
+- lit '*\s'
+- var/escaped 32 'two'
+- lit '\n'
+- isection 'bool'
+  - lit '*\sthird\n'

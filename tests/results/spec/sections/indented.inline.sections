@@ -1,0 +1,7 @@
+- lit '\s'
+- section 'boolean'
+  - lit 'YES'
+- lit '\n\s'
+- section 'boolean'
+  - lit 'GOOD'
+- lit '\n'

@@ -1,0 +1,93 @@
+# -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
+## (c) 2019 Andreas Kupries
+# # ## ### ##### ######## ############# #####################
+## Check rendering backend
+#return
+kt check Tcl     8.5
+kt check tcltest 2
+
+kt local testing mustache::frame
+kt local testing mustache::context
+kt local testing mustache::render
+
+kt source support/util.tcl
+
+# # ## ### ##### ######## ############# #####################
+
+## [..] render TEMPLATE CONTEXT WRITER
+
+## Tags to render
+#
+# [ok] dot
+# [ok] dot/escaped
+# [ok] isection
+# [ok] lit
+# [ok] partial
+# [ok] section
+# [ok] var
+# [ok] var/escaped
+
+# # ## ### ##### ######## ############# #####################
+## render
+
+tcltest::test render-1.0 "render, wrong args, not enough" -body {
+    mustache render
+} -returnCodes error \
+    -result {wrong # args: should be "mustache render template context writer"}
+
+tcltest::test render-1.1 "render, wrong args, not enough" -body {
+    mustache render T
+} -returnCodes error \
+    -result {wrong # args: should be "mustache render template context writer"}
+
+tcltest::test render-1.2 "render, wrong args, not enough" -body {
+    mustache render T C
+} -returnCodes error \
+    -result {wrong # args: should be "mustache render template context writer"}
+
+tcltest::test render-1.3 "render, wrong args, too many" -body {
+    mustache render T C W X
+} -returnCodes error \
+    -result {wrong # args: should be "mustache render template context writer"}
+
+foreach test [lsort -dict [glob -nocomplain -directory [td]/inputs/render *]] {
+    # Skip data files associated with tests, if any.
+    if {[file extension $test] ne {}} continue
+
+    set name     [file tail $test]
+    set input    [tcltest::viewFile $test]
+    set expected [v render/$name]
+    set code     [expr { [string match e_* $name] ? "error" : "ok" }]
+    set cfile    $test.context
+    set prefile   $test.pre
+
+    if {![file exists $cfile]} {
+	set cfile [td]/results/context/root
+    }
+    set cdata [tcltest::viewFile $cfile]
+
+    set pre {}
+    if {[file exists $prefile]} {
+	set pre [tcltest::viewFile $prefile]
+    }
+
+    incr k
+    tcltest::test render-2.${k}-$name "render, $name" -setup {
+	set context [mustache context new [mustache frame fromTags $cdata]]
+	set result {}
+	eval $pre
+    } -cleanup {
+	$context destroy
+	unset context result
+    } -body {
+	mustache render $input $context {::append ::result}
+	set result
+    } -returnCodes $code -result $expected
+
+    unset -nocomplain name input expected code cfile cdata
+}
+unset k test
+
+# # ## ### ##### ######## ############# #####################
+cleanupTests
+return

@@ -1,0 +1,142 @@
+[comment {-*- tcl -*- doctools manpage}]
+[include parts/definitions.inc]
+[vset VERSION 1]
+[manpage_begin [vset LABEL_FRAME] [vset MAN_SECTION] [vset VERSION]]
+[include parts/module.inc]
+[require mustache::frame]
+[titledesc [vset TITLE_FRAME]]
+[description]
+[include parts/welcome.inc]
+
+The contexts used by mustache renderer require [term {data frames}] to
+hold values of various types.
+
+[para] This package provides suitable TclOO classes for scalar values,
+sequences, and mappings.
+
+[para] Note however that any command prefix supporting the
+[sectref {Instance API}] will be suitable.
+
+[section {Class API}]
+
+[list_begin definitions]
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd ::mustache::frame::scalar] [method create] [arg obj] [arg value]]
+[call [cmd ::mustache::frame::scalar] [method new] [arg value]]
+
+These constructor commands create a new scalar data frame, initializes
+it using the [arg value] and returns the fully qualified name of that
+instance.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd ::mustache::frame::sequence] [method create] [arg obj] [arg value]]
+[call [cmd ::mustache::frame::sequence] [method new] [arg value]]
+
+These constructor commands create a new sequence data frame,
+initialize it using the [arg value] and return the fully qualified
+name of that instance.
+
+[para] The [arg value] has to be a list of data frames.
+
+[para][emph Attention:] The new sequence takes over ownership of the
+data frames in the list, and they will be destroyed when the sequence
+is destroyed.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd ::mustache::frame::mapping] [method create] [arg obj] [arg value]]
+[call [cmd ::mustache::frame::mapping] [method new] [arg value]]
+
+These constructor commands create a new mapping data frame, initialize
+it using the [arg value] and return the fully qualified name of that
+instance.
+
+[para] The [arg value] has to be a dictionary mapping arbitrary
+strings to data frames. The keys name the fields which can be found,
+the data frames hold the associated values.
+
+[para][emph Attention:] The new mapping takes over ownership of the
+data frames in the dictionary, and they will be destroyed when the
+mapping is destroyed.
+
+[list_end]
+
+[section {Instance API}]
+
+[para] Data frames are what the context uses as containers for typed
+values. It should be noted that it actually does not care about the
+specific type of a value, only about the behaviour it supports, which
+can be queried (See methods [method nil?] and [method iterable?]).
+
+[list_begin definitions]
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <framecmd>] [cmd has?] [arg field]]
+
+Checks if the value has the named [arg field].
+
+[para] Returns a boolean value indicating either success
+([const true]) or failure ([const false]) of the search.
+
+[para] Note that scalars and sequences do not have fields, searching
+them always fails.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <framecmd>] [cmd field] [arg field]]
+
+Returns the data frame for the named [arg field].
+
+[para] Scalars and sequences throw an error, as they do not have
+fields. A mapping will throw an error only if the named [arg field]
+is not known.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <framecmd>] [cmd iter] [arg context] [arg script]]
+
+Interates over the elements of the frame and invokes the [arg script]
+for each of them.
+
+During the execution of the [arg script] the active element will be
+pushed into the [arg context], and popped again after.
+
+[para] Returns the empty string.
+
+[para] Scalars and mappings will throw an error, as they cannot be
+itereated over.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <framecmd>] [cmd iterable?]]
+
+Asks the frame if it can be iterated over. In other words, if it is a
+non-empty sequence of values.
+
+[para] Returns a boolean value. [const true] signals that the frame
+can be iterated over.
+
+[para] Scalars and mapping always return [const false]. Sequences
+return [const false] only if they are mpty.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <framecmd>] [cmd nil?]]
+
+Asks the frame if it is nil, false, empty, etc.
+
+[para] Returns a boolean value. [const true] signals that the frame's
+value is indeed nil, empty, false, etc.
+
+[para] Scalars are nil if they are either empty string, or represent a
+boolean [const false].
+
+[para] Sequences and mapping are nil if they are empty, i.e of length
+or size [const 0].
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method <framecmd>] [cmd value]]
+
+Returns the value of the frame. Supported by all types.
+
+[para] Sequences and mappings return stringifications of their list or
+dictionary, respectively. This will recurse through nested structures.
+
+[list_end]
+
+[include parts/feedback.inc]
+[manpage_end]

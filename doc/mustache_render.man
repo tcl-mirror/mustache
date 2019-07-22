@@ -1,0 +1,40 @@
+[comment {-*- tcl -*- doctools manpage}]
+[include parts/definitions.inc]
+[vset VERSION 1]
+[manpage_begin [vset LABEL_RENDER] [vset MAN_SECTION] [vset VERSION]]
+[include parts/module.inc]
+[require mustache::render]
+[titledesc [vset TITLE_RENDER]]
+[description]
+[include parts/welcome.inc]
+
+This package provides the renderer for
+[uri https://mustache.github.io/ mustache] templates.
+
+[section Commands]
+
+[list_begin definitions]
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd ::mustache] [method render] \
+     [arg template] [arg context] [arg writer]]
+
+Takes the datastructure representing a parsed
+[uri https://mustache.github.io/ mustache] template, a [arg context]
+as the source of the data to interpolate, and a [arg writer]
+representing the destination of the interpolation result.
+
+[para] Both [arg context] and [arg writer] are command prefixes.  Both
+will be invoked in arbitrarly deeply nested scopes of the rendering
+operation.
+
+[para] The [arg context] command prefix has to support the API of
+[package mustache::context] objects.
+
+[para] The [arg writer] command prefix simply takes a single argument,
+the text to print to the destination represented by it. It may be
+invoked multiple times as the template is rendered.
+
+[list_end]
+
+[include parts/feedback.inc]
+[manpage_end]

@@ -1,0 +1,4 @@
+- section 'o'
+  - section 'i'
+    - var/escaped 14 'x'
+- lit 'foo'

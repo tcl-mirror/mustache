@@ -1,0 +1,14 @@
+#!/bin/bash
+clear
+echo
+ftilde
+rtilde
+sleep 2
+clear
+echo
+$SUDO ./build.tcl uninstall
+sleep 2
+clear
+echo
+date
+echo

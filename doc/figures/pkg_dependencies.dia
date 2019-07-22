@@ -1,0 +1,36 @@
+# -*- tcl -*- tcl.tk//DSL diagram//EN//1.0
+## ====================================================================
+## DSL for dependency diagram. Default parameters.
+
+source [file join [file dirname [file normalize [info script]]] dsl_dependencies.inc]
+
+## ====================================================================
+## Dependencies, bottom-up, one procedure per package.
+
+proc frame   {} { box mustache::frame    color blue stroke 2 width [grid 12] }
+proc context {} { box mustache::context  color blue stroke 2 width [grid 12] }
+proc parse   {} { box mustache::parse    color blue stroke 2 width [grid 12] }
+
+proc render  {} {
+    box mustache::render color blue stroke 2 width [grid 12]
+    group { down ; --- ; l ; --- 2 ; r ; ---> ; parse ; east ; move ; context ; move ; frame
+    }
+}
+
+proc mustache {} {
+    box mustache   color blue stroke 2 width [grid 12]
+    group { down ; ---> 3 ; render }
+    group { down ; --- ; l ; --- 3 ; r ; ---> 6 ; #parse
+    }
+}
+
+## ====================================================================
+
+proc layout {} {
+    east
+    mustache
+}
+
+## ====================================================================
+
+layout
