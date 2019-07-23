@@ -1,0 +1,156 @@
+#!/usr/bin/env tclsh
+# -*- tcl -*-
+package require Tcl 8.5
+
+# # ## ### ##### ######## ############# #####################
+
+proc main {} {
+    {*}[cmdline]
+}
+
+proc cmdline {} {
+    global argv tokens
+    set tokens off
+    while {[string match -* [set o [lindex $argv 0]]]} {
+	switch -exact -- $o {
+	    -t - --tokens { set tokens on ; set argv [lrange $argv 1 end] }
+	    -h - --help { usage }
+	    --          { break }
+	}
+    }
+    set n [llength $argv]
+
+    if {!$tokens} {
+	if {$n == 2} {
+	    lassign $argv data template
+	    return [list process $data $template]
+	}
+	if {$n == 1} {
+	    lassign $argv template
+	    return [list process-stdin $template]
+	}
+	if {$n == 0} {
+	    return [list process-mixed]
+	}
+    } elseif {$n == 1} {
+	lassign $argv template
+	return [list tokenize $template]
+    }
+    usage
+    return     
+}
+
+proc tokenize {template} {
+    package require fileutil
+    package require mustache::parse
+    puts [Format [mustache::parse [fileutil::cat $template]]]
+    return    
+}
+
+proc process {yaml template} {
+    package require fileutil
+    package require tclyaml
+    package require mustache::frame
+    package require mustache::context
+    package require mustache::parse
+    package require mustache::render
+
+    set template [mustache parse [fileutil::cat $template]]
+    
+    foreach spec [tclyaml readTags file $yaml] {
+	set spec [lindex $spec 0]
+	set context [mustache context new [mustache frame fromTags $spec]]
+	mustache render $template $context ::write
+	flush stdout
+	$context destroy
+    }
+    return
+}
+
+proc process-stdin {template} {
+    package require fileutil
+    package require tclyaml
+    package require mustache::frame
+    package require mustache::context
+    package require mustache::parse
+    package require mustache::render
+
+    set template [mustache parse [fileutil::cat $template]]
+    
+    foreach spec [tclyaml readTags chan stdin] {
+	set spec [lindex $spec 0]
+	set context [mustache context new [mustache frame fromTags $spec]]
+	mustache render $template $context ::write
+	flush stdout
+	$context destroy
+    }
+    return
+}
+
+proc process-mixed {} {
+    package require tclyaml
+    package require mustache::frame
+    package require mustache::context
+    package require mustache::parse
+    package require mustache::render
+
+    set in   [read stdin]
+    set data [open [pid] w]
+    set buf  ""
+    foreach line [split $in \n] {
+	append buf $line\n
+	if {$line eq "---"} {
+	    puts -nonewline $data $buf
+	    set buf ""
+	}
+    }
+    close $data
+    #puts [X $buf]
+    # buf holds the template + an additional trailing EOL
+    set buf      [string range $buf 0 end-1]    
+    set template [mustache parse $buf]
+    
+    foreach spec [tclyaml readTags file [pid]] {
+	set spec [lindex $spec 0]
+	# Ignore the empty trailing document.
+	if {$spec eq "scalar {}"} continue
+	
+	set context [mustache context new [mustache frame fromTags $spec]]
+	mustache render $template $context ::write
+	flush stdout
+	$context destroy
+    }
+    file delete [pid]
+    return
+}
+
+proc write {text} {
+    #puts -[X $text]
+    puts -nonewline stdout $text
+}
+
+proc Format {tree} { string trimright [F' {} $tree] \n }
+proc F' {indent tree} {
+    set r ""
+    foreach el $tree {
+	lassign $el cmd pos detail children
+	if {$cmd in {section isection}} {
+	    append r $indent "- " $cmd " " '$detail' \n
+	    append r [F' "$indent  " $children]
+	} elseif {$cmd eq "lit"} {
+	    # detail is in pos, no pos information for literals
+	    append r $indent "- " $cmd " " '[X $pos]' \n
+	} else {
+	    append r $indent "- " $cmd " " $pos " " '$detail' \n
+	}
+    }
+    return $r
+}
+
+# Escape specials for better readability.
+proc X {x} { string map [list \f \\f \v \\v \n \\n \r \\r { } \\s \t \\t] $x }
+
+# # ## ### ##### ######## ############# #####################
+
+main
+exit
