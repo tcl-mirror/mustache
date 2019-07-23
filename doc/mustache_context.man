@@ -3,19 +3,22 @@
 [vset VERSION 1]
 [manpage_begin [vset LABEL_CONTEXT] [vset MAN_SECTION] [vset VERSION]]
 [include parts/module.inc]
+[leyword contexts context dot]
 [require mustache::context]
 [titledesc [vset TITLE_CONTEXT]]
 [description]
 [include parts/welcome.inc]
 
-The render command provided by package [package mustache::render]
-requires a context as the source of the strings to interpolate into
-the template it is invoked with.
+[section Overview]
 
-[para] This package provides a suitable TclOO class.
+The [cmd {mustache render}] command provided by package
+[package mustache::render] requires a [term context] as the source of
+the values to interpolate into the template it is invoked with.
 
-[para] Note however that any command prefix supporting the
-[sectref {Instance API}] will be suitable.
+[para] This package provides a suitable [package TclOO] class.
+
+[para] Note however that [emph any] command prefix supporting the
+[sectref {Instance API}] below will be suitable.
 
 [section {Class API}]
 

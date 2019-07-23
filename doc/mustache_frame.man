@@ -4,18 +4,26 @@
 [manpage_begin [vset LABEL_FRAME] [vset MAN_SECTION] [vset VERSION]]
 [include parts/module.inc]
 [require mustache::frame]
+[keyword {data frame} {typed value} value]
 [titledesc [vset TITLE_FRAME]]
 [description]
 [include parts/welcome.inc]
 
-The contexts used by mustache renderer require [term {data frames}] to
-hold values of various types.
+[section Overview]
 
-[para] This package provides suitable TclOO classes for scalar values,
-sequences, and mappings.
+The [term contexts] used by [cmd {mustache render}] require/use
+[term {data frames}] to hold values of various types.
 
-[para] Note however that any command prefix supporting the
-[sectref {Instance API}] will be suitable.
+[para] This package provides three TclOO classes for scalar values,
+sequences, and mappings, suitable for working with the objects
+provided by the [package mustache::context] package.
+
+[para] Note however that [emph any] command prefix supporting the
+[sectref {Instance API}] below will be suitable for working with the
+same.
+
+[para] This is not necessarily true for custom context objects. Such
+may have their own API for working with typed values.
 
 [section {Class API}]
 

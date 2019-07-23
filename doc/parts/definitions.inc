@@ -1,4 +1,5 @@
 [include configuration.inc]
+[vset TITLE_APP      "[vset PTITLE] - Application"]
 [vset TITLE_INTRO    "[vset PTITLE] - Introduction to the project"]
 [vset TITLE_LICENSE  "[vset PTITLE] - License"			 ]
 [vset TITLE_CHANGES  "[vset PTITLE] - Log of Changes"    	 ]
@@ -7,6 +8,7 @@
 [vset TITLE_DEV      "[vset PTITLE] - The Developer's Guide"	 ]
 
 [comment {- Custom documents & titles - - -- --- ----- --------}]
+[vset TITLE_APP           "[vset PTITLE] - Application"]
 [vset TITLE_MUSTACHE      "[vset PTITLE] - Main package"]
 [vset TITLE_CONTEXT       "[vset PTITLE] - Field resolution context"]
 [vset TITLE_FRAME         "[vset PTITLE] - Data frames with fields"]
@@ -14,6 +16,7 @@
 [vset TITLE_RENDER        "[vset PTITLE] - Rendering parsed templates"]
 
 [comment {- Miscellanea ............. - - -- --- ----- --------}]
+[vset LABEL_APP           [vset PROJECT]-app]
 [vset LABEL_INTRO         [vset PROJECT]-introduction]
 [vset LABEL_LICENSE       [vset PROJECT]-license]
 [vset LABEL_CHANGES       [vset PROJECT]-changes]

@@ -3,12 +3,15 @@
 [vset VERSION 1]
 [manpage_begin [vset LABEL_PARSE] [vset MAN_SECTION] [vset VERSION]]
 [include parts/module.inc]
+[keyword parser]
 [require mustache::parse]
 [titledesc [vset TITLE_PARSE]]
 [description]
 [include parts/welcome.inc]
 
-This package provides the parser for
+[section Overview]
+
+[package mustache::parse] provides the parser for
 [uri https://mustache.github.io/ mustache] templates.
 
 [section Commands]
