@@ -1,0 +1,154 @@
+# -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
+## (c) 2019 Andreas Kupries
+# # ## ### ##### ######## ############# #####################
+## Check the behaviour of the application.
+#return
+kt check Tcl     8.5
+kt check tcltest 2
+
+kt local testing mustache::frame
+kt local testing mustache::context
+kt local testing mustache::parse
+kt local testing mustache::render
+
+package require fileutil
+
+kt source support/util.tcl
+
+# # ## ### ##### ######## ############# #####################
+
+proc app-puts {args} {
+    #puts ||[info level 0]||
+    # syntax
+    # =1                 text
+    # =2 -nonewline      text
+    # =2            chan text
+    # =3 -nonewline chan text
+    switch -exact -- [llength $args] {
+	1 {
+	    # text
+	    # stdout, redirect into buffer
+	    append ::stdout [lindex $args 0] \n
+	    return
+	}
+	2 {
+	    # -nonewline text
+	    # chan       text
+	    lassign $args prefix text
+	    if {$prefix eq "-nonewline"} {
+		# stdout, redirect into buffer, no newline
+		append ::stdout $text
+	    } elseif {$prefix in {stdout stderr}} {
+		# std*, redirect into buffer, newline
+		append ::stdout $text \n
+	    } else {
+		# Other channel, delegate to original
+		puts {*}$args
+	    }
+	    return
+	}
+	3 {
+	    # -nonewline chan text
+	    lassign $args prefix chan text
+	    if {($prefix eq "-nonewline") && ($chan in {stdout stderr})} {
+		# std*, redirect into buffer, no newline
+		append ::stdout $text
+		return
+	    }
+	}
+    }
+    # Error cases triggr regular command for proper message.
+    puts {*}$args
+}
+
+proc app-exit {args} {}
+proc main {} {}
+
+kt source ../bin/mustache
+
+proc app-exit {args} {
+    app-puts "EXIT $args"
+    return -code 9 ""
+}
+
+proc main {} {
+    {*}[cmdline]
+}
+
+# # ## ### ##### ######## ############# #####################
+
+proc app {args} {
+    #puts GO\t($args)
+
+    global argv argv0 stdout
+    set argv0  mustache
+    set argv   $args
+    set stdout ""
+    set state [catch {
+	main
+    } msg]
+    if {$state ni {0 9}} {
+	# Rethrow
+	return -code $state $msg
+    }
+    return $stdout
+}
+
+# # ## ### ##### ######## ############# #####################
+
+tcltest::test app-1.0 "application, help" -body {
+    app -h
+} -result [v app/help]
+
+tcltest::test app-1.1 "application, help" -body {
+    app --help
+} -result [v app/help]
+
+tcltest::test app-1.2 "application, bad option" -body {
+    app --bogus
+} -result [v app/help]
+
+tcltest::test app-2.0 "application, tokenize" -body {
+    app -t [td]/inputs/app/template.mustache
+} -result [v app/tokens]
+
+tcltest::test app-2.1 "application, tokenize" -body {
+    app --tokens [td]/inputs/app/template.mustache
+} -result [v app/tokens]
+
+tcltest::test app-3.0 "application, process" -body {
+    app [td]/inputs/app/data.yml [td]/inputs/app/template.mustache
+} -result [v app/out1]
+
+tcltest::test app-3.1 "application, process" -body {
+    app [td]/inputs/app/data2.yml [td]/inputs/app/template2.mustache
+} -result [v app/out2]
+
+tcltest::test app-4.0 "application, process-stdin" -setup {
+    close stdin
+    open [td]/inputs/app/data.yml r
+} -body {
+    app [td]/inputs/app/template.mustache
+} -result [v app/out1]
+
+tcltest::test app-5.0 "application, process-mixed" -setup {
+    append in [fileutil::cat [td]/inputs/app/data.yml]
+    append in [fileutil::cat [td]/inputs/app/template.mustache]
+    fileutil::writeFile [pid] $in
+    close stdin
+    open [pid] r
+} -cleanup {
+    file delete [pid]
+    unset in
+} -body {
+    app
+} -result [v app/out1]
+
+# # ## ### ##### ######## ############# #####################
+
+rename app-exit {}
+rename app-puts {}
+
+# # ## ### ##### ######## ############# #####################
+cleanupTests
+return

@@ -3,9 +3,21 @@
 package require Tcl 8.5
 
 # # ## ### ##### ######## ############# #####################
+## Hooks a testsuite can override.
 
-proc main {} {
-    {*}[cmdline]
+if {![llength [info commands app-exit]]} {
+    proc app-exit {args} { exit {*}$args }
+}
+if {![llength [info commands app-puts]]} {
+    proc app-puts {args} { puts {*}$args }
+}
+
+# # ## ### ##### ######## ############# #####################
+
+if {![llength [info commands main]]} {
+    proc main {} {
+	{*}[cmdline]
+    }
 }
 
 proc cmdline {} {
@@ -16,6 +28,7 @@ proc cmdline {} {
 	    -t - --tokens { set tokens on ; set argv [lrange $argv 1 end] }
 	    -h - --help { usage }
 	    --          { break }
+	    default     { usage }
 	}
     }
     set n [llength $argv]
@@ -40,10 +53,20 @@ proc cmdline {} {
     return     
 }
 
+proc usage {} {
+    global argv0
+    app-puts stderr "Usage: $argv0"
+    app-puts stderr "       $argv0 datafile templatefile"
+    app-puts stderr "       $argv0 templatefile"
+    app-puts stderr "       $argv0 -t|--token templatefile"
+    app-puts stderr "       $argv0 -h|--help"
+    app-exit 1
+}
+
 proc tokenize {template} {
     package require fileutil
     package require mustache::parse
-    puts [Format [mustache::parse [fileutil::cat $template]]]
+    app-puts [Format [mustache::parse [fileutil::cat $template]]]
     return    
 }
 
@@ -59,6 +82,9 @@ proc process {yaml template} {
     
     foreach spec [tclyaml readTags file $yaml] {
 	set spec [lindex $spec 0]
+	# Ignore an empty trailing document.
+	if {$spec eq "scalar {}"} continue
+
 	set context [mustache context new [mustache frame fromTags $spec]]
 	mustache render $template $context ::write
 	flush stdout
@@ -79,6 +105,9 @@ proc process-stdin {template} {
     
     foreach spec [tclyaml readTags chan stdin] {
 	set spec [lindex $spec 0]
+	# Ignore an empty trailing document.
+	if {$spec eq "scalar {}"} continue
+
 	set context [mustache context new [mustache frame fromTags $spec]]
 	mustache render $template $context ::write
 	flush stdout
@@ -100,12 +129,12 @@ proc process-mixed {} {
     foreach line [split $in \n] {
 	append buf $line\n
 	if {$line eq "---"} {
-	    puts -nonewline $data $buf
+	    app-puts -nonewline $data $buf
 	    set buf ""
 	}
     }
     close $data
-    #puts [X $buf]
+    #app-puts [X $buf]
     # buf holds the template + an additional trailing EOL
     set buf      [string range $buf 0 end-1]    
     set template [mustache parse $buf]
@@ -125,8 +154,8 @@ proc process-mixed {} {
 }
 
 proc write {text} {
-    #puts -[X $text]
-    puts -nonewline stdout $text
+    #app-puts -[X $text]
+    app-puts -nonewline stdout $text
 }
 
 proc Format {tree} { string trimright [F' {} $tree] \n }
@@ -153,4 +182,4 @@ proc X {x} { string map [list \f \\f \v \\v \n \\n \r \\r { } \\s \t \\t] $x }
 # # ## ### ##### ######## ############# #####################
 
 main
-exit
+app-exit

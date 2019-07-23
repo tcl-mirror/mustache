@@ -1,0 +1,7 @@
+Usage: mustache
+       mustache datafile templatefile
+       mustache templatefile
+       mustache -t|--token templatefile
+       mustache -h|--help
+EXIT 1
+
