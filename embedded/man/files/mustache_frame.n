@@ -277,19 +277,19 @@ mustache::frame \- Mustache - Data frames with fields
 .SH SYNOPSIS
 package require \fBmustache::frame \fR
 .sp
-\fB::mustache::frame::fromTags\fR \fIspec\fR
+\fB::mustache frame fromTags\fR \fIspec\fR
 .sp
-\fB::mustache::frame::scalar\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
+\fB::mustache frame scalar\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
 .sp
-\fB::mustache::frame::scalar\fR \fBnew\fR \fIvalue\fR
+\fB::mustache frame scalar\fR \fBnew\fR \fIvalue\fR
 .sp
-\fB::mustache::frame::sequence\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
+\fB::mustache frame sequence\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
 .sp
-\fB::mustache::frame::sequence\fR \fBnew\fR \fIvalue\fR
+\fB::mustache frame sequence\fR \fBnew\fR \fIvalue\fR
 .sp
-\fB::mustache::frame::mapping\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
+\fB::mustache frame mapping\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
 .sp
-\fB::mustache::frame::mapping\fR \fBnew\fR \fIvalue\fR
+\fB::mustache frame mapping\fR \fBnew\fR \fIvalue\fR
 .sp
 \fB<framecmd>\fR \fBhas?\fR \fIfield\fR
 .sp
@@ -306,21 +306,34 @@ package require \fBmustache::frame \fR
 .BE
 .SH DESCRIPTION
 .PP
-Welcome to the Mustache project, written by Andreas Kupries\&.
+Welcome to the Mustache project for Tcl, written by Andreas Kupries\&.
+.PP
+It provides a set of five related Tcl packages for the parsing
+and rendering of \fImustache-style\fR [https://mustache\&.github\&.io/]
+logic-less templates, plus an application for easy command-line access
+to the functionality\&.
 .PP
 For availability please read \fIMustache - How To Get The Sources\fR\&.
 .PP
-The contexts used by mustache renderer require \fIdata frames\fR to
-hold values of various types\&.
+.SH OVERVIEW
+\fBmustache::context\fR objects make use of \fIdata frame\fR
+objects to hold the values they will hand to the
+\fBmustache render\fR command while it renders a template\&.
 .PP
-This package provides suitable TclOO classes for scalar values,
-sequences, and mappings\&.
+\fBmustache::frame\fR provides three TclOO classes for
+holding scalar values, sequences, and mappings, all suitable for
+working with the objects provided by the \fBmustache::context\fR
+package\&.
 .PP
-Note however that any command prefix supporting the
-\fBInstance API\fR will be suitable\&.
+Note however that \fIany\fR command prefix supporting the
+\fBInstance API\fR below will be suitable for working with the
+same\&.
+.PP
+This is not necessarily true for custom context objects\&. Such
+may have their own API for working with typed values\&.
 .SH "CLASS API"
 .TP
-\fB::mustache::frame::fromTags\fR \fIspec\fR
+\fB::mustache frame fromTags\fR \fIspec\fR
 Converts the tagged nested data structure in \fIspec\fR, representing
 a hierarchy of mappings, sequences, and scalar values, into an
 equivalent hierarchy of data frame objects\&.
@@ -364,16 +377,16 @@ mapping {
 
 .CE
 .TP
-\fB::mustache::frame::scalar\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
+\fB::mustache frame scalar\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
 .TP
-\fB::mustache::frame::scalar\fR \fBnew\fR \fIvalue\fR
+\fB::mustache frame scalar\fR \fBnew\fR \fIvalue\fR
 These constructor commands create a new scalar data frame, initializes
 it using the \fIvalue\fR and returns the fully qualified name of that
 instance\&.
 .TP
-\fB::mustache::frame::sequence\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
+\fB::mustache frame sequence\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
 .TP
-\fB::mustache::frame::sequence\fR \fBnew\fR \fIvalue\fR
+\fB::mustache frame sequence\fR \fBnew\fR \fIvalue\fR
 These constructor commands create a new sequence data frame,
 initialize it using the \fIvalue\fR and return the fully qualified
 name of that instance\&.
@@ -384,9 +397,9 @@ The \fIvalue\fR has to be a list of data frames\&.
 data frames in the list, and they will be destroyed when the sequence
 is destroyed\&.
 .TP
-\fB::mustache::frame::mapping\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
+\fB::mustache frame mapping\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
 .TP
-\fB::mustache::frame::mapping\fR \fBnew\fR \fIvalue\fR
+\fB::mustache frame mapping\fR \fBnew\fR \fIvalue\fR
 These constructor commands create a new mapping data frame, initialize
 it using the \fIvalue\fR and return the fully qualified name of that
 instance\&.
@@ -470,7 +483,7 @@ Please report such at
 Please also report any ideas you may have for enhancements of
 either package(s) and/or documentation\&.
 .SH KEYWORDS
-logic-less templates, mustache, templating
+data frame, logic-less templates, mustache, templating, typed value, value
 .SH COPYRIGHT
 .nf
 Copyright (c) 2019 Andreas Kupries

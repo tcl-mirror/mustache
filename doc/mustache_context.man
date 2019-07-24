@@ -3,25 +3,28 @@
 [vset VERSION 1]
 [manpage_begin [vset LABEL_CONTEXT] [vset MAN_SECTION] [vset VERSION]]
 [include parts/module.inc]
+[keywords contexts context dot]
 [require mustache::context]
 [titledesc [vset TITLE_CONTEXT]]
 [description]
 [include parts/welcome.inc]
 
-The render command provided by package [package mustache::render]
-requires a context as the source of the strings to interpolate into
-the template it is invoked with.
+[section Overview]
 
-[para] This package provides a suitable TclOO class.
+The [cmd {mustache render}] command provided by package
+[package mustache::render] requires a [term context] as the source of
+the values to interpolate into the template it is invoked with.
 
-[para] Note however that any command prefix supporting the
-[sectref {Instance API}] will be suitable.
+[para] This package provides a suitable [package TclOO] class.
+
+[para] Note however that [emph any] command prefix supporting the
+[sectref {Instance API}] below will be suitable.
 
 [section {Class API}]
 
 [list_begin definitions]
 [comment {- - -- --- ----- -------- -------------}]
-[call [cmd ::mustache::context] [method create] [arg obj] [arg frame]]
+[call [cmd {::mustache context}] [method create] [arg obj] [arg frame]]
 
 This constructor command creates a new instance [arg obj] of the
 class, initializes it using the data [arg frame] and returns the fully
@@ -38,7 +41,7 @@ context, and will be destroyed when the context is destroyed.
 [method template:] instance method.
 
 [comment {- - -- --- ----- -------- -------------}]
-[call [cmd ::mustache::context] [method new] [arg frame]]
+[call [cmd {::mustache context}] [method new] [arg frame]]
 
 This constructor command creates a new instance of the class,
 initializes it using the data [arg frame] and returns the fully

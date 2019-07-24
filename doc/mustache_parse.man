@@ -3,12 +3,15 @@
 [vset VERSION 1]
 [manpage_begin [vset LABEL_PARSE] [vset MAN_SECTION] [vset VERSION]]
 [include parts/module.inc]
+[keywords parser]
 [require mustache::parse]
 [titledesc [vset TITLE_PARSE]]
 [description]
 [include parts/welcome.inc]
 
-This package provides the parser for
+[section Overview]
+
+[package mustache::parse] provides the parser for
 [uri https://mustache.github.io/ mustache] templates.
 
 [section Commands]
@@ -21,20 +24,25 @@ Parses the [uri https://mustache.github.io/ mustache] [arg template],
 and returns a Tcl data structure representing it.
 
 [para] The details of the data structure are not documented by design,
-it is not relevant to users of the command.
+they are not relevant to users of the command.
 
-[para] All it is necessary to know is that the command provided by
-package [package mustache::render] takes such a structure and renders
-it, using a context as the source of the data to interpolate.
+[para] All it is necessary to know is that the [cmd {mustache render}]
+command provided by package [package mustache::render] takes such a
+structure and renders it, using a [term context] as the source of the
+data to interpolate.
 
 [para] By default the parser will use the strings [const "\{\{"] and
 [const "\}\}"] to detect beginning and end of mustache tags. This can
-be overridden using the [arg delimiters] argument, by providing a
-2-element list of tag opener and closer strings, in this order.
+be overridden using the [arg delimiters] argument. It is expected to
+be a 2-element list of tag opener and closer strings, in this order.
 
-[para] Note however that this can also be done by prefixing the
-[arg template] string with the proper mustache tag for changing the
-delimiters.
+[emph Note] however that the same effect can be achieved by prefixing
+the [arg template] string with the proper mustache tag for changing
+the delimiters.
+
+As an example, the tag [const {{{=<< >>=}}}] will change the
+delimiters to [const <<] and [const >>].
+
 
 [list_end]
 

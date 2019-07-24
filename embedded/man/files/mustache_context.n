@@ -277,9 +277,9 @@ mustache::context \- Mustache - Field resolution context
 .SH SYNOPSIS
 package require \fBmustache::context \fR
 .sp
-\fB::mustache::context\fR \fBcreate\fR \fIobj\fR \fIframe\fR
+\fB::mustache context\fR \fBcreate\fR \fIobj\fR \fIframe\fR
 .sp
-\fB::mustache::context\fR \fBnew\fR \fIframe\fR
+\fB::mustache context\fR \fBnew\fR \fIframe\fR
 .sp
 \fB<contextcmd>\fR \fBhas?\fR \fIfield\fR
 .sp
@@ -306,21 +306,27 @@ package require \fBmustache::context \fR
 .BE
 .SH DESCRIPTION
 .PP
-Welcome to the Mustache project, written by Andreas Kupries\&.
+Welcome to the Mustache project for Tcl, written by Andreas Kupries\&.
+.PP
+It provides a set of five related Tcl packages for the parsing
+and rendering of \fImustache-style\fR [https://mustache\&.github\&.io/]
+logic-less templates, plus an application for easy command-line access
+to the functionality\&.
 .PP
 For availability please read \fIMustache - How To Get The Sources\fR\&.
 .PP
-The render command provided by package \fBmustache::render\fR
-requires a context as the source of the strings to interpolate into
-the template it is invoked with\&.
+.SH OVERVIEW
+The \fBmustache render\fR command provided by package
+\fBmustache::render\fR requires a \fIcontext\fR as the source of
+the values to interpolate into the template it is invoked with\&.
 .PP
-This package provides a suitable TclOO class\&.
+This package provides a suitable \fBTclOO\fR class\&.
 .PP
-Note however that any command prefix supporting the
-\fBInstance API\fR will be suitable\&.
+Note however that \fIany\fR command prefix supporting the
+\fBInstance API\fR below will be suitable\&.
 .SH "CLASS API"
 .TP
-\fB::mustache::context\fR \fBcreate\fR \fIobj\fR \fIframe\fR
+\fB::mustache context\fR \fBcreate\fR \fIobj\fR \fIframe\fR
 This constructor command creates a new instance \fIobj\fR of the
 class, initializes it using the data \fIframe\fR and returns the fully
 qualified name of that instance\&.
@@ -335,7 +341,7 @@ Additional initialization, i\&.e\&. definition of \fIpartials\fR
 (aka \fIparts\fR, aka \fIincludes\fR) can be done via the
 \fBtemplate:\fR instance method\&.
 .TP
-\fB::mustache::context\fR \fBnew\fR \fIframe\fR
+\fB::mustache context\fR \fBnew\fR \fIframe\fR
 This constructor command creates a new instance of the class,
 initializes it using the data \fIframe\fR and returns the fully
 qualified name of that instance\&.
@@ -438,7 +444,7 @@ Please report such at
 Please also report any ideas you may have for enhancements of
 either package(s) and/or documentation\&.
 .SH KEYWORDS
-logic-less templates, mustache, templating
+context, contexts, dot, logic-less templates, mustache, templating
 .SH COPYRIGHT
 .nf
 Copyright (c) 2019 Andreas Kupries

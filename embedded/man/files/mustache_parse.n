@@ -282,11 +282,17 @@ package require \fBmustache::parse \fR
 .BE
 .SH DESCRIPTION
 .PP
-Welcome to the Mustache project, written by Andreas Kupries\&.
+Welcome to the Mustache project for Tcl, written by Andreas Kupries\&.
+.PP
+It provides a set of five related Tcl packages for the parsing
+and rendering of \fImustache-style\fR [https://mustache\&.github\&.io/]
+logic-less templates, plus an application for easy command-line access
+to the functionality\&.
 .PP
 For availability please read \fIMustache - How To Get The Sources\fR\&.
 .PP
-This package provides the parser for
+.SH OVERVIEW
+\fBmustache::parse\fR provides the parser for
 \fImustache\fR [https://mustache\&.github\&.io/] templates\&.
 .SH COMMANDS
 .TP
@@ -295,20 +301,22 @@ Parses the \fImustache\fR [https://mustache\&.github\&.io/] \fItemplate\fR,
 and returns a Tcl data structure representing it\&.
 .sp
 The details of the data structure are not documented by design,
-it is not relevant to users of the command\&.
+they are not relevant to users of the command\&.
 .sp
-All it is necessary to know is that the command provided by
-package \fBmustache::render\fR takes such a structure and renders
-it, using a context as the source of the data to interpolate\&.
+All it is necessary to know is that the \fBmustache render\fR
+command provided by package \fBmustache::render\fR takes such a
+structure and renders it, using a \fIcontext\fR as the source of the
+data to interpolate\&.
 .sp
 By default the parser will use the strings \fB{{\fR and
 \fB}}\fR to detect beginning and end of mustache tags\&. This can
-be overridden using the \fIdelimiters\fR argument, by providing a
-2-element list of tag opener and closer strings, in this order\&.
-.sp
-Note however that this can also be done by prefixing the
-\fItemplate\fR string with the proper mustache tag for changing the
-delimiters\&.
+be overridden using the \fIdelimiters\fR argument\&. It is expected to
+be a 2-element list of tag opener and closer strings, in this order\&.
+\fINote\fR however that the same effect can be achieved by prefixing
+the \fItemplate\fR string with the proper mustache tag for changing
+the delimiters\&.
+As an example, the tag \fB{{=<< >>=}}\fR will change the
+delimiters to \fB<<\fR and \fB>>\fR\&.
 .PP
 .SH "BUGS, IDEAS, FEEDBACK"
 Both the package(s) and this documentation will undoubtedly contain
@@ -319,7 +327,7 @@ Please report such at
 Please also report any ideas you may have for enhancements of
 either package(s) and/or documentation\&.
 .SH KEYWORDS
-logic-less templates, mustache, templating
+logic-less templates, mustache, parser, templating
 .SH COPYRIGHT
 .nf
 Copyright (c) 2019 Andreas Kupries

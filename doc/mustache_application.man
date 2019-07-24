@@ -1,0 +1,66 @@
+[comment {-*- tcl -*- doctools manpage}]
+[include parts/definitions.inc]
+[vset VERSION 1]
+[manpage_begin [vset LABEL_APP] [vset MAN_SECTION] [vset VERSION]]
+[include parts/module.inc]
+[keywords application {command line} terminal {standard input} {standard output}]
+[require mustache]
+[titledesc [vset TITLE_APP]]
+[description]
+[include parts/welcome.inc]
+
+[section Overview]
+
+[syscmd [vset PROJECT]] is a simple command-line application providing
+easy access to the functionality of the project.
+
+Taking [vset YAML]-formatted data (as file, or from stdin) and a
+mustache template (from file or stdin) it prints the result of
+rendering the template against all the data.
+
+[section Syntax]
+
+[list_begin definitions]
+[comment {- - -- --- ----- -------- -------------}]
+[call [syscmd mustache] [arg datafile] [arg templatefile]]
+
+Renders the [vset YAML] data in the [arg datafile] against the mustache
+template in [arg templatefile] and prints the result to its standard
+output.
+
+[para] Note that the data file may contain more than one [vset YAML]
+document, separated by [const ---]. In that case each document is
+separately rendered and printed. Note that the application will not
+insert separators into such an output. Desired or required separators
+have to be part of the template.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [syscmd mustache] [arg templatefile]]
+
+As above, however the [vset YAML] documents are read from the standard
+input of the application.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [syscmd mustache]]
+
+As above, however both the [vset YAML] documents and the template are
+read from the standard input of the application. The template is the
+block of text found after the last [const ---] separator.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [syscmd mustache] [option -t]|[option --token] [arg templatefile]]
+
+Parses the template stored in the [arg templatefile] and prints the
+extracted structure to the standard output of the application for
+inspection.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [syscmd mustache] [option -h]|[option --help]]
+
+Prints basic usage information (command syntax) to the standard output
+of the application.
+
+[list_end]
+
+[include parts/feedback.inc]
+[manpage_end]

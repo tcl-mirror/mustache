@@ -276,6 +276,9 @@ doc
 \fBmustache\fR
 \fIfiles/mustache\&.n\fR: Mustache - Main package
 .TP
+\fBmustache-app\fR
+\fIfiles/mustache_application\&.n\fR: Mustache - Application
+.TP
 \fBmustache-changes\fR
 \fIfiles/mustache_changes\&.n\fR: Mustache - Log of Changes
 .TP

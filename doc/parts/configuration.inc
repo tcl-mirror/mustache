@@ -9,3 +9,4 @@
 [vset REPOSITORY https:/core.tcl.tk/akupries/mustache]
 [vset VC_TYPE fossil]
 [vset PROJ_VERSION 1]
+[vset YAML [uri https://yaml.org/ yaml]]

@@ -4,24 +4,34 @@
 [manpage_begin [vset LABEL_FRAME] [vset MAN_SECTION] [vset VERSION]]
 [include parts/module.inc]
 [require mustache::frame]
+[keywords {data frame} {typed value} value]
 [titledesc [vset TITLE_FRAME]]
 [description]
 [include parts/welcome.inc]
 
-The contexts used by mustache renderer require [term {data frames}] to
-hold values of various types.
+[section Overview]
 
-[para] This package provides suitable TclOO classes for scalar values,
-sequences, and mappings.
+[package mustache::context] objects make use of [term {data frame}]
+objects to hold the values they will hand to the
+[cmd {mustache render}] command while it renders a template.
 
-[para] Note however that any command prefix supporting the
-[sectref {Instance API}] will be suitable.
+[para] [package mustache::frame] provides three TclOO classes for
+holding scalar values, sequences, and mappings, all suitable for
+working with the objects provided by the [package mustache::context]
+package.
+
+[para] Note however that [emph any] command prefix supporting the
+[sectref {Instance API}] below will be suitable for working with the
+same.
+
+[para] This is not necessarily true for custom context objects. Such
+may have their own API for working with typed values.
 
 [section {Class API}]
 
 [list_begin definitions]
 [comment {- - -- --- ----- -------- -------------}]
-[call [cmd ::mustache::frame::fromTags] [arg spec]]
+[call [cmd {::mustache frame fromTags}] [arg spec]]
 
 Converts the tagged nested data structure in [arg spec], representing
 a hierarchy of mappings, sequences, and scalar values, into an
@@ -68,16 +78,16 @@ mapping {
 }]
 
 [comment {- - -- --- ----- -------- -------------}]
-[call [cmd ::mustache::frame::scalar] [method create] [arg obj] [arg value]]
-[call [cmd ::mustache::frame::scalar] [method new] [arg value]]
+[call [cmd {::mustache frame scalar}] [method create] [arg obj] [arg value]]
+[call [cmd {::mustache frame scalar}] [method new] [arg value]]
 
 These constructor commands create a new scalar data frame, initializes
 it using the [arg value] and returns the fully qualified name of that
 instance.
 
 [comment {- - -- --- ----- -------- -------------}]
-[call [cmd ::mustache::frame::sequence] [method create] [arg obj] [arg value]]
-[call [cmd ::mustache::frame::sequence] [method new] [arg value]]
+[call [cmd {::mustache frame sequence}] [method create] [arg obj] [arg value]]
+[call [cmd {::mustache frame sequence}] [method new] [arg value]]
 
 These constructor commands create a new sequence data frame,
 initialize it using the [arg value] and return the fully qualified
@@ -90,8 +100,8 @@ data frames in the list, and they will be destroyed when the sequence
 is destroyed.
 
 [comment {- - -- --- ----- -------- -------------}]
-[call [cmd ::mustache::frame::mapping] [method create] [arg obj] [arg value]]
-[call [cmd ::mustache::frame::mapping] [method new] [arg value]]
+[call [cmd {::mustache frame mapping}] [method create] [arg obj] [arg value]]
+[call [cmd {::mustache frame mapping}] [method new] [arg value]]
 
 These constructor commands create a new mapping data frame, initialize
 it using the [arg value] and return the fully qualified name of that

@@ -5,10 +5,6 @@
 [description]
 [include parts/welcome.inc]
 
-[vset PROJECT] is a set of 5 related Tcl packages for the parsing and
-rendering of [uri https://mustache.github.io/ mustache-style]
-logic-less templates.
-
 [section {System Architecture}]
 [include parts/architecture.inc]
 
