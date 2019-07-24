@@ -113,8 +113,9 @@
 <li class="doctools_section"><a href="#toc">Table Of Contents</a></li>
 <li class="doctools_section"><a href="#synopsis">Synopsis</a></li>
 <li class="doctools_section"><a href="#section1">Description</a></li>
-<li class="doctools_section"><a href="#section2">Commands</a></li>
-<li class="doctools_section"><a href="#section3">Bugs, Ideas, Feedback</a></li>
+<li class="doctools_section"><a href="#section2">Overview</a></li>
+<li class="doctools_section"><a href="#section3">Commands</a></li>
+<li class="doctools_section"><a href="#section4">Bugs, Ideas, Feedback</a></li>
 <li class="doctools_section"><a href="#keywords">Keywords</a></li>
 <li class="doctools_section"><a href="#copyright">Copyright</a></li>
 </ul>
@@ -131,16 +132,22 @@
 </div>
 </div>
 <div id="section1" class="doctools_section"><h2><a name="section1">Description</a></h2>
-<p>Welcome to the Mustache project, written by Andreas Kupries.</p>
+<p>Welcome to the Mustache project for Tcl, written by Andreas Kupries.</p>
+<p>It provides a set of five related Tcl packages for the parsing
+and rendering of <a href="https://mustache.github.io/">mustache-style</a>
+logic-less templates, plus an application for easy command-line access
+to the functionality.</p>
 <p>For availability please read <i class="term"><a href="mustache_howto_get_sources.html">Mustache - How To Get The Sources</a></i>.</p>
+</div>
+<div id="section2" class="doctools_section"><h2><a name="section2">Overview</a></h2>
 <p><b class="package">mustache</b> is the highest-level package provided by the
 project. It provides a number of convenience commands encapsulating
 common usecases.</p>
 <p>For not-so common cases it is necessary to directly use the
 lower-level packages, i.e. <b class="package"><a href="mustache_parse.html">mustache::parse</a></b>, and
-<b class="package"><a href="mustache_render.html">mustache::render</a></b></p>
+<b class="package"><a href="mustache_render.html">mustache::render</a></b>.</p>
 </div>
-<div id="section2" class="doctools_section"><h2><a name="section2">Commands</a></h2>
+<div id="section3" class="doctools_section"><h2><a name="section3">Commands</a></h2>
 <p>The exported commands are:</p>
 <dl class="doctools_definitions">
 <dt><a name="1"><b class="cmd">::mustache</b> <b class="method">mustache</b> <i class="arg">template</i> <i class="arg">context</i></a></dt>
@@ -161,7 +168,7 @@ package.</p>
 supporting the API of <b class="package"><a href="mustache_context.html">mustache::context</a></b> objects.</p></dd>
 </dl>
 </div>
-<div id="section3" class="doctools_section"><h2><a name="section3">Bugs, Ideas, Feedback</a></h2>
+<div id="section4" class="doctools_section"><h2><a name="section4">Bugs, Ideas, Feedback</a></h2>
 <p>Both the package(s) and this documentation will undoubtedly contain
 bugs and other problems.
 Please report such at
@@ -170,7 +177,7 @@ Please report such at
 either package(s) and/or documentation.</p>
 </div>
 <div id="keywords" class="doctools_section"><h2><a name="keywords">Keywords</a></h2>
-<p><a href="../../index.html#key0">logic-less templates</a>, <a href="../../index.html#key2">mustache</a>, <a href="../../index.html#key1">templating</a></p>
+<p><a href="../../index.html#key2">logic-less templates</a>, <a href="../../index.html#key4">mustache</a>, <a href="../../index.html#key3">templating</a></p>
 </div>
 <div id="copyright" class="doctools_section"><h2><a name="copyright">Copyright</a></h2>
 <p>Copyright &copy; 2019 Andreas Kupries<br>

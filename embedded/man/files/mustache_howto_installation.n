@@ -276,7 +276,12 @@ Database Class:	\\fB\\$3\\fR
 mustache-installation \- Mustache - The Installer's Guide
 .SH DESCRIPTION
 .PP
-Welcome to the Mustache project, written by Andreas Kupries\&.
+Welcome to the Mustache project for Tcl, written by Andreas Kupries\&.
+.PP
+It provides a set of five related Tcl packages for the parsing
+and rendering of \fImustache-style\fR [https://mustache\&.github\&.io/]
+logic-less templates, plus an application for easy command-line access
+to the functionality\&.
 .PP
 For availability please read \fIMustache - How To Get The Sources\fR\&.
 .PP

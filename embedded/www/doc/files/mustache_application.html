@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head>
-<title>mustache::parse - Mustache. Packages for logic-less templating</title>
+<title>mustache-app - Mustache. Packages for logic-less templating</title>
 <style type="text/css"><!--
     HTML {
 	background: 	#FFFFFF;
@@ -91,11 +91,11 @@
     }
 --></style>
 </head>
-<!-- Generated from file 'mustache_parse.man' by tcllib/doctools with format 'html'
+<!-- Generated from file 'mustache_application.man' by tcllib/doctools with format 'html'
    -->
 <!-- Copyright &amp;copy; 2019 Andreas Kupries   -- Copyright &amp;copy; 2019 Documentation, Andreas Kupries
    -->
-<!-- mustache::parse.n
+<!-- mustache-app.n
    -->
 <body><hr> [
    <a href="../../../../../../home">Home</a>
@@ -104,9 +104,9 @@
 | <a href="../../index.html">Keyword Index</a>
  ] <hr>
 <div class="doctools">
-<h1 class="doctools_title">mustache::parse(n) 1 doc &quot;Mustache. Packages for logic-less templating&quot;</h1>
+<h1 class="doctools_title">mustache-app(n) 1 doc &quot;Mustache. Packages for logic-less templating&quot;</h1>
 <div id="name" class="doctools_section"><h2><a name="name">Name</a></h2>
-<p>mustache::parse - Mustache - Parsing templates</p>
+<p>mustache-app - Mustache - Application</p>
 </div>
 <div id="toc" class="doctools_section"><h2><a name="toc">Table Of Contents</a></h2>
 <ul class="doctools_toc">
@@ -114,7 +114,7 @@
 <li class="doctools_section"><a href="#synopsis">Synopsis</a></li>
 <li class="doctools_section"><a href="#section1">Description</a></li>
 <li class="doctools_section"><a href="#section2">Overview</a></li>
-<li class="doctools_section"><a href="#section3">Commands</a></li>
+<li class="doctools_section"><a href="#section3">Syntax</a></li>
 <li class="doctools_section"><a href="#section4">Bugs, Ideas, Feedback</a></li>
 <li class="doctools_section"><a href="#keywords">Keywords</a></li>
 <li class="doctools_section"><a href="#copyright">Copyright</a></li>
@@ -123,10 +123,14 @@
 <div id="synopsis" class="doctools_section"><h2><a name="synopsis">Synopsis</a></h2>
 <div class="doctools_synopsis">
 <ul class="doctools_requirements">
-<li>package require <b class="pkgname">mustache::parse</b></li>
+<li>package require <b class="pkgname">mustache</b></li>
 </ul>
 <ul class="doctools_syntax">
-<li><a href="#1"><b class="cmd">::mustache</b> <b class="method">parse</b> <i class="arg">template</i> <span class="opt">?<i class="arg">delimiters</i>?</span></a></li>
+<li><a href="#1"><b class="syscmd"><a href="mustache.html">mustache</a></b> <i class="arg">datafile</i> <i class="arg">templatefile</i></a></li>
+<li><a href="#2"><b class="syscmd"><a href="mustache.html">mustache</a></b> <i class="arg">templatefile</i></a></li>
+<li><a href="#3"><b class="syscmd"><a href="mustache.html">mustache</a></b></a></li>
+<li><a href="#4"><b class="syscmd"><a href="mustache.html">mustache</a></b> <b class="option">-t</b>|<b class="option">--token</b> <i class="arg">templatefile</i></a></li>
+<li><a href="#5"><b class="syscmd"><a href="mustache.html">mustache</a></b> <b class="option">-h</b>|<b class="option">--help</b></a></li>
 </ul>
 </div>
 </div>
@@ -139,29 +143,37 @@ to the functionality.</p>
 <p>For availability please read <i class="term"><a href="mustache_howto_get_sources.html">Mustache - How To Get The Sources</a></i>.</p>
 </div>
 <div id="section2" class="doctools_section"><h2><a name="section2">Overview</a></h2>
-<p><b class="package">mustache::parse</b> provides the parser for
-<a href="https://mustache.github.io/">mustache</a> templates.</p>
+<p><b class="syscmd"><a href="mustache.html">mustache</a></b> is a simple command-line application providing
+easy access to the functionality of the project.
+Taking <a href="https://yaml.org/">yaml</a>-formatted data (as file, or from stdin) and a
+mustache template (from file or stdin) it prints the result of
+rendering the template against all the data.</p>
 </div>
-<div id="section3" class="doctools_section"><h2><a name="section3">Commands</a></h2>
+<div id="section3" class="doctools_section"><h2><a name="section3">Syntax</a></h2>
 <dl class="doctools_definitions">
-<dt><a name="1"><b class="cmd">::mustache</b> <b class="method">parse</b> <i class="arg">template</i> <span class="opt">?<i class="arg">delimiters</i>?</span></a></dt>
-<dd><p>Parses the <a href="https://mustache.github.io/">mustache</a> <i class="arg">template</i>,
-and returns a Tcl data structure representing it.</p>
-<p>The details of the data structure are not documented by design,
-they are not relevant to users of the command.</p>
-<p>All it is necessary to know is that the <b class="cmd">mustache render</b>
-command provided by package <b class="package"><a href="mustache_render.html">mustache::render</a></b> takes such a
-structure and renders it, using a <i class="term"><a href="../../index.html#key1">context</a></i> as the source of the
-data to interpolate.</p>
-<p>By default the parser will use the strings <b class="const">{{</b> and
-<b class="const">}}</b> to detect beginning and end of mustache tags. This can
-be overridden using the <i class="arg">delimiters</i> argument. It is expected to
-be a 2-element list of tag opener and closer strings, in this order.
-<em>Note</em> however that the same effect can be achieved by prefixing
-the <i class="arg">template</i> string with the proper mustache tag for changing
-the delimiters.
-As an example, the tag <b class="const">{{=&lt;&lt; &gt;&gt;=}}</b> will change the
-delimiters to <b class="const">&lt;&lt;</b> and <b class="const">&gt;&gt;</b>.</p></dd>
+<dt><a name="1"><b class="syscmd"><a href="mustache.html">mustache</a></b> <i class="arg">datafile</i> <i class="arg">templatefile</i></a></dt>
+<dd><p>Renders the <a href="https://yaml.org/">yaml</a> data in the <i class="arg">datafile</i> against the mustache
+template in <i class="arg">templatefile</i> and prints the result to its standard
+output.</p>
+<p>Note that the data file may contain more than one <a href="https://yaml.org/">yaml</a>
+document, separated by <b class="const">---</b>. In that case each document is
+separately rendered and printed. Note that the application will not
+insert separators into such an output. Desired or required separators
+have to be part of the template.</p></dd>
+<dt><a name="2"><b class="syscmd"><a href="mustache.html">mustache</a></b> <i class="arg">templatefile</i></a></dt>
+<dd><p>As above, however the <a href="https://yaml.org/">yaml</a> documents are read from the standard
+input of the application.</p></dd>
+<dt><a name="3"><b class="syscmd"><a href="mustache.html">mustache</a></b></a></dt>
+<dd><p>As above, however both the <a href="https://yaml.org/">yaml</a> documents and the template are
+read from the standard input of the application. The template is the
+block of text found after the last <b class="const">---</b> separator.</p></dd>
+<dt><a name="4"><b class="syscmd"><a href="mustache.html">mustache</a></b> <b class="option">-t</b>|<b class="option">--token</b> <i class="arg">templatefile</i></a></dt>
+<dd><p>Parses the template stored in the <i class="arg">templatefile</i> and prints the
+extracted structure to the standard output of the application for
+inspection.</p></dd>
+<dt><a name="5"><b class="syscmd"><a href="mustache.html">mustache</a></b> <b class="option">-h</b>|<b class="option">--help</b></a></dt>
+<dd><p>Prints basic usage information (command syntax) to the standard output
+of the application.</p></dd>
 </dl>
 </div>
 <div id="section4" class="doctools_section"><h2><a name="section4">Bugs, Ideas, Feedback</a></h2>
@@ -173,7 +185,7 @@ Please report such at
 either package(s) and/or documentation.</p>
 </div>
 <div id="keywords" class="doctools_section"><h2><a name="keywords">Keywords</a></h2>
-<p><a href="../../index.html#key2">logic-less templates</a>, <a href="../../index.html#key4">mustache</a>, <a href="../../index.html#key11">parser</a>, <a href="../../index.html#key3">templating</a></p>
+<p><a href="../../index.html#key13">application</a>, <a href="../../index.html#key16">command line</a>, <a href="../../index.html#key2">logic-less templates</a>, <a href="../../index.html#key4">mustache</a>, <a href="../../index.html#key14">standard input</a>, <a href="../../index.html#key15">standard output</a>, <a href="../../index.html#key3">templating</a>, <a href="../../index.html#key12">terminal</a></p>
 </div>
 <div id="copyright" class="doctools_section"><h2><a name="copyright">Copyright</a></h2>
 <p>Copyright &copy; 2019 Andreas Kupries<br>

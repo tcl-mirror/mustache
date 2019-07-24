@@ -3,7 +3,7 @@
 [vset VERSION 1]
 [manpage_begin [vset LABEL_CONTEXT] [vset MAN_SECTION] [vset VERSION]]
 [include parts/module.inc]
-[leyword contexts context dot]
+[keywords contexts context dot]
 [require mustache::context]
 [titledesc [vset TITLE_CONTEXT]]
 [description]
@@ -24,7 +24,7 @@ the values to interpolate into the template it is invoked with.
 
 [list_begin definitions]
 [comment {- - -- --- ----- -------- -------------}]
-[call [cmd ::mustache::context] [method create] [arg obj] [arg frame]]
+[call [cmd {::mustache context}] [method create] [arg obj] [arg frame]]
 
 This constructor command creates a new instance [arg obj] of the
 class, initializes it using the data [arg frame] and returns the fully
@@ -41,7 +41,7 @@ context, and will be destroyed when the context is destroyed.
 [method template:] instance method.
 
 [comment {- - -- --- ----- -------- -------------}]
-[call [cmd ::mustache::context] [method new] [arg frame]]
+[call [cmd {::mustache context}] [method new] [arg frame]]
 
 This constructor command creates a new instance of the class,
 initializes it using the data [arg frame] and returns the fully
