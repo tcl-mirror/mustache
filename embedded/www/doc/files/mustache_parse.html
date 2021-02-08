@@ -93,7 +93,7 @@
 </head>
 <!-- Generated from file 'mustache_parse.man' by tcllib/doctools with format 'html'
    -->
-<!-- Copyright &amp;copy; 2019 Andreas Kupries   -- Copyright &amp;copy; 2019 Documentation, Andreas Kupries
+<!-- Copyright &amp;copy; 2019-2021 Andreas Kupries   -- Copyright &amp;copy; 2019-2021 Documentation, Andreas Kupries
    -->
 <!-- mustache::parse.n
    -->
@@ -131,28 +131,28 @@
 </div>
 </div>
 <div id="section1" class="doctools_section"><h2><a name="section1">Description</a></h2>
-<p>Welcome to the Mustache project for Tcl, written by Andreas Kupries.</p>
+<p>Welcome to the Mustache project for Tcl, written by
+Andreas Kupries.</p>
 <p>It provides a set of five related Tcl packages for the parsing
-and rendering of <a href="https://mustache.github.io/">mustache-style</a>
-logic-less templates, plus an application for easy command-line access
-to the functionality.</p>
+and rendering of <a href="https://mustache.github.io/">mustache</a>-style logic-less templates,
+plus an application for easy command-line access to the functionality.</p>
 <p>For availability please read <i class="term"><a href="mustache_howto_get_sources.html">Mustache - How To Get The Sources</a></i>.</p>
 </div>
 <div id="section2" class="doctools_section"><h2><a name="section2">Overview</a></h2>
-<p><b class="package">mustache::parse</b> provides the parser for
+<p>The <b class="package">mustache::parse</b> package provides the parser for
 <a href="https://mustache.github.io/">mustache</a> templates.</p>
 </div>
 <div id="section3" class="doctools_section"><h2><a name="section3">Commands</a></h2>
 <dl class="doctools_definitions">
 <dt><a name="1"><b class="cmd">::mustache</b> <b class="method">parse</b> <i class="arg">template</i> <span class="opt">?<i class="arg">delimiters</i>?</span></a></dt>
-<dd><p>Parses the <a href="https://mustache.github.io/">mustache</a> <i class="arg">template</i>,
-and returns a Tcl data structure representing it.</p>
-<p>The details of the data structure are not documented by design,
-they are not relevant to users of the command.</p>
+<dd><p>This command parses the <a href="https://mustache.github.io/">mustache</a> <i class="arg">template</i>, and
+returns a Tcl data structure representing it.</p>
+<p>The details of the data structure are <em>not documented</em>
+by design, they are not relevant to users of the command.</p>
 <p>All it is necessary to know is that the <b class="cmd">mustache render</b>
-command provided by package <b class="package"><a href="mustache_render.html">mustache::render</a></b> takes such a
-structure and renders it, using a <i class="term"><a href="../../index.html#key1">context</a></i> as the source of the
-data to interpolate.</p>
+command provided by the <b class="package"><a href="mustache_render.html">mustache::render</a></b> package takes such
+a structure and renders it, using a <i class="term"><a href="../../index.html#key1">context</a></i> as the source of
+the data to interpolate.</p>
 <p>By default the parser will use the strings <b class="const">{{</b> and
 <b class="const">}}</b> to detect beginning and end of mustache tags. This can
 be overridden using the <i class="arg">delimiters</i> argument. It is expected to
@@ -167,8 +167,7 @@ delimiters to <b class="const">&lt;&lt;</b> and <b class="const">&gt;&gt;</b>.</
 <div id="section4" class="doctools_section"><h2><a name="section4">Bugs, Ideas, Feedback</a></h2>
 <p>Both the package(s) and this documentation will undoubtedly contain
 bugs and other problems.
-Please report such at
-<a href="https:/core.tcl.tk/akupries/mustache">Mustache Tickets</a>.</p>
+Please report such at <a href="https://core.tcl-lang.org/akupries/mustache">Mustache Tracker</a>.</p>
 <p>Please also report any ideas you may have for enhancements of
 either package(s) and/or documentation.</p>
 </div>
@@ -176,7 +175,7 @@ either package(s) and/or documentation.</p>
 <p><a href="../../index.html#key2">logic-less templates</a>, <a href="../../index.html#key4">mustache</a>, <a href="../../index.html#key11">parser</a>, <a href="../../index.html#key3">templating</a></p>
 </div>
 <div id="copyright" class="doctools_section"><h2><a name="copyright">Copyright</a></h2>
-<p>Copyright &copy; 2019 Andreas Kupries<br>
-Copyright &copy; 2019 Documentation, Andreas Kupries</p>
+<p>Copyright &copy; 2019-2021 Andreas Kupries<br>
+Copyright &copy; 2019-2021 Documentation, Andreas Kupries</p>
 </div>
 </div></body></html>

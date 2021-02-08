@@ -21,11 +21,13 @@ Compiled documentation (manpages and markdown).
 Part of the repository for
 
 [list_begin enumerated]
+
 [enum] easy access from the repository's web interface
-([uri http://fossil-scm.org/index.html/doc/tip/www/embeddeddoc.wiki {embedded documentation}]),
-and
+([vset fossil/edoc]), and
+
 [enum] quicker installation (no need to compile during the
 installation process itself).
+
 [list_end]
 
 [def [file tests/]]

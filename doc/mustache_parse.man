@@ -11,8 +11,8 @@
 
 [section Overview]
 
-[package mustache::parse] provides the parser for
-[uri https://mustache.github.io/ mustache] templates.
+The [package mustache::parse] package provides the parser for
+[vset project/upstream] templates.
 
 [section Commands]
 
@@ -20,16 +20,16 @@
 [comment {- - -- --- ----- -------- -------------}]
 [call [cmd ::mustache] [method parse] [arg template] [opt [arg delimiters]]]
 
-Parses the [uri https://mustache.github.io/ mustache] [arg template],
-and returns a Tcl data structure representing it.
+This command parses the [vset project/upstream] [arg template], and
+returns a Tcl data structure representing it.
 
-[para] The details of the data structure are not documented by design,
-they are not relevant to users of the command.
+[para] The details of the data structure are [strong {not documented}]
+by design, they are not relevant to users of the command.
 
 [para] All it is necessary to know is that the [cmd {mustache render}]
-command provided by package [package mustache::render] takes such a
-structure and renders it, using a [term context] as the source of the
-data to interpolate.
+command provided by the [package mustache::render] package takes such
+a structure and renders it, using a [term context] as the source of
+the data to interpolate.
 
 [para] By default the parser will use the strings [const "\{\{"] and
 [const "\}\}"] to detect beginning and end of mustache tags. This can
@@ -42,7 +42,6 @@ the delimiters.
 
 As an example, the tag [const {{{=<< >>=}}}] will change the
 delimiters to [const <<] and [const >>].
-
 
 [list_end]
 

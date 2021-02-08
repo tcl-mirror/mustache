@@ -1,7 +1,7 @@
 '\"
 '\" Generated from file 'mustache\&.man' by tcllib/doctools with format 'nroff'
-'\" Copyright (c) 2019 Andreas Kupries
-'\" Copyright (c) 2019 Documentation, Andreas Kupries
+'\" Copyright (c) 2019-2021 Andreas Kupries
+'\" Copyright (c) 2019-2021 Documentation, Andreas Kupries
 '\"
 .TH "mustache" n 1 doc "Mustache\&. Packages for logic-less templating"
 .\" The -*- nroff -*- definitions below are for supplemental macros used
@@ -284,28 +284,28 @@ package require \fBmustache \fR
 .BE
 .SH DESCRIPTION
 .PP
-Welcome to the Mustache project for Tcl, written by Andreas Kupries\&.
+Welcome to the Mustache project for Tcl, written by
+Andreas Kupries\&.
 .PP
 It provides a set of five related Tcl packages for the parsing
-and rendering of \fImustache-style\fR [https://mustache\&.github\&.io/]
-logic-less templates, plus an application for easy command-line access
-to the functionality\&.
+and rendering of \fImustache\fR [https://mustache\&.github\&.io/]-style logic-less templates,
+plus an application for easy command-line access to the functionality\&.
 .PP
 For availability please read \fIMustache - How To Get The Sources\fR\&.
 .PP
 .SH OVERVIEW
-\fBmustache\fR is the highest-level package provided by the
-project\&. It provides a number of convenience commands encapsulating
-common usecases\&.
+The \fBmustache\fR package is the highest-level package
+provided by the project\&. It provides a number of convenience commands
+encapsulating two common usecases\&.
 .PP
-For not-so common cases it is necessary to directly use the
+For any not-so common case it is necessary to directly use the
 lower-level packages, i\&.e\&. \fBmustache::parse\fR, and
 \fBmustache::render\fR\&.
 .SH COMMANDS
 The exported commands are:
 .TP
 \fB::mustache\fR \fBmustache\fR \fItemplate\fR \fIcontext\fR
-Parses the \fImustache\fR [https://mustache\&.github\&.io/] \fItemplate\fR,
+This command parses the \fImustache\fR [https://mustache\&.github\&.io/] \fItemplate\fR,
 renders it using the \fIcontext\fR as the source of the data to
 interpolate, and returns the result\&.
 .sp
@@ -315,8 +315,9 @@ The command expects \fIcontext\fR to be command prefix
 supporting the API of \fBmustache::context\fR objects\&.
 .TP
 \fB::mustache\fR \fBmustache/pt\fR \fItemplate\fR \fIcontext\fR
-Renders the pre-parsed \fItemplate\fR using the \fIcontext\fR as the
-source of the data to interpolate, and returns the result\&.
+This command renders the pre-parsed \fItemplate\fR using the
+\fIcontext\fR as the source of the data to interpolate, and returns
+the result\&.
 .sp
 This is useful if the same template has to be applied to many
 different contexts, as the template will be parsed only once\&. Which
@@ -329,8 +330,7 @@ supporting the API of \fBmustache::context\fR objects\&.
 .SH "BUGS, IDEAS, FEEDBACK"
 Both the package(s) and this documentation will undoubtedly contain
 bugs and other problems\&.
-Please report such at
-\fIMustache Tickets\fR [https:/core\&.tcl\&.tk/akupries/mustache]\&.
+Please report such at \fIMustache Tracker\fR [https://core\&.tcl-lang\&.org/akupries/mustache]\&.
 .PP
 Please also report any ideas you may have for enhancements of
 either package(s) and/or documentation\&.
@@ -338,7 +338,7 @@ either package(s) and/or documentation\&.
 logic-less templates, mustache, templating
 .SH COPYRIGHT
 .nf
-Copyright (c) 2019 Andreas Kupries
-Copyright (c) 2019 Documentation, Andreas Kupries
+Copyright (c) 2019-2021 Andreas Kupries
+Copyright (c) 2019-2021 Documentation, Andreas Kupries
 
 .fi

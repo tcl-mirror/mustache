@@ -1,7 +1,7 @@
 '\"
 '\" Generated from file 'mustache_parse\&.man' by tcllib/doctools with format 'nroff'
-'\" Copyright (c) 2019 Andreas Kupries
-'\" Copyright (c) 2019 Documentation, Andreas Kupries
+'\" Copyright (c) 2019-2021 Andreas Kupries
+'\" Copyright (c) 2019-2021 Documentation, Andreas Kupries
 '\"
 .TH "mustache::parse" n 1 doc "Mustache\&. Packages for logic-less templating"
 .\" The -*- nroff -*- definitions below are for supplemental macros used
@@ -282,31 +282,31 @@ package require \fBmustache::parse \fR
 .BE
 .SH DESCRIPTION
 .PP
-Welcome to the Mustache project for Tcl, written by Andreas Kupries\&.
+Welcome to the Mustache project for Tcl, written by
+Andreas Kupries\&.
 .PP
 It provides a set of five related Tcl packages for the parsing
-and rendering of \fImustache-style\fR [https://mustache\&.github\&.io/]
-logic-less templates, plus an application for easy command-line access
-to the functionality\&.
+and rendering of \fImustache\fR [https://mustache\&.github\&.io/]-style logic-less templates,
+plus an application for easy command-line access to the functionality\&.
 .PP
 For availability please read \fIMustache - How To Get The Sources\fR\&.
 .PP
 .SH OVERVIEW
-\fBmustache::parse\fR provides the parser for
+The \fBmustache::parse\fR package provides the parser for
 \fImustache\fR [https://mustache\&.github\&.io/] templates\&.
 .SH COMMANDS
 .TP
 \fB::mustache\fR \fBparse\fR \fItemplate\fR ?\fIdelimiters\fR?
-Parses the \fImustache\fR [https://mustache\&.github\&.io/] \fItemplate\fR,
-and returns a Tcl data structure representing it\&.
+This command parses the \fImustache\fR [https://mustache\&.github\&.io/] \fItemplate\fR, and
+returns a Tcl data structure representing it\&.
 .sp
-The details of the data structure are not documented by design,
-they are not relevant to users of the command\&.
+The details of the data structure are \fInot documented\fR
+by design, they are not relevant to users of the command\&.
 .sp
 All it is necessary to know is that the \fBmustache render\fR
-command provided by package \fBmustache::render\fR takes such a
-structure and renders it, using a \fIcontext\fR as the source of the
-data to interpolate\&.
+command provided by the \fBmustache::render\fR package takes such
+a structure and renders it, using a \fIcontext\fR as the source of
+the data to interpolate\&.
 .sp
 By default the parser will use the strings \fB{{\fR and
 \fB}}\fR to detect beginning and end of mustache tags\&. This can
@@ -321,8 +321,7 @@ delimiters to \fB<<\fR and \fB>>\fR\&.
 .SH "BUGS, IDEAS, FEEDBACK"
 Both the package(s) and this documentation will undoubtedly contain
 bugs and other problems\&.
-Please report such at
-\fIMustache Tickets\fR [https:/core\&.tcl\&.tk/akupries/mustache]\&.
+Please report such at \fIMustache Tracker\fR [https://core\&.tcl-lang\&.org/akupries/mustache]\&.
 .PP
 Please also report any ideas you may have for enhancements of
 either package(s) and/or documentation\&.
@@ -330,7 +329,7 @@ either package(s) and/or documentation\&.
 logic-less templates, mustache, parser, templating
 .SH COPYRIGHT
 .nf
-Copyright (c) 2019 Andreas Kupries
-Copyright (c) 2019 Documentation, Andreas Kupries
+Copyright (c) 2019-2021 Andreas Kupries
+Copyright (c) 2019-2021 Documentation, Andreas Kupries
 
 .fi

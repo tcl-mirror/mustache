@@ -6,12 +6,9 @@ This project requires a working installation of Tcl 8.5, or higher.
 Tcl 8.5, or higher.
 
 [para] An easy way to get a proper installation of a recent Tcl 8.5,
-(which I recommend) is to download and install
-
-[uri https://www.activestate.com ActiveState's] 
-[uri https://www.activestate.com/activetcl {ActiveTcl 8.5}]
-
-for your platform. Just follow the link and instruction on that site.
+(which I recommend) is to download and install [vset activestate]'s
+[vset activetcl] 8.5 for your platform. Just follow the link and
+instruction on that site.
 
 [para] After the installation of ActiveTcl 8.5 simply run the command
 
@@ -22,14 +19,14 @@ for your platform. Just follow the link and instruction on that site.
 This will install a lot more packages than found in the distribution
 alone.
 
-(Disclosure: I, Andreas Kupries, did work for ActiveState, maintaining
-ActiveTcl and TclDevKit).
+(Disclosure: I, Andreas Kupries, did work for ActiveState until 2015,
+maintaining ActiveTcl and TclDevKit).
 
 [para] Do you wish to build Tcl on your own ?
 The sources of all versions can be found at
 
 [list_begin definitions]
-[def Tcl]   [uri https://core.tcl.tk/tcl/]
+[def Tcl] [vset tcl/core]
 [list_end]
 
 together with the necessary instructions on how to build it.

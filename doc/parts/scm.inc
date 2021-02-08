@@ -1,10 +1,10 @@
 [comment {--- Standard section about fossil in general --}]
 
 For the curious (or a developer-to-be), the sources of this project
-are managed by the [uri https://www.fossil-scm.org {Fossil SCM}].
+are managed by the [vset fossil].
 
 Binaries for popular platforms can be found directly at its
-[uri https://www.fossil-scm.org/download.html {download page}].
+[vset fossil/get].
 
 [para]
 
@@ -12,7 +12,7 @@ With that tool available the full history of our project can be
 retrieved via:
 
 [example_begin]
-fossil clone [vset REPOSITORY] [vset PROJECT].fossil
+fossil clone [vset project/core] [vset PROJECT].fossil
 [example_end]
 
 followed by

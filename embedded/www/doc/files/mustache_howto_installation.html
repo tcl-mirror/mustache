@@ -93,7 +93,7 @@
 </head>
 <!-- Generated from file 'mustache_howto_installation.man' by tcllib/doctools with format 'html'
    -->
-<!-- Copyright &amp;copy; 2019 Andreas Kupries   -- Copyright &amp;copy; 2019 Documentation, Andreas Kupries
+<!-- Copyright &amp;copy; 2019-2021 Andreas Kupries   -- Copyright &amp;copy; 2019-2021 Documentation, Andreas Kupries
    -->
 <!-- mustache-installation.n
    -->
@@ -127,11 +127,11 @@
 </ul>
 </div>
 <div id="section1" class="doctools_section"><h2><a name="section1">Description</a></h2>
-<p>Welcome to the Mustache project for Tcl, written by Andreas Kupries.</p>
+<p>Welcome to the Mustache project for Tcl, written by
+Andreas Kupries.</p>
 <p>It provides a set of five related Tcl packages for the parsing
-and rendering of <a href="https://mustache.github.io/">mustache-style</a>
-logic-less templates, plus an application for easy command-line access
-to the functionality.</p>
+and rendering of <a href="https://mustache.github.io/">mustache</a>-style logic-less templates,
+plus an application for easy command-line access to the functionality.</p>
 <p>For availability please read <i class="term"><a href="mustache_howto_get_sources.html">Mustache - How To Get The Sources</a></i>.</p>
 <p>The audience of this document are anyone wishing to build the
 Mustache project, for either themselves, or others.</p>
@@ -148,23 +148,22 @@ directory of your choice.</p>
 <p>Use whatever you are comfortable with, as long as it provides
 Tcl 8.5, or higher.</p>
 <p>An easy way to get a proper installation of a recent Tcl 8.5,
-(which I recommend) is to download and install
-<a href="https://www.activestate.com">ActiveState's</a> 
-<a href="https://www.activestate.com/activetcl">ActiveTcl 8.5</a>
-for your platform. Just follow the link and instruction on that site.</p>
+(which I recommend) is to download and install <a href="https://www.activestate.com">ActiveState</a>'s
+<a href="https://www.activestate.com/activetcl">ActiveTcl</a> 8.5 for your platform. Just follow the link and
+instruction on that site.</p>
 <p>After the installation of ActiveTcl 8.5 simply run the command</p>
 <pre class="doctools_example">
     teacup update
 </pre>
 <p>This will install a lot more packages than found in the distribution
 alone.
-(Disclosure: I, Andreas Kupries, did work for ActiveState, maintaining
-ActiveTcl and TclDevKit).</p>
+(Disclosure: I, Andreas Kupries, did work for ActiveState until 2015,
+maintaining ActiveTcl and TclDevKit).</p>
 <p>Do you wish to build Tcl on your own ?
 The sources of all versions can be found at</p>
 <dl class="doctools_definitions">
 <dt>Tcl</dt>
-<dd><p><a href="https://core.tcl.tk/tcl/">https://core.tcl.tk/tcl/</a></p></dd>
+<dd><p><a href="https://core.tcl-lang.org/tcl">https://core.tcl-lang.org/tcl</a></p></dd>
 </dl>
 <p>together with the necessary instructions on how to build it.</p>
 <p>If there are problems with building, installing, or using Tcl
@@ -181,8 +180,7 @@ requiring a separate installation.</p>
 os-independent vendor, building from sources) use whatever you are
 comfortable with.</p>
 <p>For myself, I am most comfortable with using
-<a href="https://www.activestate.com">ActiveState's</a>
-ActiveTcl distribution and TEApot.</p>
+<a href="https://www.activestate.com">ActiveState</a>'s <a href="https://www.activestate.com/activetcl">ActiveTcl</a> distribution and TEApot.</p>
 <p>See the previous section (<span class="sectref"><a href="#subsection1">Tcl</a></span>) for disclosure and
 information on how to get it.</p>
 <p>Assuming that ActiveTcl got installed running the command</p>
@@ -196,19 +194,17 @@ more inclusive</p>
 </pre>
 <p>to get everything and the kitchensink.</p>
 <p>For those wishing to build and install TclOO on their own, the
-relevant sources can be found at <a href="https://core.tcl.tk/tcloo">https://core.tcl.tk/tcloo</a>
-together with the necessary instructions on how to build it.</p>
+relevant sources can be found at <a href="https://core.tcl-lang.org/tcloo">https://core.tcl-lang.org/tcloo</a> together with the
+necessary instructions on how to build it.</p>
 <p>If there are problems with building, installing, or using TclOO
 and its packages please file a bug against TclOO, or the vendor of
 your distribution, and not <b class="package"><a href="mustache.html">mustache</a></b>.</p>
 </div>
 <div id="subsection3" class="doctools_subsection"><h3><a name="subsection3">Kettle</a></h3>
 <p>This project uses the Kettle application and package as its build system.</p>
-<p>Please go to either the main repository at
-<a href="http://core.tcl.tk/akupries/kettle">http://core.tcl.tk/akupries/kettle</a>
-or the backup at
-<a href="http://chiselapp.com/andreas_kupries/repositories/Kettle">http://chiselapp.com/andreas_kupries/repositories/Kettle</a>
-and follow the instructions given at these sites to create a working
+<p>Please go to either the main repository at <a href="https:/core.tcl-lang.org/akupries/kettle">https:/core.tcl-lang.org/akupries/kettle</a>
+or the backups at <a href="https://chiselapp.com/user/andreas_kupries/repository/Kettle">https://chiselapp.com/user/andreas_kupries/repository/Kettle</a> and <a href="https://github.com/andreas-kupries/kettle">https://github.com/andreas-kupries/kettle</a> and
+follow the instructions given at these sites to create a working
 installation. They are not repeated here. If there are problems with
 these instructions please file a bug against the Kettle project, and
 not <b class="package"><a href="mustache.html">Mustache</a></b>.</p>
@@ -266,8 +262,7 @@ syntax, simply invoke &quot;<b class="file">build.tcl</b>&quot; like</p>
 <div id="section5" class="doctools_section"><h2><a name="section5">Bugs, Ideas, Feedback</a></h2>
 <p>Both the package(s) and this documentation will undoubtedly contain
 bugs and other problems.
-Please report such at
-<a href="https:/core.tcl.tk/akupries/mustache">Mustache Tickets</a>.</p>
+Please report such at <a href="https://core.tcl-lang.org/akupries/mustache">Mustache Tracker</a>.</p>
 <p>Please also report any ideas you may have for enhancements of
 either package(s) and/or documentation.</p>
 </div>
@@ -275,7 +270,7 @@ either package(s) and/or documentation.</p>
 <p><a href="../../index.html#key2">logic-less templates</a>, <a href="../../index.html#key4">mustache</a>, <a href="../../index.html#key3">templating</a></p>
 </div>
 <div id="copyright" class="doctools_section"><h2><a name="copyright">Copyright</a></h2>
-<p>Copyright &copy; 2019 Andreas Kupries<br>
-Copyright &copy; 2019 Documentation, Andreas Kupries</p>
+<p>Copyright &copy; 2019-2021 Andreas Kupries<br>
+Copyright &copy; 2019-2021 Documentation, Andreas Kupries</p>
 </div>
 </div></body></html>

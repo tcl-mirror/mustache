@@ -1,7 +1,7 @@
 '\"
 '\" Generated from file 'mustache_changes\&.man' by tcllib/doctools with format 'nroff'
-'\" Copyright (c) 2019 Andreas Kupries
-'\" Copyright (c) 2019 Documentation, Andreas Kupries
+'\" Copyright (c) 2019-2021 Andreas Kupries
+'\" Copyright (c) 2019-2021 Documentation, Andreas Kupries
 '\"
 .TH "mustache-changes" n 1 doc "Mustache\&. Packages for logic-less templating"
 .\" The -*- nroff -*- definitions below are for supplemental macros used
@@ -276,12 +276,12 @@ Database Class:	\\fB\\$3\\fR
 mustache-changes \- Mustache - Log of Changes
 .SH DESCRIPTION
 .PP
-Welcome to the Mustache project for Tcl, written by Andreas Kupries\&.
+Welcome to the Mustache project for Tcl, written by
+Andreas Kupries\&.
 .PP
 It provides a set of five related Tcl packages for the parsing
-and rendering of \fImustache-style\fR [https://mustache\&.github\&.io/]
-logic-less templates, plus an application for easy command-line access
-to the functionality\&.
+and rendering of \fImustache\fR [https://mustache\&.github\&.io/]-style logic-less templates,
+plus an application for easy command-line access to the functionality\&.
 .PP
 For availability please read \fIMustache - How To Get The Sources\fR\&.
 .PP
@@ -320,8 +320,7 @@ by Ruby's \fBmustache\fR package\&.
 .SH "BUGS, IDEAS, FEEDBACK"
 Both the package(s) and this documentation will undoubtedly contain
 bugs and other problems\&.
-Please report such at
-\fIMustache Tickets\fR [https:/core\&.tcl\&.tk/akupries/mustache]\&.
+Please report such at \fIMustache Tracker\fR [https://core\&.tcl-lang\&.org/akupries/mustache]\&.
 .PP
 Please also report any ideas you may have for enhancements of
 either package(s) and/or documentation\&.
@@ -329,7 +328,7 @@ either package(s) and/or documentation\&.
 logic-less templates, mustache, templating
 .SH COPYRIGHT
 .nf
-Copyright (c) 2019 Andreas Kupries
-Copyright (c) 2019 Documentation, Andreas Kupries
+Copyright (c) 2019-2021 Andreas Kupries
+Copyright (c) 2019-2021 Documentation, Andreas Kupries
 
 .fi

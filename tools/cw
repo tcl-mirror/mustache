@@ -1,3 +1,0 @@
-#!/bin/bash
-sw -i $(find . -type f -name '*.tcl' -o -name '*.test' -o -name '*.md')
-sw -i $(find tests/results -type f)

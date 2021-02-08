@@ -14,11 +14,9 @@ references to information for the latter two.
 
 [section Location]
 
-The official repository of the project is at [uri [vset REPOSITORY]].
-
-A mirror has been set up at
-[uri https://chiselapp.com/user/andreas_kupries/repository/mustache],
-in case of trouble with the main location.
+The official repository for Kettle can be found at
+[vset project/core], with mirrors at [vset project/chisel] and
+[vset project/github], in case of trouble with the main location.
 
 [section Retrieval]
 [include parts/retrieve.inc]

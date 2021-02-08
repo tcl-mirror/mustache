@@ -14,8 +14,7 @@ os-independent vendor, building from sources) use whatever you are
 comfortable with.
 
 [para] For myself, I am most comfortable with using
-[uri https://www.activestate.com ActiveState's]
-ActiveTcl distribution and TEApot.
+[vset activestate]'s [vset activetcl] distribution and TEApot.
 
 [para] See the previous section ([sectref Tcl]) for disclosure and
 information on how to get it.
@@ -36,8 +35,8 @@ more inclusive
 to get everything and the kitchensink.
 
 [para] For those wishing to build and install TclOO on their own, the
-relevant sources can be found at [uri https://core.tcl.tk/tcloo]
-together with the necessary instructions on how to build it.
+relevant sources can be found at [vset tcloo/core] together with the
+necessary instructions on how to build it.
 
 [para] If there are problems with building, installing, or using TclOO
 and its packages please file a bug against TclOO, or the vendor of

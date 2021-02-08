@@ -1,7 +1,7 @@
 '\"
 '\" Generated from file 'mustache_howto_installation\&.man' by tcllib/doctools with format 'nroff'
-'\" Copyright (c) 2019 Andreas Kupries
-'\" Copyright (c) 2019 Documentation, Andreas Kupries
+'\" Copyright (c) 2019-2021 Andreas Kupries
+'\" Copyright (c) 2019-2021 Documentation, Andreas Kupries
 '\"
 .TH "mustache-installation" n 1 doc "Mustache\&. Packages for logic-less templating"
 .\" The -*- nroff -*- definitions below are for supplemental macros used
@@ -276,12 +276,12 @@ Database Class:	\\fB\\$3\\fR
 mustache-installation \- Mustache - The Installer's Guide
 .SH DESCRIPTION
 .PP
-Welcome to the Mustache project for Tcl, written by Andreas Kupries\&.
+Welcome to the Mustache project for Tcl, written by
+Andreas Kupries\&.
 .PP
 It provides a set of five related Tcl packages for the parsing
-and rendering of \fImustache-style\fR [https://mustache\&.github\&.io/]
-logic-less templates, plus an application for easy command-line access
-to the functionality\&.
+and rendering of \fImustache\fR [https://mustache\&.github\&.io/]-style logic-less templates,
+plus an application for easy command-line access to the functionality\&.
 .PP
 For availability please read \fIMustache - How To Get The Sources\fR\&.
 .PP
@@ -305,10 +305,9 @@ Use whatever you are comfortable with, as long as it provides
 Tcl 8\&.5, or higher\&.
 .PP
 An easy way to get a proper installation of a recent Tcl 8\&.5,
-(which I recommend) is to download and install
-\fIActiveState's\fR [https://www\&.activestate\&.com]
-\fIActiveTcl 8\&.5\fR [https://www\&.activestate\&.com/activetcl]
-for your platform\&. Just follow the link and instruction on that site\&.
+(which I recommend) is to download and install \fIActiveState\fR [https://www\&.activestate\&.com]'s
+\fIActiveTcl\fR [https://www\&.activestate\&.com/activetcl] 8\&.5 for your platform\&. Just follow the link and
+instruction on that site\&.
 .PP
 After the installation of ActiveTcl 8\&.5 simply run the command
 .CS
@@ -319,14 +318,14 @@ After the installation of ActiveTcl 8\&.5 simply run the command
 .CE
 This will install a lot more packages than found in the distribution
 alone\&.
-(Disclosure: I, Andreas Kupries, did work for ActiveState, maintaining
-ActiveTcl and TclDevKit)\&.
+(Disclosure: I, Andreas Kupries, did work for ActiveState until 2015,
+maintaining ActiveTcl and TclDevKit)\&.
 .PP
 Do you wish to build Tcl on your own ?
 The sources of all versions can be found at
 .TP
 Tcl
-\fIhttps://core\&.tcl\&.tk/tcl/\fR
+\fIhttps://core\&.tcl-lang\&.org/tcl\fR
 .PP
 together with the necessary instructions on how to build it\&.
 .PP
@@ -347,8 +346,7 @@ os-independent vendor, building from sources) use whatever you are
 comfortable with\&.
 .PP
 For myself, I am most comfortable with using
-\fIActiveState's\fR [https://www\&.activestate\&.com]
-ActiveTcl distribution and TEApot\&.
+\fIActiveState\fR [https://www\&.activestate\&.com]'s \fIActiveTcl\fR [https://www\&.activestate\&.com/activetcl] distribution and TEApot\&.
 .PP
 See the previous section (\fBTcl\fR) for disclosure and
 information on how to get it\&.
@@ -371,8 +369,8 @@ more inclusive
 to get everything and the kitchensink\&.
 .PP
 For those wishing to build and install TclOO on their own, the
-relevant sources can be found at \fIhttps://core\&.tcl\&.tk/tcloo\fR
-together with the necessary instructions on how to build it\&.
+relevant sources can be found at \fIhttps://core\&.tcl-lang\&.org/tcloo\fR together with the
+necessary instructions on how to build it\&.
 .PP
 If there are problems with building, installing, or using TclOO
 and its packages please file a bug against TclOO, or the vendor of
@@ -380,11 +378,9 @@ your distribution, and not \fBmustache\fR\&.
 .SS KETTLE
 This project uses the Kettle application and package as its build system\&.
 .PP
-Please go to either the main repository at
-\fIhttp://core\&.tcl\&.tk/akupries/kettle\fR
-or the backup at
-\fIhttp://chiselapp\&.com/andreas_kupries/repositories/Kettle\fR
-and follow the instructions given at these sites to create a working
+Please go to either the main repository at \fIhttps:/core\&.tcl-lang\&.org/akupries/kettle\fR
+or the backups at \fIhttps://chiselapp\&.com/user/andreas_kupries/repository/Kettle\fR and \fIhttps://github\&.com/andreas-kupries/kettle\fR and
+follow the instructions given at these sites to create a working
 installation\&. They are not repeated here\&. If there are problems with
 these instructions please file a bug against the Kettle project, and
 not \fBMustache\fR\&.
@@ -466,8 +462,7 @@ syntax, simply invoke "\fIbuild\&.tcl\fR" like
 .SH "BUGS, IDEAS, FEEDBACK"
 Both the package(s) and this documentation will undoubtedly contain
 bugs and other problems\&.
-Please report such at
-\fIMustache Tickets\fR [https:/core\&.tcl\&.tk/akupries/mustache]\&.
+Please report such at \fIMustache Tracker\fR [https://core\&.tcl-lang\&.org/akupries/mustache]\&.
 .PP
 Please also report any ideas you may have for enhancements of
 either package(s) and/or documentation\&.
@@ -475,7 +470,7 @@ either package(s) and/or documentation\&.
 logic-less templates, mustache, templating
 .SH COPYRIGHT
 .nf
-Copyright (c) 2019 Andreas Kupries
-Copyright (c) 2019 Documentation, Andreas Kupries
+Copyright (c) 2019-2021 Andreas Kupries
+Copyright (c) 2019-2021 Documentation, Andreas Kupries
 
 .fi
