@@ -36,21 +36,21 @@ mustache::context \- Mustache \- Field resolution context
 
 # <a name='synopsis'></a>SYNOPSIS
 
-package require mustache::context
+package require mustache::context  
 
-[__::mustache context__ __create__ *obj* *frame*](#1)
-[__::mustache context__ __new__ *frame*](#2)
-[__<contextcmd>__ __has?__ *field*](#3)
-[__<contextcmd>__ __focus__ *field*](#4)
-[__<contextcmd>__ __pop__](#5)
-[__<contextcmd>__ __push__ *frame*](#6)
-[__<contextcmd>__ __iterable?__](#7)
-[__<contextcmd>__ __nil?__](#8)
-[__<contextcmd>__ __[value](\.\./\.\./index\.md\#value)__](#9)
-[__<contextcmd>__ __iter__ *script*](#10)
-[__<contextcmd>__ __template?__ *name*](#11)
-[__<contextcmd>__ __template:__ *name* *specification*](#12)
-[__<contextcmd>__ __template__ *name*](#13)
+[__::mustache context__ __create__ *obj* *frame*](#1)  
+[__::mustache context__ __new__ *frame*](#2)  
+[__<contextcmd>__ __has?__ *field*](#3)  
+[__<contextcmd>__ __focus__ *field*](#4)  
+[__<contextcmd>__ __pop__](#5)  
+[__<contextcmd>__ __push__ *frame*](#6)  
+[__<contextcmd>__ __iterable?__](#7)  
+[__<contextcmd>__ __nil?__](#8)  
+[__<contextcmd>__ __[value](\.\./\.\./index\.md\#value)__](#9)  
+[__<contextcmd>__ __iter__ *script*](#10)  
+[__<contextcmd>__ __template?__ *name*](#11)  
+[__<contextcmd>__ __template:__ *name* *specification*](#12)  
+[__<contextcmd>__ __template__ *name*](#13)  
 
 # <a name='description'></a>DESCRIPTION
 
@@ -214,5 +214,5 @@ templates](\.\./\.\./index\.md\#logic\_less\_templates),
 
 # <a name='copyright'></a>COPYRIGHT
 
-Copyright &copy; 2019\-2021 Andreas Kupries
+Copyright &copy; 2019\-2021 Andreas Kupries  
 Copyright &copy; 2019\-2021 Documentation, Andreas Kupries

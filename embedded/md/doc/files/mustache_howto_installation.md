@@ -229,5 +229,5 @@ and/or documentation\.
 
 # <a name='copyright'></a>COPYRIGHT
 
-Copyright &copy; 2019\-2021 Andreas Kupries
+Copyright &copy; 2019\-2021 Andreas Kupries  
 Copyright &copy; 2019\-2021 Documentation, Andreas Kupries

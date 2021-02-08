@@ -34,9 +34,9 @@ mustache::parse \- Mustache \- Parsing templates
 
 # <a name='synopsis'></a>SYNOPSIS
 
-package require mustache::parse
+package require mustache::parse  
 
-[__::mustache__ __parse__ *template* ?*delimiters*?](#1)
+[__::mustache__ __parse__ *template* ?*delimiters*?](#1)  
 
 # <a name='description'></a>DESCRIPTION
 
@@ -95,5 +95,5 @@ and/or documentation\.
 
 # <a name='copyright'></a>COPYRIGHT
 
-Copyright &copy; 2019\-2021 Andreas Kupries
+Copyright &copy; 2019\-2021 Andreas Kupries  
 Copyright &copy; 2019\-2021 Documentation, Andreas Kupries

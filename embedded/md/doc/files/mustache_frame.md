@@ -36,21 +36,21 @@ mustache::frame \- Mustache \- Data frames with fields
 
 # <a name='synopsis'></a>SYNOPSIS
 
-package require mustache::frame
+package require mustache::frame  
 
-[__::mustache frame fromTags__ *spec*](#1)
-[__::mustache frame scalar__ __create__ *obj* *value*](#2)
-[__::mustache frame scalar__ __new__ *value*](#3)
-[__::mustache frame sequence__ __create__ *obj* *value*](#4)
-[__::mustache frame sequence__ __new__ *value*](#5)
-[__::mustache frame mapping__ __create__ *obj* *value*](#6)
-[__::mustache frame mapping__ __new__ *value*](#7)
-[__<framecmd>__ __has?__ *field*](#8)
-[__<framecmd>__ __field__ *field*](#9)
-[__<framecmd>__ __iter__ *context* *script*](#10)
-[__<framecmd>__ __iterable?__](#11)
-[__<framecmd>__ __nil?__](#12)
-[__<framecmd>__ __[value](\.\./\.\./index\.md\#value)__](#13)
+[__::mustache frame fromTags__ *spec*](#1)  
+[__::mustache frame scalar__ __create__ *obj* *value*](#2)  
+[__::mustache frame scalar__ __new__ *value*](#3)  
+[__::mustache frame sequence__ __create__ *obj* *value*](#4)  
+[__::mustache frame sequence__ __new__ *value*](#5)  
+[__::mustache frame mapping__ __create__ *obj* *value*](#6)  
+[__::mustache frame mapping__ __new__ *value*](#7)  
+[__<framecmd>__ __has?__ *field*](#8)  
+[__<framecmd>__ __field__ *field*](#9)  
+[__<framecmd>__ __iter__ *context* *script*](#10)  
+[__<framecmd>__ __iterable?__](#11)  
+[__<framecmd>__ __nil?__](#12)  
+[__<framecmd>__ __[value](\.\./\.\./index\.md\#value)__](#13)  
 
 # <a name='description'></a>DESCRIPTION
 
@@ -239,5 +239,5 @@ value](\.\./\.\./index\.md\#typed\_value), [value](\.\./\.\./index\.md\#value)
 
 # <a name='copyright'></a>COPYRIGHT
 
-Copyright &copy; 2019\-2021 Andreas Kupries
+Copyright &copy; 2019\-2021 Andreas Kupries  
 Copyright &copy; 2019\-2021 Documentation, Andreas Kupries

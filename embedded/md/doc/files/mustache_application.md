@@ -34,13 +34,13 @@ mustache\-app \- Mustache \- Application
 
 # <a name='synopsis'></a>SYNOPSIS
 
-package require mustache
+package require mustache  
 
-[__[mustache](mustache\.md)__ *datafile* *templatefile*](#1)
-[__[mustache](mustache\.md)__ *templatefile*](#2)
-[__[mustache](mustache\.md)__](#3)
-[__[mustache](mustache\.md)__ __\-t__&#124;__\-\-token__ *templatefile*](#4)
-[__[mustache](mustache\.md)__ __\-h__&#124;__\-\-help__](#5)
+[__[mustache](mustache\.md)__ *datafile* *templatefile*](#1)  
+[__[mustache](mustache\.md)__ *templatefile*](#2)  
+[__[mustache](mustache\.md)__](#3)  
+[__[mustache](mustache\.md)__ __\-t__&#124;__\-\-token__ *templatefile*](#4)  
+[__[mustache](mustache\.md)__ __\-h__&#124;__\-\-help__](#5)  
 
 # <a name='description'></a>DESCRIPTION
 
@@ -118,5 +118,5 @@ output](\.\./\.\./index\.md\#standard\_output),
 
 # <a name='copyright'></a>COPYRIGHT
 
-Copyright &copy; 2019\-2021 Andreas Kupries
+Copyright &copy; 2019\-2021 Andreas Kupries  
 Copyright &copy; 2019\-2021 Documentation, Andreas Kupries

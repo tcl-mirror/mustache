@@ -34,9 +34,9 @@ mustache::render \- Mustache \- Rendering parsed templates
 
 # <a name='synopsis'></a>SYNOPSIS
 
-package require mustache::render
+package require mustache::render  
 
-[__::mustache__ __render__ *template* *context* *writer*](#1)
+[__::mustache__ __render__ *template* *context* *writer*](#1)  
 
 # <a name='description'></a>DESCRIPTION
 
@@ -93,5 +93,5 @@ templates](\.\./\.\./index\.md\#logic\_less\_templates),
 
 # <a name='copyright'></a>COPYRIGHT
 
-Copyright &copy; 2019\-2021 Andreas Kupries
+Copyright &copy; 2019\-2021 Andreas Kupries  
 Copyright &copy; 2019\-2021 Documentation, Andreas Kupries

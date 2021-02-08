@@ -34,10 +34,10 @@ mustache \- Mustache \- Main package
 
 # <a name='synopsis'></a>SYNOPSIS
 
-package require mustache
+package require mustache  
 
-[__::mustache__ __mustache__ *template* *context*](#1)
-[__::mustache__ __mustache/pt__ *template* *context*](#2)
+[__::mustache__ __mustache__ *template* *context*](#1)  
+[__::mustache__ __mustache/pt__ *template* *context*](#2)  
 
 # <a name='description'></a>DESCRIPTION
 
@@ -105,5 +105,5 @@ and/or documentation\.
 
 # <a name='copyright'></a>COPYRIGHT
 
-Copyright &copy; 2019\-2021 Andreas Kupries
+Copyright &copy; 2019\-2021 Andreas Kupries  
 Copyright &copy; 2019\-2021 Documentation, Andreas Kupries
