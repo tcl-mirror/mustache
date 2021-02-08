@@ -1,13 +1,13 @@
 
 [//000000001]: # (mustache\-app \- Mustache\. Packages for logic\-less templating)
 [//000000002]: # (Generated from file 'mustache\_application\.man' by tcllib/doctools with format 'markdown')
-[//000000003]: # (Copyright &copy; 2019\-2021 Andreas Kupries
-Copyright &copy; 2019\-2021 Documentation, Andreas Kupries)
-[//000000004]: # (mustache\-app\(n\) 1 doc "Mustache\. Packages for logic\-less templating")
+[//000000003]: # (Copyright &copy; 2019\-2021 Andreas Kupries)
+[//000000004]: # (Copyright &copy; 2019\-2021 Documentation, Andreas Kupries)
+[//000000005]: # (mustache\-app\(n\) 1 doc "Mustache\. Packages for logic\-less templating")
 
-<hr> [ <a href="../../../../../../home">Home</a> | <a
-href="../../toc.md">Main Table Of Contents</a> | <a
-href="../toc.md">Table Of Contents</a> | <a
+<hr> [ <a href="../../../../../../home">Home</a> &#124; <a
+href="../../toc.md">Main Table Of Contents</a> &#124; <a
+href="../toc.md">Table Of Contents</a> &#124; <a
 href="../../index.md">Keyword Index</a> ] <hr>
 
 # NAME
@@ -107,11 +107,14 @@ and/or documentation\.
 
 # <a name='keywords'></a>KEYWORDS
 
-[application](\.\./\.\./index\.md\#key8), [command
-line](\.\./\.\./index\.md\#key11), [logic\-less templates](\.\./\.\./index\.md\#key0),
-[mustache](\.\./\.\./index\.md\#key2), [standard input](\.\./\.\./index\.md\#key9),
-[standard output](\.\./\.\./index\.md\#key10),
-[templating](\.\./\.\./index\.md\#key1), [terminal](\.\./\.\./index\.md\#key7)
+[application](\.\./\.\./index\.md\#application), [command
+line](\.\./\.\./index\.md\#command\_line), [logic\-less
+templates](\.\./\.\./index\.md\#logic\_less\_templates),
+[mustache](\.\./\.\./index\.md\#mustache), [standard
+input](\.\./\.\./index\.md\#standard\_input), [standard
+output](\.\./\.\./index\.md\#standard\_output),
+[templating](\.\./\.\./index\.md\#templating),
+[terminal](\.\./\.\./index\.md\#terminal)
 
 # <a name='copyright'></a>COPYRIGHT
 

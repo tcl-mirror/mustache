@@ -1,13 +1,13 @@
 
 [//000000001]: # (mustache::parse \- Mustache\. Packages for logic\-less templating)
 [//000000002]: # (Generated from file 'mustache\_parse\.man' by tcllib/doctools with format 'markdown')
-[//000000003]: # (Copyright &copy; 2019\-2021 Andreas Kupries
-Copyright &copy; 2019\-2021 Documentation, Andreas Kupries)
-[//000000004]: # (mustache::parse\(n\) 1 doc "Mustache\. Packages for logic\-less templating")
+[//000000003]: # (Copyright &copy; 2019\-2021 Andreas Kupries)
+[//000000004]: # (Copyright &copy; 2019\-2021 Documentation, Andreas Kupries)
+[//000000005]: # (mustache::parse\(n\) 1 doc "Mustache\. Packages for logic\-less templating")
 
-<hr> [ <a href="../../../../../../home">Home</a> | <a
-href="../../toc.md">Main Table Of Contents</a> | <a
-href="../toc.md">Table Of Contents</a> | <a
+<hr> [ <a href="../../../../../../home">Home</a> &#124; <a
+href="../../toc.md">Main Table Of Contents</a> &#124; <a
+href="../toc.md">Table Of Contents</a> &#124; <a
 href="../../index.md">Keyword Index</a> ] <hr>
 
 # NAME
@@ -67,7 +67,7 @@ The __mustache::parse__ package provides the parser for
     All it is necessary to know is that the __mustache render__ command
     provided by the __[mustache::render](mustache\_render\.md)__ package
     takes such a structure and renders it, using a
-    *[context](\.\./\.\./index\.md\#key13)* as the source of the data to
+    *[context](\.\./\.\./index\.md\#context)* as the source of the data to
     interpolate\.
 
     By default the parser will use the strings __\{\{__ and __\}\}__ to
@@ -89,9 +89,9 @@ and/or documentation\.
 
 # <a name='keywords'></a>KEYWORDS
 
-[logic\-less templates](\.\./\.\./index\.md\#key0),
-[mustache](\.\./\.\./index\.md\#key2), [parser](\.\./\.\./index\.md\#key6),
-[templating](\.\./\.\./index\.md\#key1)
+[logic\-less templates](\.\./\.\./index\.md\#logic\_less\_templates),
+[mustache](\.\./\.\./index\.md\#mustache), [parser](\.\./\.\./index\.md\#parser),
+[templating](\.\./\.\./index\.md\#templating)
 
 # <a name='copyright'></a>COPYRIGHT
 

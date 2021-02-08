@@ -1,13 +1,13 @@
 
 [//000000001]: # (mustache::context \- Mustache\. Packages for logic\-less templating)
 [//000000002]: # (Generated from file 'mustache\_context\.man' by tcllib/doctools with format 'markdown')
-[//000000003]: # (Copyright &copy; 2019\-2021 Andreas Kupries
-Copyright &copy; 2019\-2021 Documentation, Andreas Kupries)
-[//000000004]: # (mustache::context\(n\) 1 doc "Mustache\. Packages for logic\-less templating")
+[//000000003]: # (Copyright &copy; 2019\-2021 Andreas Kupries)
+[//000000004]: # (Copyright &copy; 2019\-2021 Documentation, Andreas Kupries)
+[//000000005]: # (mustache::context\(n\) 1 doc "Mustache\. Packages for logic\-less templating")
 
-<hr> [ <a href="../../../../../../home">Home</a> | <a
-href="../../toc.md">Main Table Of Contents</a> | <a
-href="../toc.md">Table Of Contents</a> | <a
+<hr> [ <a href="../../../../../../home">Home</a> &#124; <a
+href="../../toc.md">Main Table Of Contents</a> &#124; <a
+href="../toc.md">Table Of Contents</a> &#124; <a
 href="../../index.md">Keyword Index</a> ] <hr>
 
 # NAME
@@ -46,7 +46,7 @@ package require mustache::context
 [__<contextcmd>__ __push__ *frame*](#6)
 [__<contextcmd>__ __iterable?__](#7)
 [__<contextcmd>__ __nil?__](#8)
-[__<contextcmd>__ __[value](\.\./\.\./index\.md\#key3)__](#9)
+[__<contextcmd>__ __[value](\.\./\.\./index\.md\#value)__](#9)
 [__<contextcmd>__ __iter__ *script*](#10)
 [__<contextcmd>__ __template?__ *name*](#11)
 [__<contextcmd>__ __template:__ *name* *specification*](#12)
@@ -67,7 +67,7 @@ Sources](mustache\_howto\_get\_sources\.md)*\.
 
 The __mustache render__ command provided by package
 __[mustache::render](mustache\_render\.md)__ requires a
-*[context](\.\./\.\./index\.md\#key13)* as the source of the values to
+*[context](\.\./\.\./index\.md\#context)* as the source of the values to
 interpolate into the template it is invoked with\.
 
 This package provides a suitable __TclOO__ class\.
@@ -114,9 +114,8 @@ retrieves the values to interpolate from\.
 
 From its point of view a context is a stack of *data frames* from which it can
 pull values\. The data frame at the top of the stack is called
-*[dot](\.\./\.\./index\.md\#key14)*\. Any search for named fields starts at
-*[dot](\.\./\.\./index\.md\#key14)*, moving deeper into the stack only on
-misses\.
+*[dot](\.\./\.\./index\.md\#dot)*\. Any search for named fields starts at
+*[dot](\.\./\.\./index\.md\#dot)*, moving deeper into the stack only on misses\.
 
 During rendering data frames are pushed on and popped of the stack at the behest
 of the renderer, as it walks the template structure\.
@@ -131,7 +130,7 @@ of the renderer, as it walks the template structure\.
 
     Searches the context for the named *field*\. Throws an error when the field
     is not found\. When found the data frame associated with the field is pushed
-    on the search stack, i\.e\. made *[dot](\.\./\.\./index\.md\#key14)*\.
+    on the search stack, i\.e\. made *[dot](\.\./\.\./index\.md\#dot)*\.
 
     Returns the empty string\.
 
@@ -154,28 +153,28 @@ of the renderer, as it walks the template structure\.
 
   - <a name='7'></a>__<contextcmd>__ __iterable?__
 
-    Asks *[dot](\.\./\.\./index\.md\#key14)* if it can be iterated over\. In
-    other words, if it is a non\-empty sequence of values\.
+    Asks *[dot](\.\./\.\./index\.md\#dot)* if it can be iterated over\. In other
+    words, if it is a non\-empty sequence of values\.
 
     Returns a boolean value\. __true__ signals that
-    *[dot](\.\./\.\./index\.md\#key14)* can be iterated over\.
+    *[dot](\.\./\.\./index\.md\#dot)* can be iterated over\.
 
   - <a name='8'></a>__<contextcmd>__ __nil?__
 
-    Asks *[dot](\.\./\.\./index\.md\#key14)* if it is nil, false, empty, etc\.
+    Asks *[dot](\.\./\.\./index\.md\#dot)* if it is nil, false, empty, etc\.
 
     Returns a boolean value\. __true__ signals that
-    *[dot](\.\./\.\./index\.md\#key14)* is indeed nil, empty, false, etc\.
+    *[dot](\.\./\.\./index\.md\#dot)* is indeed nil, empty, false, etc\.
 
-  - <a name='9'></a>__<contextcmd>__ __[value](\.\./\.\./index\.md\#key3)__
+  - <a name='9'></a>__<contextcmd>__ __[value](\.\./\.\./index\.md\#value)__
 
-    Asks *[dot](\.\./\.\./index\.md\#key14)* for its value, and returns it\.
+    Asks *[dot](\.\./\.\./index\.md\#dot)* for its value, and returns it\.
 
   - <a name='10'></a>__<contextcmd>__ __iter__ *script*
 
-    Iterates over the elements of *[dot](\.\./\.\./index\.md\#key14)* and
-    invokes the *script* for each element\. During the execution of the
-    *script* the active element will be *[dot](\.\./\.\./index\.md\#key14)*\.
+    Iterates over the elements of *[dot](\.\./\.\./index\.md\#dot)* and invokes
+    the *script* for each element\. During the execution of the *script* the
+    active element will be *[dot](\.\./\.\./index\.md\#dot)*\.
 
     Returns the empty string\.
 
@@ -207,10 +206,11 @@ and/or documentation\.
 
 # <a name='keywords'></a>KEYWORDS
 
-[context](\.\./\.\./index\.md\#key13), [contexts](\.\./\.\./index\.md\#key12),
-[dot](\.\./\.\./index\.md\#key14), [logic\-less
-templates](\.\./\.\./index\.md\#key0), [mustache](\.\./\.\./index\.md\#key2),
-[templating](\.\./\.\./index\.md\#key1)
+[context](\.\./\.\./index\.md\#context), [contexts](\.\./\.\./index\.md\#contexts),
+[dot](\.\./\.\./index\.md\#dot), [logic\-less
+templates](\.\./\.\./index\.md\#logic\_less\_templates),
+[mustache](\.\./\.\./index\.md\#mustache),
+[templating](\.\./\.\./index\.md\#templating)
 
 # <a name='copyright'></a>COPYRIGHT
 

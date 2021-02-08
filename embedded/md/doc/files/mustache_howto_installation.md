@@ -1,13 +1,13 @@
 
 [//000000001]: # (mustache\-installation \- Mustache\. Packages for logic\-less templating)
 [//000000002]: # (Generated from file 'mustache\_howto\_installation\.man' by tcllib/doctools with format 'markdown')
-[//000000003]: # (Copyright &copy; 2019\-2021 Andreas Kupries
-Copyright &copy; 2019\-2021 Documentation, Andreas Kupries)
-[//000000004]: # (mustache\-installation\(n\) 1 doc "Mustache\. Packages for logic\-less templating")
+[//000000003]: # (Copyright &copy; 2019\-2021 Andreas Kupries)
+[//000000004]: # (Copyright &copy; 2019\-2021 Documentation, Andreas Kupries)
+[//000000005]: # (mustache\-installation\(n\) 1 doc "Mustache\. Packages for logic\-less templating")
 
-<hr> [ <a href="../../../../../../home">Home</a> | <a
-href="../../toc.md">Main Table Of Contents</a> | <a
-href="../toc.md">Table Of Contents</a> | <a
+<hr> [ <a href="../../../../../../home">Home</a> &#124; <a
+href="../../toc.md">Main Table Of Contents</a> &#124; <a
+href="../toc.md">Table Of Contents</a> &#124; <a
 href="../../index.md">Keyword Index</a> ] <hr>
 
 # NAME
@@ -164,7 +164,7 @@ the top\-level directory of the project\.
 
 For the most basic installation of Mustache run
 
-    % /path/to/mustache/build\.tcl install
+    % /path/to/mustache/build.tcl install
 
 This command uses the __kettle__ application found in the , and the
 associated __tclsh__\.
@@ -176,11 +176,11 @@ will become siblings of __tclsh__\.
 For more control about which version of __kettle__ and/or __tclsh__ gets
 used run either
 
-    % /path/to/kettle /path/to/mustache/build\.tcl install
+    % /path/to/kettle /path/to/mustache/build.tcl install
 
 or even
 
-    % /path/to/tclsh /path/to/kettle /path/to/mustache/build\.tcl install
+    % /path/to/tclsh /path/to/kettle /path/to/mustache/build.tcl install
 
 to specify the exact files to use\.
 
@@ -191,12 +191,12 @@ for all the possible actions, which includes 'install'ation\.
 On unix the same GUI is acessible by invoking "build\.tcl" with the arguments
 __gui__, i\.e\. as
 
-    % /path/to/mustache/build\.tcl gui
+    % /path/to/mustache/build.tcl gui
 
 To get help about the methods of "build\.tcl", and their complete syntax, simply
 invoke "build\.tcl" like
 
-    % /path/to/mustache/build\.tcl gui
+    % /path/to/mustache/build.tcl gui
 
 # <a name='section4'></a>Related Documents
 
@@ -223,8 +223,9 @@ and/or documentation\.
 
 # <a name='keywords'></a>KEYWORDS
 
-[logic\-less templates](\.\./\.\./index\.md\#key0),
-[mustache](\.\./\.\./index\.md\#key2), [templating](\.\./\.\./index\.md\#key1)
+[logic\-less templates](\.\./\.\./index\.md\#logic\_less\_templates),
+[mustache](\.\./\.\./index\.md\#mustache),
+[templating](\.\./\.\./index\.md\#templating)
 
 # <a name='copyright'></a>COPYRIGHT
 

@@ -1,13 +1,13 @@
 
 [//000000001]: # (mustache\_development \- Mustache\. Packages for logic\-less templating)
 [//000000002]: # (Generated from file 'mustache\_howto\_development\.man' by tcllib/doctools with format 'markdown')
-[//000000003]: # (Copyright &copy; 2019\-2021 Andreas Kupries
-Copyright &copy; 2019\-2021 Documentation, Andreas Kupries)
-[//000000004]: # (mustache\_development\(n\) 1 doc "Mustache\. Packages for logic\-less templating")
+[//000000003]: # (Copyright &copy; 2019\-2021 Andreas Kupries)
+[//000000004]: # (Copyright &copy; 2019\-2021 Documentation, Andreas Kupries)
+[//000000005]: # (mustache\_development\(n\) 1 doc "Mustache\. Packages for logic\-less templating")
 
-<hr> [ <a href="../../../../../../home">Home</a> | <a
-href="../../toc.md">Main Table Of Contents</a> | <a
-href="../toc.md">Table Of Contents</a> | <a
+<hr> [ <a href="../../../../../../home">Home</a> &#124; <a
+href="../../toc.md">Main Table Of Contents</a> &#124; <a
+href="../toc.md">Table Of Contents</a> &#124; <a
 href="../../index.md">Keyword Index</a> ] <hr>
 
 # NAME
@@ -162,21 +162,21 @@ developers and maintainers\. These are:
 
   - Validation of the documentation
 
-        % /path/to/mustache/build\.tcl validate\-doc
+        % /path/to/mustache/build.tcl validate-doc
 
   - Regeneration of the embedded documentation
 
-        % /path/to/mustache/build\.tcl doc
+        % /path/to/mustache/build.tcl doc
 
   - Regeneration of the figures for the documentation
 
-        % /path/to/mustache/build\.tcl figures
+        % /path/to/mustache/build.tcl figures
 
   - Execution of the test\-suite
 
     The most basic execution of the test\-suite is done with
 
-        % /path/to/mustache/build\.tcl test
+        % /path/to/mustache/build.tcl test
 
     When the test\-suite reports issues with the framework use of the more
     extended form below is indicated, with a __<stem>__ of your choice\. This
@@ -184,7 +184,7 @@ developers and maintainers\. These are:
     These will contain extended test logs, details about errors and failures,
     etc\.
 
-        % /path/to/mustache/build\.tcl test \-\-log <stem>
+        % /path/to/mustache/build.tcl test --log <stem>
 
 # <a name='section6'></a>Architecture & Concepts
 
@@ -227,8 +227,9 @@ and/or documentation\.
 
 # <a name='keywords'></a>KEYWORDS
 
-[logic\-less templates](\.\./\.\./index\.md\#key0),
-[mustache](\.\./\.\./index\.md\#key2), [templating](\.\./\.\./index\.md\#key1)
+[logic\-less templates](\.\./\.\./index\.md\#logic\_less\_templates),
+[mustache](\.\./\.\./index\.md\#mustache),
+[templating](\.\./\.\./index\.md\#templating)
 
 # <a name='copyright'></a>COPYRIGHT
 
