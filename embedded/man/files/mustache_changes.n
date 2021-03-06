@@ -3,7 +3,7 @@
 '\" Copyright (c) 2019-2021 Andreas Kupries
 '\" Copyright (c) 2019-2021 Documentation, Andreas Kupries
 '\"
-.TH "mustache-changes" n 1 doc "Mustache\&. Packages for logic-less templating"
+.TH "mustache-changes" n 1\&.1 doc "Mustache\&. Packages for logic-less templating"
 .\" The -*- nroff -*- definitions below are for supplemental macros used
 .\" in Tcl/Tk manual entries.
 .\"
@@ -288,6 +288,40 @@ For availability please read \fIMustache - How To Get The Sources\fR\&.
 This document provides an overview of the changes \fBmustache\fR
 underwent from version to version\&.
 .SH CHANGES
+.SS "CHANGES FOR VERSION 1\&.1"
+.IP [1]
+Extended the \fBmustache::frame\fR package to support the
+\fITclYAML\fR [https://core\&.tcl-lang\&.org/akupries/tclyaml] version 0\&.5 tags for \fBbool\fR,
+\fBfloat\fR, \fBint\fR, \fBnull\fR, and \fBstring\fR\&.
+.sp
+The pre-existing tag \fBscalar\fR is now a an alias for
+\fBstring\fR\&.
+.sp
+This extension of the type system makes it easier to use
+mustache's data frames as an in-memory representation for
+structured typed data\&. No automatic loss of type data inside of
+Tcl scripts now\&.
+.IP [2]
+Extended the data frames provided by package
+\fBmustache::frame\fR with methods for walking a frame tree
+in general, and simplifying the conversion back into external
+serialization formats\&.
+.IP [3]
+Added packages for the conversion of a data frame (tree) into
+various serializations:
+.RS
+.TP
+\fBmustache::frame::as::events\fR
+Serialization into a list of events describing the incremental build of the tree\&.
+.TP
+\fBmustache::frame::as::json\fR
+Serialization into whitespace-free \fIJSON\fR [https://json\&.org/]\&.
+.TP
+\fBmustache::frame::as::tagged\fR
+Serialization into the kind of tagged structure accepted by
+\fITclYAML\fR [https://core\&.tcl-lang\&.org/akupries/tclyaml]'s \fBwriteTags\fR command\&.
+.RE
+.PP
 .SS "CHANGES FOR VERSION 1"
 This is the first release of mustache\&.
 The changes therefore describe the initial features of the system\&.

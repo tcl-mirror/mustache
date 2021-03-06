@@ -1,16 +1,25 @@
 # -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
-## (c) 2019 Andreas Kupries
+## (c) 2019-2021 Andreas Kupries
 # # ## ### ##### ######## ############# #####################
 ##
-# Process all the mustache tests of the original testsuite for
-# expansion. This code is inspired by the script `tests.tcl` of
-# project `mustache.tcl` (gh@ianka/mustache.tcl, BSD licensed)
-##
-# Comment the following return to save the exploded test input
-# templates and what ruby makes of them into a directory hierarchy.
-# This is useful for comparing the original ruby structures to my tree
-# structure. Especially around the handling of standalone tags. Not
-# required for builders and installers.
+#
+# Process the test specifications of the original testsuite (*) with
+# the original (ruby) `mustache` (Has to be in the PATH). This code is
+# inspired by the script `tests.tcl` of project `mustache.tcl`
+# (gh@ianka/mustache.tcl, BSD licensed).
+#
+# When active the results are written to the `$env(WORKSPACE)/Specs/`
+# hierarchy. Activation is done by disabling the `return` command at
+# (**).
+#
+# (*) The local copy of these is under `tests/input/spec/`.
+#
+# This operation is useful for comparing the original ruby structures
+# to my tree structure. Especially around the handling of standalone
+# tags. This is not required for builders and installers, thus why
+# this test is disabled by default.
+#
+# (**)
 return
 
 kt check Tcl     8.5
@@ -21,7 +30,8 @@ kt local testing mustache::parse
 kt source support/util.tcl
 
 proc SaveExpanded {label template data expected partials desc} {
-    set dstroot [file join [file dirname [td]] _work specs ${label}]
+    global env
+    set dstroot [file join $env(WORKSPACE) Specs ${label}]
     file mkdir $dstroot
 
     fileutil::writeFile $dstroot/template.mustache $template
@@ -37,24 +47,32 @@ proc SaveExpanded {label template data expected partials desc} {
 
 # # ## ### ##### ######## ############# #####################
 
-foreach specfile [Specs] {
-    lassign [Tests $specfile] label tests
+tcltest::test mustache-spec-inspection {Spec Expansion} -body {
+    if {![llength [auto_execok mustache]]} {
+	set _ {Upstream mustache not in PATH}
+    } elseif {![info exists env(WORKSPACE)] || ($env(WORKSPACE) eq "")} {
+	set _ {Environment variable WORKSPACE not set or empty}
+    } else {
+	foreach specfile [Specs] {
+	    lassign [Tests $specfile] label tests
 
-    foreach spec $tests {
-	incr k
+	    foreach spec $tests {
+		incr k
 
-	Decode $spec name desc data template expected partials
-	if {![info exists partials]} { set partials {} }
+		Decode $spec name desc data template expected partials
+		if {![info exists partials]} { set partials {} }
 
-	SaveExpanded $label/[format %02d ${k}]-$name \
-	    $template $data $expected $partials $desc
+		SaveExpanded $label/[format %02d ${k}]-$name \
+		    $template $data $expected $partials $desc
 
-	unset -nocomplain name desc data template expected partials
+		unset -nocomplain name desc data template expected partials
+	    }
+
+	    #break
+	    unset k
+	}
     }
-
-    #break
-    unset k
-}
+} -result {}
 
 # # ## ### ##### ######## ############# #####################
 cleanupTests

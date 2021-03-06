@@ -79,11 +79,12 @@ proc process {yaml template} {
     package require mustache::render
 
     set template [mustache parse [fileutil::cat $template]]
-    
+
     foreach spec [tclyaml readTags file $yaml] {
 	set spec [lindex $spec 0]
 	# Ignore an empty trailing document.
 	if {$spec eq "scalar {}"} continue
+	if {$spec eq "null {}"} continue
 
 	set context [mustache context new [mustache frame fromTags $spec]]
 	mustache render $template $context ::write
@@ -107,6 +108,7 @@ proc process-stdin {template} {
 	set spec [lindex $spec 0]
 	# Ignore an empty trailing document.
 	if {$spec eq "scalar {}"} continue
+	if {$spec eq "null {}"} continue
 
 	set context [mustache context new [mustache frame fromTags $spec]]
 	mustache render $template $context ::write
@@ -143,7 +145,8 @@ proc process-mixed {} {
 	set spec [lindex $spec 0]
 	# Ignore the empty trailing document.
 	if {$spec eq "scalar {}"} continue
-	
+	if {$spec eq "null {}"} continue
+
 	set context [mustache context new [mustache frame fromTags $spec]]
 	mustache render $template $context ::write
 	flush stdout

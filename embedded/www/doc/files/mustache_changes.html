@@ -104,7 +104,7 @@
 &#124; <a href="../../index.html">Keyword Index</a>
  ] <hr>
 <div class="doctools">
-<h1 class="doctools_title">mustache-changes(n) 1 doc &quot;Mustache. Packages for logic-less templating&quot;</h1>
+<h1 class="doctools_title">mustache-changes(n) 1.1 doc &quot;Mustache. Packages for logic-less templating&quot;</h1>
 <div id="name" class="doctools_section"><h2><a name="name">Name</a></h2>
 <p>mustache-changes - Mustache - Log of Changes</p>
 </div>
@@ -114,7 +114,8 @@
 <li class="doctools_section"><a href="#section1">Description</a></li>
 <li class="doctools_section"><a href="#section2">Changes</a>
 <ul>
-<li class="doctools_subsection"><a href="#subsection1">Changes for version 1</a></li>
+<li class="doctools_subsection"><a href="#subsection1">Changes for version 1.1</a></li>
+<li class="doctools_subsection"><a href="#subsection2">Changes for version 1</a></li>
 </ul>
 </li>
 <li class="doctools_section"><a href="#section3">Related Documents</a></li>
@@ -134,7 +135,36 @@ plus an application for easy command-line access to the functionality.</p>
 underwent from version to version.</p>
 </div>
 <div id="section2" class="doctools_section"><h2><a name="section2">Changes</a></h2>
-<div id="subsection1" class="doctools_subsection"><h3><a name="subsection1">Changes for version 1</a></h3>
+<div id="subsection1" class="doctools_subsection"><h3><a name="subsection1">Changes for version 1.1</a></h3>
+<ol class="doctools_enumerated">
+<li><p>Extended the <b class="package"><a href="mustache_frame.html">mustache::frame</a></b> package to support the
+       <a href="https://core.tcl-lang.org/akupries/tclyaml">TclYAML</a> version 0.5 tags for <b class="const">bool</b>,
+       <b class="const">float</b>, <b class="const">int</b>, <b class="const">null</b>, and <b class="const">string</b>.</p>
+<p>The pre-existing tag <b class="const">scalar</b> is now a an alias for
+       <b class="const">string</b>.</p>
+<p>This extension of the type system makes it easier to use
+       mustache's data frames as an in-memory representation for
+       structured typed data. No automatic loss of type data inside of
+       Tcl scripts now.</p></li>
+<li><p>Extended the data frames provided by package
+       <b class="package"><a href="mustache_frame.html">mustache::frame</a></b> with methods for walking a frame tree
+       in general, and simplifying the conversion back into external
+       serialization formats.</p></li>
+<li><p>Added packages for the conversion of a data frame (tree) into
+       various serializations:</p>
+<dl class="doctools_definitions">
+<dt><b class="package">mustache::frame::as::events</b></dt>
+<dd><p>Serialization into a list of events describing the incremental build of the tree.</p></dd>
+<dt><b class="package">mustache::frame::as::json</b></dt>
+<dd><p>Serialization into whitespace-free <a href="https://json.org/">JSON</a>.</p></dd>
+<dt><b class="package">mustache::frame::as::tagged</b></dt>
+<dd><p>Serialization into the kind of tagged structure accepted by
+<a href="https://core.tcl-lang.org/akupries/tclyaml">TclYAML</a>'s <b class="cmd">writeTags</b> command.</p></dd>
+</dl>
+</li>
+</ol>
+</div>
+<div id="subsection2" class="doctools_subsection"><h3><a name="subsection2">Changes for version 1</a></h3>
 <p>This is the first release of mustache.
 The changes therefore describe the initial features of the system.</p>
 <p>In detail:</p>

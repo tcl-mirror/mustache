@@ -12,6 +12,7 @@ dict with fdata {}
 # - _vc   - cons value, post processor for raw value
 # - _fd   - field query result, and additional test options.
 # - _id   - iter result, and additional test options.
+# - _vi   - visit result
 
 proc VAL  {} { global fkind _vc ; {*}$_vc [v frame/$fkind] }
 proc VALs {} { global fkind     ;          v frame/$fkind.to_s }
@@ -23,21 +24,28 @@ proc VALs {} { global fkind     ;          v frame/$fkind.to_s }
 # [ok] iterable?
 # [ok] nil?
 # [ok] value
+# [..] visit
 
 # [..] TODO destructor (confirm that owned objects (children) are destroyed as well)
 
 # # ## ### ##### ######## ############# #####################
 ## Constructor
 
-tcltest::test frame-${fkind}-cons-1.0 "cons, wrong args, not enough" -body {
-    mustache frame $fkind new
-} -returnCodes error \
-    -result [M' {wrong # args: should be "mustache frame @ new val"} @ $fkind]
+if {$fkind ne "null"} {
+    tcltest::test frame-${fkind}-cons-1.0 "cons, wrong args, not enough" -body {
+	mustache frame $fkind new
+    } -returnCodes error \
+	-result [M' {wrong # args: should be "mustache frame @ new val"} @ $fkind]
 
+    set r [M' {wrong # args: should be "mustache frame @ new val"} @ $fkind]
+} else {
+    set r [M' {wrong # args: should be "mustache frame @ new ?val?"} @ $fkind]
+}
+   
 tcltest::test frame-${fkind}-cons-1.1 "cons, wrong args, too many" -body {
     mustache frame $fkind new [VAL] X
 } -returnCodes error \
-    -result [M' {wrong # args: should be "mustache frame @ new val"} @ $fkind]
+    -result $r
 
 tcltest::test frame-${fkind}-cons-2.0 "cons" -body {
     set o [mustache frame $fkind new [VAL]]
@@ -198,7 +206,21 @@ tcltest::test frame-${fkind}-iter-2.0 "iter, result" -setup {
 } -result {*}$_id
 
 # # ## ### ##### ######## ############# #####################
-unset -nocomplain _hq _it _nl _fd _vc
+## visit
+
+tcltest::test frame-${fkind}-visit-1.0 "visit" -setup {
+    mustache frame $fkind create FR [VAL]
+    set r {}
+} -cleanup {
+    FR destroy
+    unset r
+} -body {
+    FR visit lappend r
+    join $r \n
+} -match glob -result [join $_vi \n]
+
+# # ## ### ##### ######## ############# #####################
+unset -nocomplain _hq _it _nl _fd _vc _vi
 rename VAL {}
 rename VALs {}
 return

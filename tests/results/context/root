@@ -1,6 +1,10 @@
 mapping {
-	{scalar FIELD} {scalar V<}
-	{scalar FALSE} {scalar 0}
+	{scalar FIELD}  {scalar V<}
+	{scalar FALSE}  {bool 0}
+	{scalar NUMBR}  {int  33}
+	{scalar DOUBL}  {float 3.14}
+	{scalar NULL}   {null}
+	{scalar STRING} {string 0}
 	{scalar NIL} {scalar {}}
 	{scalar SEQ} {sequence {
 		{scalar 1}

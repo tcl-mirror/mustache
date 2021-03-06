@@ -1,0 +1,1 @@
+mapping {{string FIELD} {string V<} {string FALSE} {bool 0} {string NUMBR} {int 33} {string DOUBL} {float 3.14} {string NULL} {null {}} {string STRING} {string 0} {string NIL} {string {}} {string SEQ} {sequence {{string 1} {string 2} {string 3}}} {string NOSEQ} {sequence {}} {string NOMAP} {mapping {}} {string SUB} {mapping {{string CHILD} {string X}}}}

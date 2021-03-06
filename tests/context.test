@@ -1,5 +1,5 @@
 # -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
-## (c) 2019 Andreas Kupries
+## (c) 2019-2021 Andreas Kupries
 # # ## ### ##### ######## ############# #####################
 ## Check the behaviour of contexts.
 #return
@@ -271,7 +271,7 @@ tcltest::test context-iterable?-2.1 "iter, scalar" -setup {
     CTX destroy
 } -body {
     CTX iter {}
-} -returnCodes error -result {Scalar cannot be iterated over}
+} -returnCodes error -result {Mustache frame: A string cannot be iterated over}
 
 tcltest::test context-iterable?-2.2 "iter, sequence" -setup {
     mustache context create CTX [RF]
@@ -335,67 +335,35 @@ tcltest::test context-nil?-1.0 "nil?, wrong args, too many" -setup {
 } -returnCodes error \
     -result {wrong # args: should be "CTX nil?"}
 
-tcltest::test context-nil?-2.0 "nil?, mapping" -setup {
-    mustache context create CTX [RF]
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX nil?
-} -result 0
+foreach {kind field result} {
+    mapping        {}     0
+    mapping/empty  NOMAP  1
+    scalar         FIELD  0
+    scalar/false   FALSE  1
+    scalar/empty   NIL    1
+    sequence       SEQ    0
+    sequence/empty NOSEQ  1
+    scalar/int     NUMBR  0
+    scalar/float   DOUBL  0
+    scalar/null    NULL   1
+    string         STRING 1
+} {
+    # Note: string/STRING => 1 is due to the speciality that a string
+    # which can be treated as boolean, and represents a `false`, is to
+    # be nil.
 
-tcltest::test context-nil?-2.1 "nil?, mapping, empty" -setup {
-    mustache context create CTX [RF]
-    CTX focus NOMAP
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX nil?
-} -result 1
+    incr k
 
-tcltest::test context-nil?-3.0 "nil?, scalar" -setup {
-    mustache context create CTX [RF]
-    CTX focus FIELD
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX nil?
-} -result 0
-
-tcltest::test context-nil?-3.1 "nil?, scalar, false" -setup {
-    mustache context create CTX [RF]
-    CTX focus FALSE
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX nil?
-} -result 1
-
-tcltest::test context-nil?-3.2 "nil?, scalar, empty" -setup {
-    mustache context create CTX [RF]
-    CTX focus NIL
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX nil?
-} -result 1
-
-tcltest::test context-nil?-4.0 "nil?, sequence" -setup {
-    mustache context create CTX [RF]
-    CTX focus SEQ
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX nil?
-} -result 0
-
-tcltest::test context-nil?-4.1 "nil?, sequence, empty" -setup {
-    mustache context create CTX [RF]
-    CTX focus NOSEQ
-} -cleanup {
-    CTX destroy
-} -body {
-    CTX nil?
-} -result 1
+    tcltest::test context-nil?-${kind}-2.$k "nil?, $kind" -setup {
+	mustache context create CTX [RF]
+	if {$field ne {}} { CTX focus $field }
+    } -cleanup {
+	CTX destroy
+    } -body {
+	CTX nil?
+    } -result $result
+}
+unset k
 
 # # ## ### ##### ######## ############# #####################
 ## pop
@@ -590,7 +558,7 @@ tcltest::test context-value-2.0 "value, mapping" -setup {
     CTX destroy
 } -body {
     CTX value
-} -result {FIELD V< FALSE 0 NIL {} SEQ {1 2 3} NOSEQ {} NOMAP {} SUB {CHILD X}}
+} -result {FIELD V< FALSE 0 NUMBR 33 DOUBL 3.14 NULL {} STRING 0 NIL {} SEQ {1 2 3} NOSEQ {} NOMAP {} SUB {CHILD X}}
 
 tcltest::test context-value-2.1 "value, scalar" -setup {
     mustache context create CTX [RF]

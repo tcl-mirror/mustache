@@ -56,8 +56,13 @@ proc Specs {} {
 }
 
 proc Tests {specfile} {
-    set spec  [lindex [tclyaml readTags file $specfile] 0 0]
-    set tests [lindex [dict get [lindex $spec end] {scalar tests}] end]
+    set spec [lindex [tclyaml readTags file $specfile] 0 0 end]
+    if {[dict exists $spec {scalar tests}]} {
+	set spec [dict get $spec {scalar tests}]
+    } else {
+	set spec [dict get $spec {string tests}]
+    }
+    set tests [lindex $spec end]
 
     lappend r [string trim [file rootname [file tail $specfile]] {./~}]
     lappend r $tests

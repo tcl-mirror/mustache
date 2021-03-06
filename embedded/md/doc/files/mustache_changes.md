@@ -3,7 +3,7 @@
 [//000000002]: # (Generated from file 'mustache\_changes\.man' by tcllib/doctools with format 'markdown')
 [//000000003]: # (Copyright &copy; 2019\-2021 Andreas Kupries)
 [//000000004]: # (Copyright &copy; 2019\-2021 Documentation, Andreas Kupries)
-[//000000005]: # (mustache\-changes\(n\) 1 doc "Mustache\. Packages for logic\-less templating")
+[//000000005]: # (mustache\-changes\(n\) 1\.1 doc "Mustache\. Packages for logic\-less templating")
 
 <hr> [ <a href="../../../../../../home">Home</a> &#124; <a
 href="../../toc.md">Main Table Of Contents</a> &#124; <a
@@ -22,7 +22,9 @@ mustache\-changes \- Mustache \- Log of Changes
 
   - [Changes](#section2)
 
-      - [Changes for version 1](#subsection1)
+      - [Changes for version 1\.1](#subsection1)
+
+      - [Changes for version 1](#subsection2)
 
   - [Related Documents](#section3)
 
@@ -48,7 +50,43 @@ __[mustache](mustache\.md)__ underwent from version to version\.
 
 # <a name='section2'></a>Changes
 
-## <a name='subsection1'></a>Changes for version 1
+## <a name='subsection1'></a>Changes for version 1\.1
+
+  1. Extended the __[mustache::frame](mustache\_frame\.md)__ package to
+     support the [TclYAML](https://core\.tcl\-lang\.org/akupries/tclyaml)
+     version 0\.5 tags for __bool__, __float__, __int__,
+     __null__, and __string__\.
+
+     The pre\-existing tag __scalar__ is now a an alias for __string__\.
+
+     This extension of the type system makes it easier to use mustache's data
+     frames as an in\-memory representation for structured typed data\. No
+     automatic loss of type data inside of Tcl scripts now\.
+
+  1. Extended the data frames provided by package
+     __[mustache::frame](mustache\_frame\.md)__ with methods for walking a
+     frame tree in general, and simplifying the conversion back into external
+     serialization formats\.
+
+  1. Added packages for the conversion of a data frame \(tree\) into various
+     serializations:
+
+       - __mustache::frame::as::events__
+
+         Serialization into a list of events describing the incremental build of
+         the tree\.
+
+       - __mustache::frame::as::json__
+
+         Serialization into whitespace\-free [JSON](https://json\.org/)\.
+
+       - __mustache::frame::as::tagged__
+
+         Serialization into the kind of tagged structure accepted by
+         [TclYAML](https://core\.tcl\-lang\.org/akupries/tclyaml)'s
+         __writeTags__ command\.
+
+## <a name='subsection2'></a>Changes for version 1
 
 This is the first release of mustache\. The changes therefore describe the
 initial features of the system\.

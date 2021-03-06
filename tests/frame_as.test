@@ -1,0 +1,58 @@
+# -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
+## (c) 2021 Andreas Kupries
+# # ## ### ##### ######## ############# #####################
+## Check the behaviour of frame objects.
+#return
+kt check Tcl     8.5
+kt check tcltest 2
+
+kt local support mustache::frame
+kt local testing mustache::frame::as::events
+kt local testing mustache::frame::as::json
+kt local testing mustache::frame::as::tagged
+
+kt source support/util.tcl
+
+# # ## ### ##### ######## ############# #####################
+## as ... Various types
+
+tcltest::test as-1.0 "as, wrong args, not enough" -setup {
+    set frame [mustache frame bool new 0]
+} -cleanup {
+    $frame destroy
+    unset frame
+} -body {
+    $frame as
+} -returnCodes error -match glob -result {wrong # args: should be "::oo::Obj* as type"}
+
+tcltest::test as-1.1 "as, wrong args, too many" -setup {
+    set frame [mustache frame bool new 0]
+} -cleanup {
+    $frame destroy
+    unset frame
+} -body {
+    $frame as TYPE X
+} -returnCodes error -match glob -result {wrong # args: should be "::oo::Obj* as type"}
+
+# - -- --- ----- -------- ------------- ---------------------
+
+foreach type {
+    events
+    json
+    tagged
+} {
+    incr k
+    tcltest::test as-2.${k}-$type "as, $type" -setup {
+	set frame [mustache frame fromTags [tcltest::viewFile [td]/results/context/root]]
+    } -cleanup {
+	$frame destroy
+	unset frame
+    } -body {
+	$frame as $type
+    } -result  [tcltest::viewFile [td]/results/as/$type]
+}
+unset k
+
+# # ## ### ##### ######## ############# #####################
+cleanupTests
+return

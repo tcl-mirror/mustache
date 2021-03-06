@@ -128,18 +128,35 @@
 </ul>
 <ul class="doctools_syntax">
 <li><a href="#1"><b class="cmd">::mustache frame fromTags</b> <i class="arg">spec</i></a></li>
-<li><a href="#2"><b class="cmd">::mustache frame scalar</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
-<li><a href="#3"><b class="cmd">::mustache frame scalar</b> <b class="method">new</b> <i class="arg">value</i></a></li>
-<li><a href="#4"><b class="cmd">::mustache frame sequence</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
-<li><a href="#5"><b class="cmd">::mustache frame sequence</b> <b class="method">new</b> <i class="arg">value</i></a></li>
-<li><a href="#6"><b class="cmd">::mustache frame mapping</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
-<li><a href="#7"><b class="cmd">::mustache frame mapping</b> <b class="method">new</b> <i class="arg">value</i></a></li>
-<li><a href="#8"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">has?</b> <i class="arg">field</i></a></li>
-<li><a href="#9"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">field</b> <i class="arg">field</i></a></li>
-<li><a href="#10"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iter</b> <i class="arg">context</i> <i class="arg">script</i></a></li>
-<li><a href="#11"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iterable?</b></a></li>
-<li><a href="#12"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">nil?</b></a></li>
-<li><a href="#13"><b class="method">&lt;framecmd&gt;</b> <b class="cmd"><a href="../../index.html#value">value</a></b></a></li>
+<li><a href="#2"><b class="cmd">::mustache frame bool</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
+<li><a href="#3"><b class="cmd">::mustache frame bool</b> <b class="method">new</b> <i class="arg">value</i></a></li>
+<li><a href="#4"><b class="cmd">::mustache frame float</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
+<li><a href="#5"><b class="cmd">::mustache frame float</b> <b class="method">new</b> <i class="arg">value</i></a></li>
+<li><a href="#6"><b class="cmd">::mustache frame int</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
+<li><a href="#7"><b class="cmd">::mustache frame int</b> <b class="method">new</b> <i class="arg">value</i></a></li>
+<li><a href="#8"><b class="cmd">::mustache frame null</b> <b class="method">create</b> <i class="arg">obj</i> <span class="opt">?<i class="arg">value</i>?</span></a></li>
+<li><a href="#9"><b class="cmd">::mustache frame null</b> <b class="method">new</b> <span class="opt">?<i class="arg">value</i>?</span></a></li>
+<li><a href="#10"><b class="cmd">::mustache frame scalar</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
+<li><a href="#11"><b class="cmd">::mustache frame scalar</b> <b class="method">new</b> <i class="arg">value</i></a></li>
+<li><a href="#12"><b class="cmd">::mustache frame string</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
+<li><a href="#13"><b class="cmd">::mustache frame string</b> <b class="method">new</b> <i class="arg">value</i></a></li>
+<li><a href="#14"><b class="cmd">::mustache frame sequence</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
+<li><a href="#15"><b class="cmd">::mustache frame sequence</b> <b class="method">new</b> <i class="arg">value</i></a></li>
+<li><a href="#16"><b class="cmd">::mustache frame mapping</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
+<li><a href="#17"><b class="cmd">::mustache frame mapping</b> <b class="method">new</b> <i class="arg">value</i></a></li>
+<li><a href="#18"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">has?</b> <i class="arg">field</i></a></li>
+<li><a href="#19"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">field</b> <i class="arg">field</i></a></li>
+<li><a href="#20"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iter</b> <i class="arg">context</i> <i class="arg">script</i></a></li>
+<li><a href="#21"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iterable?</b></a></li>
+<li><a href="#22"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">nil?</b></a></li>
+<li><a href="#23"><b class="method">&lt;framecmd&gt;</b> <b class="cmd"><a href="../../index.html#value">value</a></b></a></li>
+<li><a href="#24"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">as</b> <i class="arg">type</i></a></li>
+<li><a href="#25"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">visit</b> <span class="opt">?<i class="arg">word</i>...?</span></a></li>
+<li><a href="#26"><b class="method">{*}word...</b> <i class="arg">type</i> <i class="arg">frame</i> <i class="arg">value</i></a></li>
+<li><a href="#27"><b class="method">{*}word...</b> <b class="method">sequence start</b> <i class="arg">frame</i></a></li>
+<li><a href="#28"><b class="method">{*}word...</b> <b class="method">sequence exit</b> <i class="arg">frame</i> <i class="arg">value</i></a></li>
+<li><a href="#29"><b class="method">{*}word...</b> <b class="method">mapping start</b> <i class="arg">frame</i></a></li>
+<li><a href="#30"><b class="method">{*}word...</b> <b class="method">mapping exit</b> <i class="arg">frame</i> <i class="arg">value</i></a></li>
 </ul>
 </div>
 </div>
@@ -155,10 +172,10 @@ plus an application for easy command-line access to the functionality.</p>
 <p><b class="package"><a href="mustache_context.html">mustache::context</a></b> objects make use of <i class="term"><a href="../../index.html#data_frame">data frame</a></i>
 objects to hold the values they will hand to the
 <b class="cmd">mustache render</b> command while it renders a template.</p>
-<p><b class="package">mustache::frame</b> provides three TclOO classes for
-holding scalar values, sequences, and mappings, all suitable for
-working with the objects provided by the <b class="package"><a href="mustache_context.html">mustache::context</a></b>
-package.</p>
+<p><b class="package">mustache::frame</b> provides seven TclOO classes for
+holding scalar values of various types, sequences, and mappings, all
+suitable for working with the objects provided by the
+<b class="package"><a href="mustache_context.html">mustache::context</a></b> package.</p>
 <p>Note however that <em>any</em> command prefix supporting the
 <span class="sectref"><a href="#section4">Instance API</a></span> below will be suitable for working with the
 same.</p>
@@ -175,7 +192,17 @@ equivalent hierarchy of data frame objects.</p>
 <p>The <i class="arg">spec</i> has to be a 2-element list of tag and value, in
 this order. The accepted tags and the associated values are</p>
 <dl class="doctools_definitions">
+<dt><b class="const">bool</b></dt>
+<dd><p>The value is a boolean.</p></dd>
+<dt><b class="const">float</b></dt>
+<dd><p>The value is a floating point number.</p></dd>
+<dt><b class="const">int</b></dt>
+<dd><p>The value is an integer number.</p></dd>
+<dt><b class="const">null</b></dt>
+<dd><p>The value is null/nil/missing.</p></dd>
 <dt><b class="const">scalar</b></dt>
+<dd></dd>
+<dt><b class="const">string</b></dt>
 <dd><p>The value is an arbitrary string.</p></dd>
 <dt><b class="const">sequence</b></dt>
 <dd><p>The value is a Tcl list containing nested specs.</p></dd>
@@ -184,8 +211,11 @@ this order. The accepted tags and the associated values are</p>
 	specs. Note however that it is expected that keys are always
 	tagged as scalars.</p></dd>
 </dl>
-<p>Note that the <b class="package">TclYAML</b> package is able to generate
-this type of tagged structure.</p>
+<p><em>Note</em> that the <b class="package"><a href="https://core.tcl-lang.org/akupries/tclyaml">TclYAML</a></b> package is
+able to generate this type of tagged structure.</p>
+<p><em>Note</em> further that the type-specific tags are only
+generated by <a href="https://core.tcl-lang.org/akupries/tclyaml">TclYAML</a> version 0.5 and up. Version 0.4 and
+before generate only the un-typed <b class="const">scalar</b> tag.</p>
 <p>Example:</p>
 <pre class="doctools_example">
 mapping {
@@ -201,31 +231,52 @@ mapping {
 }
 </pre>
 </dd>
-<dt><a name="2"><b class="cmd">::mustache frame scalar</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
+<dt><a name="2"><b class="cmd">::mustache frame bool</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
 <dd></dd>
-<dt><a name="3"><b class="cmd">::mustache frame scalar</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
-<dd><p>These constructor commands create a new scalar data frame, initializes
-it using the <i class="arg">value</i> and returns the fully qualified name of that
-instance.</p></dd>
-<dt><a name="4"><b class="cmd">::mustache frame sequence</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
+<dt><a name="3"><b class="cmd">::mustache frame bool</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
 <dd></dd>
-<dt><a name="5"><b class="cmd">::mustache frame sequence</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
-<dd><p>These constructor commands create a new sequence data frame,
+<dt><a name="4"><b class="cmd">::mustache frame float</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
+<dd></dd>
+<dt><a name="5"><b class="cmd">::mustache frame float</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
+<dd></dd>
+<dt><a name="6"><b class="cmd">::mustache frame int</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
+<dd></dd>
+<dt><a name="7"><b class="cmd">::mustache frame int</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
+<dd></dd>
+<dt><a name="8"><b class="cmd">::mustache frame null</b> <b class="method">create</b> <i class="arg">obj</i> <span class="opt">?<i class="arg">value</i>?</span></a></dt>
+<dd></dd>
+<dt><a name="9"><b class="cmd">::mustache frame null</b> <b class="method">new</b> <span class="opt">?<i class="arg">value</i>?</span></a></dt>
+<dd></dd>
+<dt><a name="10"><b class="cmd">::mustache frame scalar</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
+<dd></dd>
+<dt><a name="11"><b class="cmd">::mustache frame scalar</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
+<dd></dd>
+<dt><a name="12"><b class="cmd">::mustache frame string</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
+<dd></dd>
+<dt><a name="13"><b class="cmd">::mustache frame string</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
+<dd><p>These constructor commands create a new <i class="term">scalar</i> data frame of
+the given type, initialize it using the <i class="arg">value</i> and return the
+fully qualified name of that instance.</p></dd>
+<dt><a name="14"><b class="cmd">::mustache frame sequence</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
+<dd></dd>
+<dt><a name="15"><b class="cmd">::mustache frame sequence</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
+<dd><p>These constructor commands create a new <i class="term">sequence</i> data frame,
 initialize it using the <i class="arg">value</i> and return the fully qualified
 name of that instance.</p>
-<p>The <i class="arg">value</i> has to be a list of data frames.</p>
+<p>The <i class="arg">value</i> has to be a list of data frame objects.</p>
 <p><em>Attention:</em> The new sequence takes over ownership of the
 data frames in the list, and they will be destroyed when the sequence
 is destroyed.</p></dd>
-<dt><a name="6"><b class="cmd">::mustache frame mapping</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
+<dt><a name="16"><b class="cmd">::mustache frame mapping</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
 <dd></dd>
-<dt><a name="7"><b class="cmd">::mustache frame mapping</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
-<dd><p>These constructor commands create a new mapping data frame, initialize
-it using the <i class="arg">value</i> and return the fully qualified name of that
-instance.</p>
+<dt><a name="17"><b class="cmd">::mustache frame mapping</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
+<dd><p>These constructor commands create a new <i class="term">mapping</i> data frame,
+initialize it using the <i class="arg">value</i> and return the fully qualified
+name of that instance.</p>
 <p>The <i class="arg">value</i> has to be a dictionary mapping arbitrary
-strings to data frames. The keys name the fields which can be found,
-the data frames hold the associated values.</p>
+strings to data frames. The keys of the dictionary name the fields
+which can be found in the mapping later on, and the data frames hold
+the associated values.</p>
 <p><em>Attention:</em> The new mapping takes over ownership of the
 data frames in the dictionary, and they will be destroyed when the
 mapping is destroyed.</p></dd>
@@ -235,46 +286,88 @@ mapping is destroyed.</p></dd>
 <p>Data frames are what the context uses as containers for typed
 values. It should be noted that it actually does not care about the
 specific type of a value, only about the behaviour it supports, which
-can be queried (See methods <b class="method">nil?</b> and <b class="method">iterable?</b>).</p>
+can be queried (See the methods <b class="method">nil?</b> and <b class="method">iterable?</b>).</p>
 <dl class="doctools_definitions">
-<dt><a name="8"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">has?</b> <i class="arg">field</i></a></dt>
+<dt><a name="18"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">has?</b> <i class="arg">field</i></a></dt>
 <dd><p>Checks if the value has the named <i class="arg">field</i>.</p>
 <p>Returns a boolean value indicating either success
 (<b class="const">true</b>) or failure (<b class="const">false</b>) of the search.</p>
-<p>Note that scalars and sequences do not have fields, searching
+<p>Note that scalars and sequences do not have fields. Searching
 them always fails.</p></dd>
-<dt><a name="9"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">field</b> <i class="arg">field</i></a></dt>
+<dt><a name="19"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">field</b> <i class="arg">field</i></a></dt>
 <dd><p>Returns the data frame for the named <i class="arg">field</i>.</p>
 <p>Scalars and sequences throw an error, as they do not have
 fields. A mapping will throw an error only if the named <i class="arg">field</i>
 is not known.</p></dd>
-<dt><a name="10"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iter</b> <i class="arg">context</i> <i class="arg">script</i></a></dt>
-<dd><p>Interates over the elements of the frame and invokes the <i class="arg">script</i>
+<dt><a name="20"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iter</b> <i class="arg">context</i> <i class="arg">script</i></a></dt>
+<dd><p>Iterates over the elements of the frame and invokes the <i class="arg">script</i>
 for each of them.
 During the execution of the <i class="arg">script</i> the active element will be
 pushed into the <i class="arg">context</i>, and popped again after.</p>
 <p>Returns the empty string.</p>
 <p>Scalars and mappings will throw an error, as they cannot be
-itereated over.</p></dd>
-<dt><a name="11"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iterable?</b></a></dt>
+iterated over.</p></dd>
+<dt><a name="21"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iterable?</b></a></dt>
 <dd><p>Asks the frame if it can be iterated over. In other words, if it is a
 non-empty sequence of values.</p>
 <p>Returns a boolean value. <b class="const">true</b> signals that the frame
 can be iterated over.</p>
-<p>Scalars and mapping always return <b class="const">false</b>. Sequences
+<p>Scalars and mappings always return <b class="const">false</b>. Sequences
 return <b class="const">false</b> only if they are mpty.</p></dd>
-<dt><a name="12"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">nil?</b></a></dt>
+<dt><a name="22"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">nil?</b></a></dt>
 <dd><p>Asks the frame if it is nil, false, empty, etc.</p>
 <p>Returns a boolean value. <b class="const">true</b> signals that the frame's
 value is indeed nil, empty, false, etc.</p>
-<p>Scalars are nil if they are either empty string, or represent a
-boolean <b class="const">false</b>.</p>
-<p>Sequences and mapping are nil if they are empty, i.e of length
+<p>Strings are nil if they are either the empty string, or their
+value can be interpreted as a boolean value, and is representing
+<b class="const">false</b>.</p>
+<p>Numbers are never nil, nulls are always nil, and booleans are
+nil if they represent <b class="const">false</b>.</p>
+<p>Sequences and mappings are nil if they are empty, i.e of length
 or size <b class="const">0</b>.</p></dd>
-<dt><a name="13"><b class="method">&lt;framecmd&gt;</b> <b class="cmd"><a href="../../index.html#value">value</a></b></a></dt>
-<dd><p>Returns the value of the frame. Supported by all types.</p>
-<p>Sequences and mappings return stringifications of their list or
-dictionary, respectively. This will recurse through nested structures.</p></dd>
+<dt><a name="23"><b class="method">&lt;framecmd&gt;</b> <b class="cmd"><a href="../../index.html#value">value</a></b></a></dt>
+<dd><p>Returns the Tcl string value of the frame. Supported by all types.</p>
+<p>Sequences and mappings return Tcl stringifications of their
+list or dictionary, respectively. This will recurse through nested
+structures.</p></dd>
+<dt><a name="24"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">as</b> <i class="arg">type</i></a></dt>
+<dd><p>Returns the string representation of the data frame as per the
+specified <i class="arg">type</i>.</p>
+<p>It is expected that the <i class="arg">type</i> is backed by a package named
+<b class="package">::mustache::frame::as::&lt;<i class="arg">type</i>&gt;</b>, exporting a command of
+the same name.</p>
+<p>This command has to be suitable for use with the data frame's
+<b class="method">visit</b> method.
+The <b class="method">as</b> method will invoke <b class="method">visit</b> with the type
+command to perform the actual conversion.</p></dd>
+<dt><a name="25"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">visit</b> <span class="opt">?<i class="arg">word</i>...?</span></a></dt>
+<dd><p>This method visits the data frame and its children in interleaved
+pre- and post-order, invoking the command prefix specified by the
+<i class="arg">word</i>... for each frame once (scalars) or twice (sequences, and
+mappings).</p>
+<p>The result of the method is the result of the last invokation
+of the command prefix for the top data frame.</p>
+<p>The command prefix is always called in the global scope. It is
+expected to support the signatures below. The <i class="arg">frame</i> argument is
+always the object command of the data frame the call is for.</p>
+<dl class="doctools_definitions">
+<dt><a name="26"><b class="method">{*}word...</b> <i class="arg">type</i> <i class="arg">frame</i> <i class="arg">value</i></a></dt>
+<dd><p>Called for all scalar frames, once. The <i class="arg">value</i> is the Tcl value
+of the scalar. The <i class="arg">type</i> is one of the possible scalar type tags.</p></dd>
+<dt><a name="27"><b class="method">{*}word...</b> <b class="method">sequence start</b> <i class="arg">frame</i></a></dt>
+<dd><p>Called at the beginning of a sequence, enables initializations in the
+converter.  The return value, if any, is ignored.</p></dd>
+<dt><a name="28"><b class="method">{*}word...</b> <b class="method">sequence exit</b> <i class="arg">frame</i> <i class="arg">value</i></a></dt>
+<dd><p>Called after visiting the children of a sequence. The <i class="arg">value</i> is a
+list containing the results of visiting the sequence's elements.</p></dd>
+<dt><a name="29"><b class="method">{*}word...</b> <b class="method">mapping start</b> <i class="arg">frame</i></a></dt>
+<dd><p>Called at the beginning of a mapping, enables initializations in the
+converter.  The return value, if any, is ignored.</p></dd>
+<dt><a name="30"><b class="method">{*}word...</b> <b class="method">mapping exit</b> <i class="arg">frame</i> <i class="arg">value</i></a></dt>
+<dd><p>Called after visiting the value children of a mapping. The <i class="arg">value</i>
+is a dictionary mapping the field names to the results of visiting
+their frames.</p></dd>
+</dl></dd>
 </dl>
 </div>
 <div id="section5" class="doctools_section"><h2><a name="section5">Bugs, Ideas, Feedback</a></h2>

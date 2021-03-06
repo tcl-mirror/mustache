@@ -1,0 +1,118 @@
+# -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
+## (c) 2019-2021 Andreas Kupries
+# # ## ### ##### ######## ############# #####################
+## Check the behaviour of frame objects.
+#return
+
+kt check Tcl     8.5
+kt check tcltest 2
+
+kt local testing mustache::frame
+kt local testing mustache::frame::as::tagged
+
+kt source support/util.tcl
+
+# # ## ### ##### ######## ############# #####################
+
+foreach {fkind fdata} {
+    bool {
+	_hq 0
+	_it 0
+	_nl 1
+	_fd {{Mustache frame: A bool has no fields} -returnCodes error}
+	_id {{Mustache frame: A bool cannot be iterated over} -returnCodes error}
+	_vc return
+	_vi {bool ::FR 0}
+    }
+    float {
+	_hq 0
+	_it 0
+	_nl 0
+	_fd {{Mustache frame: A float has no fields} -returnCodes error}
+	_id {{Mustache frame: A float cannot be iterated over} -returnCodes error}
+	_vc return
+	_vi {float ::FR 3.14}
+    }
+    int {
+	_hq 0
+	_it 0
+	_nl 0
+	_fd {{Mustache frame: A int has no fields} -returnCodes error}
+	_id {{Mustache frame: A int cannot be iterated over} -returnCodes error}
+	_vc return
+	_vi {int ::FR 1023}
+    }
+    null {
+	_hq 0
+	_it 0
+	_nl 1
+	_fd {{Mustache frame: A null has no fields} -returnCodes error}
+	_id {{Mustache frame: A null cannot be iterated over} -returnCodes error}
+	_vc return
+	_vi {null ::FR {}}
+    }
+    string {
+	_hq 0
+	_it 0
+	_nl 0
+	_fd {{Mustache frame: A string has no fields} -returnCodes error}
+	_id {{Mustache frame: A string cannot be iterated over} -returnCodes error}
+	_vc return
+	_vi {string ::FR a-scalar}
+    }
+    sequence {
+	_hq 0
+	_it 1
+	_nl 0
+	_fd {{Sequence has no fields} -returnCodes error}
+	_id {{{push ::oo::Obj*} dot pop {push ::oo::Obj*} dot pop {push ::oo::Obj*} dot pop} -match glob}
+	_vc mustache::frame::FT::arg-sequence
+	_vi {sequence start ::FR string ::oo::Obj* 1 string ::oo::Obj* 2 string ::oo::Obj* 3 sequence exit ::FR {{sequence start ::FR string ::oo::Obj* 1} {sequence start ::FR string ::oo::Obj* 1 string ::oo::Obj* 2} {sequence start ::FR string ::oo::Obj* 1 string ::oo::Obj* 2 string ::oo::Obj* 3}}}
+    }
+    mapping  {
+	_hq 1
+	_it 0
+	_nl 0
+	_fd {::oo::Obj* -match glob}
+	_id {{Mapping cannot be iterated over} -returnCodes error}
+	_vc mustache::frame::FT::arg-mapping
+	_vi {mapping start ::FR string ::oo::Obj* V mapping exit ::FR {FIELD {mapping start ::FR string ::oo::Obj* V}}}
+    }
+} {
+    kt source suite/frame.suite
+}
+
+# # ## ### ##### ######## ############# #####################
+## fromTags...
+
+tcltest::test frame-fromTags-1.0 "fromTags, wrong args, not enough" -body {
+    mustache frame fromTags
+} -returnCodes error -result {wrong # args: should be "mustache frame fromTags spec"}
+
+tcltest::test frame-fromTags-1.1 "fromTags, wrong args, too many" -body {
+    mustache frame fromTags SPEC X
+} -returnCodes error -result {wrong # args: should be "mustache frame fromTags spec"}
+
+tcltest::test frame-fromTags-2.0 "fromTags" -cleanup {
+    $o destroy
+    unset o
+} -body {
+    set o [mustache frame fromTags [v context/root]]
+    $o value
+} -result {FIELD V< FALSE 0 NUMBR 33 DOUBL 3.14 NULL {} STRING 0 NIL {} SEQ {1 2 3} NOSEQ {} NOMAP {} SUB {CHILD X}}
+
+# - -- --- ----- -------- ------------- ---------------------
+
+tcltest::test frame-fromTags-2.1 "fromTags, to tagged" -body {
+    set o [mustache frame fromTags [lindex [tclyaml readTags file [td]/inputs/yaml/example.yaml] 0 0]]
+    $o as tagged
+} -cleanup {
+    $o destroy
+    unset o
+} -result [v yaml/[expr {([package vcompare [package require tclyaml] 0.5] >= 0)
+			 ? "0.5"
+			 : "0.4" }]]
+
+# # ## ### ##### ######## ############# #####################
+cleanupTests
+return

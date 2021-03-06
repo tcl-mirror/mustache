@@ -1,9 +1,9 @@
 ## -*- tcl -*-
 # # ## ### ##### ######## #############
-## (c) 2019 Andreas Kupries
+## (c) 2019-2021 Andreas Kupries
 
 # @@ Meta Begin
-# Package mustache 1
+# Package mustache 1.1
 # Meta author      {Andreas Kupries}
 # Meta category    Template Processing
 # Meta description Implementation of mustache, user commands
@@ -25,7 +25,7 @@ package require debug::caller
 package require mustache::parse  1
 package require mustache::render 1
 
-package provide mustache 1
+package provide mustache 1.1
 
 # # ## ### ##### ######## #############
 

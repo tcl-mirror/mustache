@@ -1,29 +1,33 @@
 # -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
-## (c) 2019 Andreas Kupries
+## (c) 2019-2021 Andreas Kupries
 # # ## ### ##### ######## ############# #####################
 ## Execute all the mustache tests of the original testsuite.
 ## This code is inspired by the script `tests.tcl` of project
 ## `mustache.tcl` (gh@ianka/mustache.tcl, BSD licensed)
 #return
+
 kt check Tcl     8.5
 kt check tcltest 2
 
 kt local testing mustache::context
 kt local testing mustache::frame
+kt local testing mustache::frame::as::tagged
 kt local testing mustache::parse
 kt local testing mustache::render
 kt local testing mustache
 
 kt source support/util.tcl
 
-#debug on mustache/parse  "" stdout
-#debug on mustache/render "" stdout
+#debug on mustache/parse   "" stdout
+#debug on mustache/render  "" stdout
+#debug on mustache/context "" stdout
+#debug on mustache/frame   "" stdout
 
 # # ## ### ##### ######## ############# #####################
 
 foreach specfile [Specs] {
-    #puts Z\t__________________________________________________________
-    #puts ZN\t$specfile
+    # puts Z\t__________________________________________________________
+    # puts ZN\t$specfile
 
     lassign [Tests $specfile] label tests
 
@@ -34,8 +38,8 @@ foreach specfile [Specs] {
 
 	# puts Z\t__________________________________________________________
 	# puts ZN\t$name
-	# puts ZD\t$desc
-	# puts ZI\t$data\t'[X [$data value]]'
+	# puts ZT\t$desc
+	# puts ZD\t$data\t[[$data dot] as tagged]
 	# puts ZT\t[X $template]
 	# puts ZE\t[X $expected]
 
