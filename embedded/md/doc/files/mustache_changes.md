@@ -68,6 +68,10 @@ __[mustache](mustache\.md)__ underwent from version to version\.
      frame tree in general, and simplifying the conversion back into external
      serialization formats\.
 
+  1. Extended the sequence and mapping data frames provided by package
+     __[mustache::frame](mustache\_frame\.md)__ with methods \(__for__\)
+     for iteration over the content, without a context\.
+
   1. Added packages for the conversion of a data frame \(tree\) into various
      serializations:
 

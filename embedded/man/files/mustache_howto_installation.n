@@ -378,7 +378,7 @@ your distribution, and not \fBmustache\fR\&.
 .SS KETTLE
 This project uses the Kettle application and package as its build system\&.
 .PP
-Please go to either the main repository at \fIhttps:/core\&.tcl-lang\&.org/akupries/kettle\fR
+Please go to either the main repository at \fIhttps://core\&.tcl-lang\&.org/akupries/kettle\fR
 or the backups at \fIhttps://chiselapp\&.com/user/andreas_kupries/repository/Kettle\fR and \fIhttps://github\&.com/andreas-kupries/kettle\fR and
 follow the instructions given at these sites to create a working
 installation\&. They are not repeated here\&. If there are problems with

@@ -307,6 +307,10 @@ Extended the data frames provided by package
 in general, and simplifying the conversion back into external
 serialization formats\&.
 .IP [3]
+Extended the sequence and mapping data frames provided by
+package \fBmustache::frame\fR with methods (\fBfor\fR)
+for iteration over the content, without a context\&.
+.IP [4]
 Added packages for the conversion of a data frame (tree) into
 various serializations:
 .RS

@@ -9,6 +9,10 @@
 [vset VC_TYPE fossil]
 [vset PROJ_VERSION 1.1]
 
+[vset project/chisel/url https://chiselapp.com/user/andreas_kupries/repository/mustache]
+[vset project/core/url   https://core.tcl-lang.org/akupries/mustache]
+[vset project/github/url https://github.com/andreas-kupries/mustache]
+
 [vset activestate       [uri https://www.activestate.com ActiveState]]
 [vset activetcl         [uri https://www.activestate.com/activetcl ActiveTcl]]
 [vset fossil            [uri https://www.fossil-scm.org               {Fossil SCM}]]
@@ -16,13 +20,16 @@
 [vset fossil/get        [uri https://www.fossil-scm.org/download.html {download page}]]
 [vset json              [uri https://json.org/ JSON]]
 [vset kettle/chisel     [uri https://chiselapp.com/user/andreas_kupries/repository/Kettle]]
-[vset kettle/core       [uri https:/core.tcl-lang.org/akupries/kettle]]
+[vset kettle/core       [uri https://core.tcl-lang.org/akupries/kettle]]
 [vset kettle/github     [uri https://github.com/andreas-kupries/kettle]]
-[vset project/chisel    [uri https://chiselapp.com/user/andreas_kupries/repository/mustache]]
-[vset project/core      [uri https:/core.tcl-lang.org/akupries/mustache]]
-[vset project/github    [uri https://github.com/andreas-kupries/mustache]]
-[vset project/track     [uri https://core.tcl-lang.org/akupries/mustache "[vset PTITLE] Tracker"]]
+
+[vset project/chisel    [uri [vset project/chisel/url]]] 
+[vset project/core      [uri [vset project/core/url]]]
+[vset project/github    [uri [vset project/github/url]]]
+[vset project/track     [uri [vset project/core/url] "[vset PTITLE] Tracker"]]
+
 [vset project/upstream  [uri https://mustache.github.io/ mustache]]
+
 [vset tcl/core          [uri https://core.tcl-lang.org/tcl]]
 [vset tcloo/core        [uri https://core.tcl-lang.org/tcloo]]
 [vset tclyaml/core      [uri https://core.tcl-lang.org/akupries/tclyaml TclYAML]]

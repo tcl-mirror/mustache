@@ -142,7 +142,7 @@ __[mustache](mustache\.md)__\.
 This project uses the Kettle application and package as its build system\.
 
 Please go to either the main repository at
-[https:/core\.tcl\-lang\.org/akupries/kettle](https:/core\.tcl\-lang\.org/akupries/kettle)
+[https://core\.tcl\-lang\.org/akupries/kettle](https://core\.tcl\-lang\.org/akupries/kettle)
 or the backups at
 [https://chiselapp\.com/user/andreas\_kupries/repository/Kettle](https://chiselapp\.com/user/andreas\_kupries/repository/Kettle)
 and
