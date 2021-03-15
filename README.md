@@ -1,43 +1,27 @@
-# Attention
-
-:warning: This repository is mirrored to
-[github](https://github.com/andreas-kupries/mustache) :warning: .
-
-:warning: We are __not tracking issues at github__.
-With the exeception of the maintainer of the mirroring setup nobody
-will even see issues created at github. :warning: .
-
-Please use the
-[official ticket tracker](https://core.tcl-lang.org/akupries/mustache/reportlist)
-instead.
 
 # Welcome
 
-Welcome to my, [vset AUTHOR]' Mustache project. It provides a set of
-five related Tcl packages for the parsing and rendering of
+Welcome to my Mustache project. It provides a set of five related Tcl
+packages for the parsing and rendering of
 [mustache-style](https://mustache.github.io) logic-less templates,
 plus an application for easy command-line access to the functionality.
 
-At the [home site](http://core.tcl-lang.org/akupries/mustache) you
-will find the official [fossil](https://fossil-scm.org) repository
-used to manage the sources, together with the bug tracker. This is
-also the main location for releases to download from.
+# Attention Please
 
-Two other locations for these sources are the
+You are reading this document on the github mirror of the
+[official sources](http://core.tcl-lang.org/akupries/mustache).
 
-  - [ChiselApp Mirror](https://chiselapp.com/user/andreas_kupries/repository/mustache), and the
-  - [GitHub mirror](https://github.com/andreas-kupries/mustache).
+Please be aware that tickets added here are ignored, or, at best,
+simply closed with link to the
+[official ticket tracker](https://core.tcl-lang.org/akupries/mustache/reportlist).
 
-Please note the :warning: at the top.
+# Sources
 
-Further note that I am aware of
-[mustache.tcl](https://github.com/ianka/mustache.tcl).
-That implementation is pure a template interpreter, without separation
-of compiler and render phases. For nested sections it reparses the
-internal parts over and over again.
+See
 
-This set of packages on the other hand is capable of parsing a given
-template once and then re-using it multiple times.
+  - [Primary repository](http://core.tcl-lang.org/akupries/mustache)
+  - [ChiselApp Mirror](https://chiselapp.com/user/andreas_kupries/repository/mustache/index)
+  - Here.
 
 # Guides and other Documentation
 
@@ -56,3 +40,15 @@ template once and then re-using it multiple times.
    * [How To Get The Sources](embedded/md/doc/files/mustache_howto_get_sources.md)
    * [How To Build And Install mustache](embedded/md/doc/files/mustache_howto_installation.md)
    * [The Developer's Guide](embedded/md/doc/files/mustache_howto_development.md)
+
+# Related
+
+__Note__ that I am aware of
+[mustache.tcl](https://github.com/ianka/mustache.tcl).
+
+That implementation is pure a template interpreter, without separation
+of compiler and render phases. For nested sections it reparses the
+internal parts over and over again.
+
+This set of packages on the other hand is capable of parsing a given
+template once and then re-using it multiple times.
