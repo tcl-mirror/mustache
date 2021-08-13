@@ -24,7 +24,9 @@ proc VALs {} { global fkind     ;          v frame/$fkind.to_s }
 # [ok] iterable?
 # [ok] nil?
 # [ok] value
-# [..] visit
+# [ok] visit
+# [ok] type
+# [ok] is
 
 # [..] TODO destructor (confirm that owned objects (children) are destroyed as well)
 
@@ -218,6 +220,60 @@ tcltest::test frame-${fkind}-visit-1.0 "visit" -setup {
     FR visit lappend r
     join $r \n
 } -match glob -result [join $_vi \n]
+
+# # ## ### ##### ######## ############# #####################
+## type
+
+tcltest::test frame-${fkind}-type-1.0 "type, wrong args, too many" -setup {
+    mustache frame $fkind create FR [VAL]
+} -cleanup {
+    FR destroy
+} -body {
+    FR type X
+} -returnCodes error -result {wrong # args: should be "FR type"}
+
+tcltest::test frame-${fkind}-type-2.0 "type" -setup {
+    mustache frame $fkind create FR [VAL]
+} -cleanup {
+    FR destroy
+} -body {
+    FR type
+} -result $fkind
+
+# # ## ### ##### ######## ############# #####################
+## is
+
+tcltest::test frame-${fkind}-is-1.0 "is, wrong args, not enough" -setup {
+    mustache frame $fkind create FR [VAL]
+} -cleanup {
+    FR destroy
+} -body {
+    FR is
+} -returnCodes error -result {wrong # args: should be "FR is type"}
+
+tcltest::test frame-${fkind}-is-1.1 "is, wrong args, too many" -setup {
+    mustache frame $fkind create FR [VAL]
+} -cleanup {
+    FR destroy
+} -body {
+    FR is TYPE X
+} -returnCodes error -result {wrong # args: should be "FR is type"}
+
+tcltest::test frame-${fkind}-is-2.0 "is mismatch" -setup {
+    mustache frame $fkind create FR [VAL]
+} -cleanup {
+    FR destroy
+} -body {
+    FR is bogus
+} -result 0
+
+tcltest::test frame-${fkind}-is-2.1 "is match" -setup {
+    mustache frame $fkind create FR [VAL]
+} -cleanup {
+    FR destroy
+} -body {
+    FR is $fkind
+} -result 1
 
 # # ## ### ##### ######## ############# #####################
 unset -nocomplain _hq _it _nl _fd _vc _vi

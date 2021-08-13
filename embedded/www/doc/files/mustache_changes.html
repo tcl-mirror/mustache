@@ -114,8 +114,9 @@
 <li class="doctools_section"><a href="#section1">Description</a></li>
 <li class="doctools_section"><a href="#section2">Changes</a>
 <ul>
-<li class="doctools_subsection"><a href="#subsection1">Changes for version 1.1</a></li>
-<li class="doctools_subsection"><a href="#subsection2">Changes for version 1</a></li>
+<li class="doctools_subsection"><a href="#subsection1">Changes for version 1.2</a></li>
+<li class="doctools_subsection"><a href="#subsection2">Changes for version 1.1</a></li>
+<li class="doctools_subsection"><a href="#subsection3">Changes for version 1</a></li>
 </ul>
 </li>
 <li class="doctools_section"><a href="#section3">Related Documents</a></li>
@@ -135,7 +136,45 @@ plus an application for easy command-line access to the functionality.</p>
 underwent from version to version.</p>
 </div>
 <div id="section2" class="doctools_section"><h2><a name="section2">Changes</a></h2>
-<div id="subsection1" class="doctools_subsection"><h3><a name="subsection1">Changes for version 1.1</a></h3>
+<div id="subsection1" class="doctools_subsection"><h3><a name="subsection1">Changes for version 1.2</a></h3>
+<p><em>Version 1.2 is in development and has not been released yet</em></p>
+<ol class="doctools_enumerated">
+<li><p><em>Attention</em></p>
+<p>Added a new <b class="type">string!</b> type to the
+       <b class="package"><a href="mustache_frame.html">mustache::frame</a></b> package.</p>
+<p>It is strongly recommended to use this type for any kind of
+       string value instead of old type <b class="type">string</b> (without a
+       trailing <em>!</em>.</p>
+<p>Why ?</p>
+<p>The original <b class="type">string</b> type is coded to match the
+       expectations of the mustache specification, as laid down by its
+       official compatibility testsuite.</p>
+<p>This includes some very weird behaviour for a <b class="type">string</b>
+       type: It &quot;normalizes&quot; any string which looks like a double
+       number, which means anything which looks numeric. That is a
+       very bad thing to do when your strings are, for example file
+       and directory names, just looking like numbers. Then you call
+       such normalization &quot;mangling&quot; instead and start cursing.</p>
+<p>The new <b class="type">string!</b> type does no such mangling.</p>
+<p>The new type is now the standard type when converting to and
+       from YAML, and other such representations. I.e. an external
+       string is mapped to <b class="type">string!</b> now.</p>
+<p>Existing code using <b class="type">string</b> directly in the construction
+       of frames has to be manually converted to use <b class="type">string!</b>
+       however.</p></li>
+<li><p>Extended the <b class="package"><a href="mustache_frame.html">mustache::frame</a></b> package with several
+       methods specific to scalars and mappings, and one generic.</p>
+<p>It is now possible to change a scalar's value in place, as well as
+       add, remove, and move key/value assignments in a mapping.</p>
+<p>The new generic method simplifies the writing of type checks.
+       Instead of</p>
+<pre class="doctools_example">[$frame type] eq &quot;mapping&quot;</pre>
+<p>it is now possible to write</p>
+<pre class="doctools_example">[$frame is mapping]</pre>
+<p>etc.</p></li>
+</ol>
+</div>
+<div id="subsection2" class="doctools_subsection"><h3><a name="subsection2">Changes for version 1.1</a></h3>
 <ol class="doctools_enumerated">
 <li><p>Extended the <b class="package"><a href="mustache_frame.html">mustache::frame</a></b> package to support the
        <a href="https://core.tcl-lang.org/akupries/tclyaml">TclYAML</a> version 0.5 tags for <b class="const">bool</b>,
@@ -167,7 +206,7 @@ underwent from version to version.</p>
 </li>
 </ol>
 </div>
-<div id="subsection2" class="doctools_subsection"><h3><a name="subsection2">Changes for version 1</a></h3>
+<div id="subsection3" class="doctools_subsection"><h3><a name="subsection3">Changes for version 1</a></h3>
 <p>This is the first release of mustache.
 The changes therefore describe the initial features of the system.</p>
 <p>In detail:</p>

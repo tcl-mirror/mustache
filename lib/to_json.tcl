@@ -26,7 +26,7 @@ package provide mustache::frame::as::json 1
 # # ## ### ##### ######## ############# #####################
 
 namespace eval ::mustache::frame::as::json {
-    namespace export bool float int null string scalar sequence mapping
+    namespace export bool float int null string string! scalar sequence mapping
     namespace ensemble create
 }
 namespace eval ::mustache::frame::as::json::sequence {
@@ -74,6 +74,11 @@ proc ::mustache::frame::as::json::null {self value} {
 }
 
 proc ::mustache::frame::as::json::string {self value} {
+    debug.mustache/frame/as/json {}
+    return "\"${value}\""
+}
+
+proc ::mustache::frame::as::json::string! {self value} {
     debug.mustache/frame/as/json {}
     return "\"${value}\""
 }

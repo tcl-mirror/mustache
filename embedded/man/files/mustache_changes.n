@@ -288,6 +288,62 @@ For availability please read \fIMustache - How To Get The Sources\fR\&.
 This document provides an overview of the changes \fBmustache\fR
 underwent from version to version\&.
 .SH CHANGES
+.SS "CHANGES FOR VERSION 1\&.2"
+\fIVersion 1\&.2 is in development and has not been released yet\fR
+.IP [1]
+\fIAttention\fR
+.sp
+Added a new \fBstring!\fR type to the
+\fBmustache::frame\fR package\&.
+.sp
+It is strongly recommended to use this type for any kind of
+string value instead of old type \fBstring\fR (without a
+trailing \fI!\fR\&.
+.sp
+Why ?
+.sp
+The original \fBstring\fR type is coded to match the
+expectations of the mustache specification, as laid down by its
+official compatibility testsuite\&.
+.sp
+This includes some very weird behaviour for a \fBstring\fR
+type: It "normalizes" any string which looks like a double
+number, which means anything which looks numeric\&. That is a
+very bad thing to do when your strings are, for example file
+and directory names, just looking like numbers\&. Then you call
+such normalization "mangling" instead and start cursing\&.
+.sp
+The new \fBstring!\fR type does no such mangling\&.
+.sp
+The new type is now the standard type when converting to and
+from YAML, and other such representations\&. I\&.e\&. an external
+string is mapped to \fBstring!\fR now\&.
+.sp
+Existing code using \fBstring\fR directly in the construction
+of frames has to be manually converted to use \fBstring!\fR
+however\&.
+.IP [2]
+Extended the \fBmustache::frame\fR package with several
+methods specific to scalars and mappings, and one generic\&.
+.sp
+It is now possible to change a scalar's value in place, as well as
+add, remove, and move key/value assignments in a mapping\&.
+.sp
+The new generic method simplifies the writing of type checks\&.
+Instead of
+.CS
+
+[$frame type] eq "mapping"
+.CE
+.IP
+it is now possible to write
+.CS
+
+[$frame is mapping]
+.CE
+.IP
+etc\&.
+.PP
 .SS "CHANGES FOR VERSION 1\&.1"
 .IP [1]
 Extended the \fBmustache::frame\fR package to support the

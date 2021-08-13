@@ -28,7 +28,11 @@ mustache::frame \- Mustache \- Data frames with fields
 
   - [Instance API](#section4)
 
-  - [Bugs, Ideas, Feedback](#section5)
+  - [Scalar Instance API](#section5)
+
+  - [Mapping Instance API](#section6)
+
+  - [Bugs, Ideas, Feedback](#section7)
 
   - [Keywords](#keywords)
 
@@ -51,23 +55,32 @@ package require mustache::frame
 [__::mustache frame scalar__ __new__ *value*](#11)  
 [__::mustache frame string__ __create__ *obj* *value*](#12)  
 [__::mustache frame string__ __new__ *value*](#13)  
-[__::mustache frame sequence__ __create__ *obj* *value*](#14)  
-[__::mustache frame sequence__ __new__ *value*](#15)  
-[__::mustache frame mapping__ __create__ *obj* *value*](#16)  
-[__::mustache frame mapping__ __new__ *value*](#17)  
-[__<framecmd>__ __has?__ *field*](#18)  
-[__<framecmd>__ __field__ *field*](#19)  
-[__<framecmd>__ __iter__ *context* *script*](#20)  
-[__<framecmd>__ __iterable?__](#21)  
-[__<framecmd>__ __nil?__](#22)  
-[__<framecmd>__ __[value](\.\./\.\./index\.md\#value)__](#23)  
-[__<framecmd>__ __as__ *type*](#24)  
-[__<framecmd>__ __visit__ ?*word*\.\.\.?](#25)  
-[__\{\*\}word\.\.\.__ *type* *frame* *value*](#26)  
-[__\{\*\}word\.\.\.__ __sequence start__ *frame*](#27)  
-[__\{\*\}word\.\.\.__ __sequence exit__ *frame* *value*](#28)  
-[__\{\*\}word\.\.\.__ __mapping start__ *frame*](#29)  
-[__\{\*\}word\.\.\.__ __mapping exit__ *frame* *value*](#30)  
+[__::mustache frame string\!__ __create__ *obj* *value*](#14)  
+[__::mustache frame string\!__ __new__ *value*](#15)  
+[__::mustache frame sequence__ __create__ *obj* *value*](#16)  
+[__::mustache frame sequence__ __new__ *value*](#17)  
+[__::mustache frame mapping__ __create__ *obj* *value*](#18)  
+[__::mustache frame mapping__ __new__ *value*](#19)  
+[__frameCmd__ __type__](#20)  
+[__frameCmd__ __is__ *type*](#21)  
+[__frameCmd__ __has?__ *field*](#22)  
+[__frameCmd__ __field__ *field*](#23)  
+[__frameCmd__ __iter__ *context* *script*](#24)  
+[__frameCmd__ __iterable?__](#25)  
+[__frameCmd__ __nil?__](#26)  
+[__frameCmd__ __[value](\.\./\.\./index\.md\#value)__](#27)  
+[__frameCmd__ __as__ *type*](#28)  
+[__frameCmd__ __visit__ ?*word*\.\.\.?](#29)  
+[__\{\*\}word\.\.\.__ *type* *frame* *value*](#30)  
+[__\{\*\}word\.\.\.__ __sequence start__ *frame*](#31)  
+[__\{\*\}word\.\.\.__ __sequence exit__ *frame* *value*](#32)  
+[__\{\*\}word\.\.\.__ __mapping start__ *frame*](#33)  
+[__\{\*\}word\.\.\.__ __mapping exit__ *frame* *value*](#34)  
+[__scalarCmd__ __set__ *value*](#35)  
+[__scalarCmd__ __validate__ *value*](#36)  
+[__mappingCmd__ __set__ *key* *value*](#37)  
+[__mappingCmd__ __unset__ *key*](#38)  
+[__mappingCmd__ __rename__ *key* *newkey*](#39)  
 
 # <a name='description'></a>DESCRIPTION
 
@@ -130,7 +143,8 @@ API for working with typed values\.
 
       * __string__
 
-        The value is an arbitrary string\.
+        The value is an arbitrary string\. Internally it is mapped to
+        __string\!__ frames\.
 
       * __sequence__
 
@@ -187,13 +201,31 @@ API for working with typed values\.
 
   - <a name='13'></a>__::mustache frame string__ __new__ *value*
 
+  - <a name='14'></a>__::mustache frame string\!__ __create__ *obj* *value*
+
+  - <a name='15'></a>__::mustache frame string\!__ __new__ *value*
+
     These constructor commands create a new *scalar* data frame of the given
     type, initialize it using the *value* and return the fully qualified name
     of that instance\.
 
-  - <a name='14'></a>__::mustache frame sequence__ __create__ *obj* *value*
+    *ATTENTION* Of these three, best use __string\!__ over all else\.
 
-  - <a name='15'></a>__::mustache frame sequence__ __new__ *value*
+    *Do not use* __string__\. While the disrecommended type is the original
+    type for string values it is now present only to pass the mustache
+    compatibility tests\. It comes with auto\-magic behaviour counter to what is
+    expected from a string type, i\.e\. to pass all values as they are\.
+
+    __string__ does not do that\. Any value which looks like a number it
+    "normalizes"\.
+
+    The new type __string\!__ on the other hand does exactly that\. No
+    auto\-magic normalization, i\.e\. mangling of things looking like numbers\. Just
+    passing values as they are\.
+
+  - <a name='16'></a>__::mustache frame sequence__ __create__ *obj* *value*
+
+  - <a name='17'></a>__::mustache frame sequence__ __new__ *value*
 
     These constructor commands create a new *sequence* data frame, initialize
     it using the *value* and return the fully qualified name of that instance\.
@@ -203,9 +235,9 @@ API for working with typed values\.
     *Attention:* The new sequence takes over ownership of the data frames in
     the list, and they will be destroyed when the sequence is destroyed\.
 
-  - <a name='16'></a>__::mustache frame mapping__ __create__ *obj* *value*
+  - <a name='18'></a>__::mustache frame mapping__ __create__ *obj* *value*
 
-  - <a name='17'></a>__::mustache frame mapping__ __new__ *value*
+  - <a name='19'></a>__::mustache frame mapping__ __new__ *value*
 
     These constructor commands create a new *mapping* data frame, initialize
     it using the *value* and return the fully qualified name of that instance\.
@@ -224,7 +256,16 @@ be noted that it actually does not care about the specific type of a value, only
 about the behaviour it supports, which can be queried \(See the methods
 __nil?__ and __iterable?__\)\.
 
-  - <a name='18'></a>__<framecmd>__ __has?__ *field*
+  - <a name='20'></a>__frameCmd__ __type__
+
+    Returns the type of the frame\.
+
+  - <a name='21'></a>__frameCmd__ __is__ *type*
+
+    Checks if the frame is of the specified *type* and returns the result as a
+    boolean value\.
+
+  - <a name='22'></a>__frameCmd__ __has?__ *field*
 
     Checks if the value has the named *field*\.
 
@@ -234,14 +275,14 @@ __nil?__ and __iterable?__\)\.
     Note that scalars and sequences do not have fields\. Searching them always
     fails\.
 
-  - <a name='19'></a>__<framecmd>__ __field__ *field*
+  - <a name='23'></a>__frameCmd__ __field__ *field*
 
     Returns the data frame for the named *field*\.
 
     Scalars and sequences throw an error, as they do not have fields\. A mapping
     will throw an error only if the named *field* is not known\.
 
-  - <a name='20'></a>__<framecmd>__ __iter__ *context* *script*
+  - <a name='24'></a>__frameCmd__ __iter__ *context* *script*
 
     Iterates over the elements of the frame and invokes the *script* for each
     of them\. During the execution of the *script* the active element will be
@@ -251,7 +292,7 @@ __nil?__ and __iterable?__\)\.
 
     Scalars and mappings will throw an error, as they cannot be iterated over\.
 
-  - <a name='21'></a>__<framecmd>__ __iterable?__
+  - <a name='25'></a>__frameCmd__ __iterable?__
 
     Asks the frame if it can be iterated over\. In other words, if it is a
     non\-empty sequence of values\.
@@ -262,7 +303,7 @@ __nil?__ and __iterable?__\)\.
     Scalars and mappings always return __false__\. Sequences return
     __false__ only if they are mpty\.
 
-  - <a name='22'></a>__<framecmd>__ __nil?__
+  - <a name='26'></a>__frameCmd__ __nil?__
 
     Asks the frame if it is nil, false, empty, etc\.
 
@@ -278,14 +319,14 @@ __nil?__ and __iterable?__\)\.
     Sequences and mappings are nil if they are empty, i\.e of length or size
     __0__\.
 
-  - <a name='23'></a>__<framecmd>__ __[value](\.\./\.\./index\.md\#value)__
+  - <a name='27'></a>__frameCmd__ __[value](\.\./\.\./index\.md\#value)__
 
     Returns the Tcl string value of the frame\. Supported by all types\.
 
     Sequences and mappings return Tcl stringifications of their list or
     dictionary, respectively\. This will recurse through nested structures\.
 
-  - <a name='24'></a>__<framecmd>__ __as__ *type*
+  - <a name='28'></a>__frameCmd__ __as__ *type*
 
     Returns the string representation of the data frame as per the specified
     *type*\.
@@ -298,7 +339,7 @@ __nil?__ and __iterable?__\)\.
     method\. The __as__ method will invoke __visit__ with the type
     command to perform the actual conversion\.
 
-  - <a name='25'></a>__<framecmd>__ __visit__ ?*word*\.\.\.?
+  - <a name='29'></a>__frameCmd__ __visit__ ?*word*\.\.\.?
 
     This method visits the data frame and its children in interleaved pre\- and
     post\-order, invoking the command prefix specified by the *word*\.\.\. for
@@ -311,33 +352,72 @@ __nil?__ and __iterable?__\)\.
     support the signatures below\. The *frame* argument is always the object
     command of the data frame the call is for\.
 
-      * <a name='26'></a>__\{\*\}word\.\.\.__ *type* *frame* *value*
+      * <a name='30'></a>__\{\*\}word\.\.\.__ *type* *frame* *value*
 
         Called for all scalar frames, once\. The *value* is the Tcl value of
         the scalar\. The *type* is one of the possible scalar type tags\.
 
-      * <a name='27'></a>__\{\*\}word\.\.\.__ __sequence start__ *frame*
+      * <a name='31'></a>__\{\*\}word\.\.\.__ __sequence start__ *frame*
 
         Called at the beginning of a sequence, enables initializations in the
         converter\. The return value, if any, is ignored\.
 
-      * <a name='28'></a>__\{\*\}word\.\.\.__ __sequence exit__ *frame* *value*
+      * <a name='32'></a>__\{\*\}word\.\.\.__ __sequence exit__ *frame* *value*
 
         Called after visiting the children of a sequence\. The *value* is a
         list containing the results of visiting the sequence's elements\.
 
-      * <a name='29'></a>__\{\*\}word\.\.\.__ __mapping start__ *frame*
+      * <a name='33'></a>__\{\*\}word\.\.\.__ __mapping start__ *frame*
 
         Called at the beginning of a mapping, enables initializations in the
         converter\. The return value, if any, is ignored\.
 
-      * <a name='30'></a>__\{\*\}word\.\.\.__ __mapping exit__ *frame* *value*
+      * <a name='34'></a>__\{\*\}word\.\.\.__ __mapping exit__ *frame* *value*
 
         Called after visiting the value children of a mapping\. The *value* is
         a dictionary mapping the field names to the results of visiting their
         frames\.
 
-# <a name='section5'></a>Bugs, Ideas, Feedback
+# <a name='section5'></a>Scalar Instance API
+
+Scalar data frames provide more than just the generic API\. These additional
+methods should only be used after a type check:
+
+  - <a name='35'></a>__scalarCmd__ __set__ *value*
+
+    Set the new scalar *value* into the frame\. An error will be thrown if the
+    value does not match the type of the frame\. The command returns the empty
+    string\.
+
+  - <a name='36'></a>__scalarCmd__ __validate__ *value*
+
+    Validates the scalar *value* against the frame\. An error will be thrown if
+    the value does not match the type of the frame\. The command returns the
+    normalized value, as per the frame's type\.
+
+# <a name='section6'></a>Mapping Instance API
+
+Mapping data frames provide more than just the generic API\. These additional
+methods should only be used after a type check:
+
+  - <a name='37'></a>__mappingCmd__ __set__ *key* *value*
+
+    Extends or modifies the mapping\. After the call the *key* maps to the
+    *value* frame\. A previously existing assignment for the *key* is
+    destroyed\. The command returns the empty string\.
+
+  - <a name='38'></a>__mappingCmd__ __unset__ *key*
+
+    Removes the assignment identified by *key* from the mapping\. The
+    associated value frame is destroyed\. The command returns the empty string\.
+
+  - <a name='39'></a>__mappingCmd__ __rename__ *key* *newkey*
+
+    Move the assignment of *key* to the *newky*\. An error will be thrown if
+    the *key* does not exist\. A previously existing assignment for the
+    *newkey* is destroyed\. The command returns the empty string\.
+
+# <a name='section7'></a>Bugs, Ideas, Feedback
 
 Both the package\(s\) and this documentation will undoubtedly contain bugs and
 other problems\. Please report such at [Mustache

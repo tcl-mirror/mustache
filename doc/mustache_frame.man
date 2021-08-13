@@ -63,6 +63,7 @@ this order. The accepted tags and the associated values are
 [def [const string]]
 
 	The value is an arbitrary string.
+	Internally it is mapped to [type string!] frames.
 
 [def [const sequence]]
 
@@ -117,9 +118,35 @@ mapping {
 [call [cmd {::mustache frame string}] [method create] [arg obj] [arg value]]
 [call [cmd {::mustache frame string}] [method new] [arg value]]
 
+[call [cmd {::mustache frame string!}] [method create] [arg obj] [arg value]]
+[call [cmd {::mustache frame string!}] [method new] [arg value]]
+
 These constructor commands create a new [term scalar] data frame of
 the given type, initialize it using the [arg value] and return the
 fully qualified name of that instance.
+
+[para] [strong ATTENTION]
+
+Of these three, best use [const string!] over all else.
+
+[para]
+
+[strong {Do not use}] [type string]. While the disrecommended type is
+the original type for string values it is now present only to pass the
+mustache compatibility tests. It comes with auto-magic behaviour
+counter to what is expected from a string type, i.e. to pass all
+values as they are.
+
+[para]
+
+[type string] does not do that. Any value which looks like a number it
+"normalizes".
+
+[para]
+
+The new type [type string!] on the other hand does exactly that. No
+auto-magic normalization, i.e. mangling of things looking like
+numbers. Just passing values as they are.
 
 [comment {- - -- --- ----- -------- -------------}]
 [call [cmd {::mustache frame sequence}] [method create] [arg obj] [arg value]]
@@ -163,7 +190,18 @@ can be queried (See the methods [method nil?] and [method iterable?]).
 
 [list_begin definitions]
 [comment {- - -- --- ----- -------- -------------}]
-[call [method <framecmd>] [cmd has?] [arg field]]
+[call [method frameCmd] [cmd type]]
+
+Returns the type of the frame.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method frameCmd] [cmd is] [arg type]]
+
+Checks if the frame is of the specified [arg type] and returns the
+result as a boolean value.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method frameCmd] [cmd has?] [arg field]]
 
 Checks if the value has the named [arg field].
 
@@ -174,7 +212,7 @@ Checks if the value has the named [arg field].
 them always fails.
 
 [comment {- - -- --- ----- -------- -------------}]
-[call [method <framecmd>] [cmd field] [arg field]]
+[call [method frameCmd] [cmd field] [arg field]]
 
 Returns the data frame for the named [arg field].
 
@@ -183,7 +221,7 @@ fields. A mapping will throw an error only if the named [arg field]
 is not known.
 
 [comment {- - -- --- ----- -------- -------------}]
-[call [method <framecmd>] [cmd iter] [arg context] [arg script]]
+[call [method frameCmd] [cmd iter] [arg context] [arg script]]
 
 Iterates over the elements of the frame and invokes the [arg script]
 for each of them.
@@ -197,7 +235,7 @@ pushed into the [arg context], and popped again after.
 iterated over.
 
 [comment {- - -- --- ----- -------- -------------}]
-[call [method <framecmd>] [cmd iterable?]]
+[call [method frameCmd] [cmd iterable?]]
 
 Asks the frame if it can be iterated over. In other words, if it is a
 non-empty sequence of values.
@@ -209,7 +247,7 @@ can be iterated over.
 return [const false] only if they are mpty.
 
 [comment {- - -- --- ----- -------- -------------}]
-[call [method <framecmd>] [cmd nil?]]
+[call [method frameCmd] [cmd nil?]]
 
 Asks the frame if it is nil, false, empty, etc.
 
@@ -227,7 +265,7 @@ nil if they represent [const false].
 or size [const 0].
 
 [comment {- - -- --- ----- -------- -------------}]
-[call [method <framecmd>] [cmd value]]
+[call [method frameCmd] [cmd value]]
 
 Returns the Tcl string value of the frame. Supported by all types.
 
@@ -236,7 +274,7 @@ list or dictionary, respectively. This will recurse through nested
 structures.
 
 [comment {- - -- --- ----- -------- -------------}]
-[call [method <framecmd>] [cmd as] [arg type]]
+[call [method frameCmd] [cmd as] [arg type]]
 
 Returns the string representation of the data frame as per the
 specified [arg type].
@@ -252,7 +290,7 @@ The [method as] method will invoke [method visit] with the type
 command to perform the actual conversion.
 
 [comment {- - -- --- ----- -------- -------------}]
-[call [method <framecmd>] [cmd visit] [opt [arg word]...]]
+[call [method frameCmd] [cmd visit] [opt [arg word]...]]
 
 This method visits the data frame and its children in interleaved
 pre- and post-order, invoking the command prefix specified by the
@@ -293,9 +331,78 @@ Called after visiting the value children of a mapping. The [arg value]
 is a dictionary mapping the field names to the results of visiting
 their frames.
 
-[list_end]
+[list_end][comment {-- command prefix signatures}]
 
-[list_end]
+[list_end][comment {-- main command list}]
+
+
+[section {Scalar Instance API}]
+
+[para] Scalar data frames provide more than just the generic API.
+These additional methods should only be used after a type check:
+
+[list_begin definitions]
+[comment {- - -- --- ----- -------- -------------}]
+[call [method scalarCmd] [cmd set] [arg value]]
+
+Set the new scalar [arg value] into the frame.
+
+An error will be thrown if the value does not match the type of the
+frame.
+
+The command returns the empty string.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method scalarCmd] [cmd validate] [arg value]]
+
+Validates the scalar [arg value] against the frame.
+
+An error will be thrown if the value does not match the type of the
+frame.
+
+The command returns the normalized value, as per the frame's type.
+
+[list_end][comment {-- main command list}]
+
+
+[section {Mapping Instance API}]
+
+[para] Mapping data frames provide more than just the generic API.
+These additional methods should only be used after a type check:
+
+[list_begin definitions]
+[comment {- - -- --- ----- -------- -------------}]
+[call [method mappingCmd] [cmd set] [arg key] [arg value]]
+
+Extends or modifies the mapping.
+
+After the call the [arg key] maps to the [arg value] frame.
+
+A previously existing assignment for the [arg key] is destroyed.
+
+The command returns the empty string.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method mappingCmd] [cmd unset] [arg key]]
+
+Removes the assignment identified by [arg key] from the mapping.
+
+The associated value frame is destroyed.
+
+The command returns the empty string.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [method mappingCmd] [cmd rename] [arg key] [arg newkey]]
+
+Move the assignment of [arg key] to the [arg newky].
+
+An error will be thrown if the [arg key] does not exist.
+
+A previously existing assignment for the [arg newkey] is destroyed.
+
+The command returns the empty string.
+
+[list_end][comment {-- main command list}]
 
 [include parts/feedback.inc]
 [manpage_end]

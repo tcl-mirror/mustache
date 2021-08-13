@@ -21,7 +21,7 @@ package require TclOO
 package require debug
 package require debug::caller
 
-package provide mustache::frame 1.1
+package provide mustache::frame 1.2
 
 # # ## ### ##### ######## ############# #####################
 
@@ -31,7 +31,7 @@ namespace eval ::mustache {
 }
 namespace eval ::mustache::frame {
     namespace export \
-	bool float int null string mapping sequence \
+	bool float int null string string! mapping sequence \
 	fromTags
     namespace ensemble create
 }
@@ -84,12 +84,12 @@ proc ::mustache::frame::FT::null {{val {}}} {
 
 proc ::mustache::frame::FT::string {val} {
     debug.mustache/frame {}
-    mustache frame string new $val
+    mustache frame string! new $val
 }
 
 proc ::mustache::frame::FT::scalar {val} {
     debug.mustache/frame {}
-    mustache frame string new $val
+    mustache frame string! new $val
 }
 
 proc ::mustache::frame::FT::sequence {val} {
@@ -131,6 +131,7 @@ proc ::mustache::frame::FT::arg-mapping {val} {
 # # ## ### ##### ######## ############# #####################
 ## API - Frame methods
 # - type        Type of value in this frame object
+# - is T        Check if frame is of type T
 # - field K	Get frame for field with name K
 # - has? K	Do you know a field with name K
 # - iter C S    Iterate your children, run script S with each child
@@ -170,6 +171,11 @@ oo::class create ::mustache::frame::base {
 	package require mustache::frame::as::$type
 	my visit ::mustache::frame::as::$type
     }
+
+    # Generic type check.
+    method is {type} {
+	string equal $type [my type]
+    }
 }
 
 # # ## ### ##### ######## ############# #####################
@@ -181,7 +187,7 @@ oo::class create ::mustache::frame::scalar {
     constructor {t v} {
 	debug.mustache/frame {}
 	set type  $t
-	set value $v
+	set value [my validate $v]
 	return
     }
 
@@ -226,6 +232,20 @@ oo::class create ::mustache::frame::scalar {
     }
 
     # - - -- --- ----- -------- -------------
+    ## Scalar specific methods
+
+    method set {val} {
+	debug.mustache/frame {}
+	set value [my validate $val]
+	return
+    }
+
+    method validate {val} {
+	debug.mustache/frame {}
+	return $val
+    }
+
+    # - - -- --- ----- -------- -------------
     ## State variables
 
     variable value	;# Frame data
@@ -239,10 +259,13 @@ oo::class create ::mustache::frame::bool {
 
     constructor {val} {
 	debug.mustache/frame {}
-	if {![string is bool -strict $val]} {
-	    my E "Expected a boolean, got \"$val\"" BOOL INVALID
-	}
 	next bool $val
+    }
+
+    method validate {val} {
+	debug.mustache/frame {}
+	if {[string is bool -strict $val]} { return $val }
+	my E "Expected a boolean, got \"$val\"" BOOL INVALID
     }
 
     method nil? {} {
@@ -257,13 +280,18 @@ oo::class create ::mustache::frame::float {
 
     constructor {val} {
 	debug.mustache/frame {}
+	next float $val
+    }
+
+    method validate {val} {
+	debug.mustache/frame {}
 	if {![string is double -strict $val]} {
 	    my E "Expected a double, got \"$val\"" FLOAT INVALID
 	}
 	if {$val ni {-Inf Inf -NaN NaN}} {
 	    set val [expr $val]
 	}
-	next float $val
+	return $val
     }
 
     method nil? {} {
@@ -278,10 +306,13 @@ oo::class create ::mustache::frame::int {
 
     constructor {val} {
 	debug.mustache/frame {}
-	if {![string is int -strict $val]} {
-	    my E "Expected an integer, got \"$val\"" INT INVALID
-	}
-	next int [expr $val]
+	next int $val
+    }
+
+    method validate {val} {
+	debug.mustache/frame {}
+	if {[string is int -strict $val]} { return [expr $val] }
+	my E "Expected an integer, got \"$val\"" INT INVALID
     }
 
     method nil? {} {
@@ -295,10 +326,13 @@ oo::class create ::mustache::frame::null {
 
     constructor {{val {}}} {
 	debug.mustache/frame {}
-	if {$val ne {}} {
-	    my E "Expected a null, got \"$val\"" NULL INVALID
-	}
-	next null {}
+	next null $val
+    }
+
+    method validate {val} {
+	debug.mustache/frame {}
+	if {$val eq {}} { return $val }
+	my E "Expected a null, got \"$val\"" NULL INVALID
     }
 
     method nil? {} {
@@ -308,16 +342,43 @@ oo::class create ::mustache::frame::null {
     }
 }
 
+# Proper string class. Use this. No mangling of its value in any way,
+# like `string` does.
+oo::class create ::mustache::frame::string! {
+    superclass ::mustache::frame::scalar
+
+    constructor {val} {
+	debug.mustache/frame {}
+	next string $val
+    }
+
+    method nil? {} {
+	debug.mustache/frame {string ([my value]) - [expr {[my value] eq {}}]}
+	# Yes for an empty string. And also if the string is treatable
+	# as a boolean, and representing a false. This is mustache
+	# (ruby?) thing.
+	expr {([my value] eq {}) || ([string is boolean -strict [my value]] && ![my value])}
+    }
+}
+
+# Compatibility string class to pass the mustache specification tests.
+# This class mangles^Wnormalizes all strings which look like numbers.
+# Bad juju if your strings are file or directory names looking like numbers.
 oo::class create ::mustache::frame::string {
     superclass ::mustache::frame::scalar
 
     constructor {val} {
 	debug.mustache/frame {}
+	next string $val
+    }
+
+    method validate {val} {
+	debug.mustache/frame {}
 	# Normalize double string. This is a mustache (ruby?) thing.
 	if {[string is double -strict $val]} {
 	    set val [expr $val]
 	}
-	next string $val
+	return $val
     }
 
     method nil? {} {
@@ -353,6 +414,11 @@ oo::class create ::mustache::frame::sequence {
     method type {} {
 	debug.mustache/frame {}
 	return sequence
+    }
+
+    method size {} {
+	debug.mustache/frame {}
+	return [llength $value]
     }
 
     method for {valv script} {
@@ -433,6 +499,15 @@ oo::class create ::mustache::frame::sequence {
     }
 
     # - - -- --- ----- -------- -------------
+    # Sequence specific methods
+
+    method append {val} {
+	debug.mustache/frame {}
+	lappend value $val
+	return
+    }
+
+    # - - -- --- ----- -------- -------------
     ## State variables
 
     variable value	;# Frame data (list, sequence)
@@ -464,6 +539,11 @@ oo::class create ::mustache::frame::mapping {
     method type {} {
 	debug.mustache/frame {}
 	return mapping
+    }
+
+    method size {} {
+	debug.mustache/frame {}
+	return [dict size $value]
     }
 
     method for {keyv valv script} {
@@ -541,6 +621,41 @@ oo::class create ::mustache::frame::mapping {
 	set r {}
 	dict for {k v} $value { lappend r $k [$v value] }
 	return $r
+    }
+
+    # - - -- --- ----- -------- -------------
+    # Mapping specific methods
+
+    method set {k val} {
+	debug.mustache/frame {}
+	if {[dict exists $value $k]} {
+	    [dict get $value $k] destroy
+	}
+	dict set value $k $val
+	return
+    }
+
+    method unset {k} {
+	debug.mustache/frame {}
+	if {![dict exists $value $k]} return
+	[dict get $value $k] destroy
+	dict unset value $k
+	return
+    }
+
+    method rename {k new} {
+	debug.mustache/frame {}
+	if {![dict exists $value $k]} {
+	    return -code error \
+		-errorcode {MUSTACHE FRAME MAPPING FIELD} \
+		"Field '$k' is not known"
+	}
+	if {[dict exists $value $new]} {
+	    [dict get $value $new] destroy
+	}
+	dict set value $new [dict get $value $k]
+	dict unset value $k
+	return
     }
 
     # - - -- --- ----- -------- -------------

@@ -27,7 +27,7 @@ package provide mustache::frame::as::tagged 1
 # # ## ### ##### ######## ############# #####################
 
 namespace eval ::mustache::frame::as::tagged {
-    namespace export bool float int null string scalar sequence mapping
+    namespace export bool float int null string string! scalar sequence mapping
     namespace ensemble create
 }
 namespace eval ::mustache::frame::as::tagged::sequence {
@@ -75,6 +75,11 @@ proc ::mustache::frame::as::tagged::null {self value} {
 }
 
 proc ::mustache::frame::as::tagged::string {self value} {
+    debug.mustache/frame/as/tagged {}
+    list string $value
+}
+
+proc ::mustache::frame::as::tagged::string! {self value} {
     debug.mustache/frame/as/tagged {}
     list string $value
 }

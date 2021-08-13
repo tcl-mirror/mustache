@@ -1,0 +1,97 @@
+# -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
+## (c) 2021 Andreas Kupries
+# # ## ### ##### ######## ############# #####################
+## Check the type-specific behaviour of scalar frame objects.
+
+kt check Tcl     8.5
+kt check tcltest 2
+
+kt local support mustache::frame
+
+kt source support/util.tcl
+
+# # ## ### ##### ######## ############# #####################
+## set, validate
+
+foreach {fkind good bad} {
+    bool    true bogus
+    float   0.1  bogus
+    int     1    bogus
+    null    {}   bogus
+    string  any  {}
+    string! any  {}
+} {
+    tcltest::test frame-scalar-${fkind}-set-1.0 "set, wrong args, not enough" -setup {
+	mustache frame $fkind create FR $good
+    } -cleanup {
+	FR destroy
+    } -body {
+	FR set
+    } -returnCodes error -result {wrong # args: should be "FR set val"}
+
+    tcltest::test frame-scalar-${fkind}-set-1.1 "set, wrong args, too many" -setup {
+	mustache frame $fkind create FR $good
+    } -cleanup {
+	FR destroy
+    } -body {
+	FR set $good X
+    } -returnCodes error -result {wrong # args: should be "FR set val"}
+
+    tcltest::test frame-scalar-${fkind}-set-2.0 "set ok" -setup {
+	mustache frame $fkind create FR $good
+    } -cleanup {
+	FR destroy
+    } -body {
+	FR set $good
+    } -result {}
+
+    # - -- --- ----- -------- ------------- ---------------------
+
+    tcltest::test frame-scalar-${fkind}-validate-1.0 "validate, wrong args, not enough" -setup {
+	mustache frame $fkind create FR $good
+    } -cleanup {
+	FR destroy
+    } -body {
+	FR validate
+    } -returnCodes error -result {wrong # args: should be "FR validate val"}
+
+    tcltest::test frame-scalar-${fkind}-validate-1.1 "validate, wrong args, too many" -setup {
+	mustache frame $fkind create FR $good
+    } -cleanup {
+	FR destroy
+    } -body {
+	FR validate $good X
+    } -returnCodes error -result {wrong # args: should be "FR validate val"}
+
+    tcltest::test frame-scalar-${fkind}-validate-2.0 "validate ok" -setup {
+	mustache frame $fkind create FR $good
+    } -cleanup {
+	FR destroy
+    } -body {
+	FR validate $good
+    } -result $good
+
+    # - -- --- ----- -------- ------------- ---------------------
+
+    if {$bad eq {}} continue
+
+    tcltest::test frame-scalar-${fkind}-set-2.1 "set match" -setup {
+	mustache frame $fkind create FR $good
+    } -cleanup {
+	FR destroy
+    } -body {
+	FR set $bad
+    } -returnCodes error -match glob -result {Mustache frame: *}
+
+    tcltest::test frame-scalar-${fkind}-validate-2.1 "validate match" -setup {
+	mustache frame $fkind create FR $good
+    } -cleanup {
+	FR destroy
+    } -body {
+	FR validate $bad
+    } -returnCodes error -match glob -result {Mustache frame: *}
+}
+
+# # ## ### ##### ######## ############# #####################
+cleanupTests
+return

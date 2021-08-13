@@ -22,9 +22,11 @@ mustache\-changes \- Mustache \- Log of Changes
 
   - [Changes](#section2)
 
-      - [Changes for version 1\.1](#subsection1)
+      - [Changes for version 1\.2](#subsection1)
 
-      - [Changes for version 1](#subsection2)
+      - [Changes for version 1\.1](#subsection2)
+
+      - [Changes for version 1](#subsection3)
 
   - [Related Documents](#section3)
 
@@ -50,7 +52,57 @@ __[mustache](mustache\.md)__ underwent from version to version\.
 
 # <a name='section2'></a>Changes
 
-## <a name='subsection1'></a>Changes for version 1\.1
+## <a name='subsection1'></a>Changes for version 1\.2
+
+*Version 1\.2 is in development and has not been released yet*
+
+  1. *Attention*
+
+     Added a new __string\!__ type to the
+     __[mustache::frame](mustache\_frame\.md)__ package\.
+
+     It is strongly recommended to use this type for any kind of string value
+     instead of old type __string__ \(without a trailing *\!*\.
+
+     Why ?
+
+     The original __string__ type is coded to match the expectations of the
+     mustache specification, as laid down by its official compatibility
+     testsuite\.
+
+     This includes some very weird behaviour for a __string__ type: It
+     "normalizes" any string which looks like a double number, which means
+     anything which looks numeric\. That is a very bad thing to do when your
+     strings are, for example file and directory names, just looking like
+     numbers\. Then you call such normalization "mangling" instead and start
+     cursing\.
+
+     The new __string\!__ type does no such mangling\.
+
+     The new type is now the standard type when converting to and from YAML, and
+     other such representations\. I\.e\. an external string is mapped to
+     __string\!__ now\.
+
+     Existing code using __string__ directly in the construction of frames
+     has to be manually converted to use __string\!__ however\.
+
+  1. Extended the __[mustache::frame](mustache\_frame\.md)__ package with
+     several methods specific to scalars and mappings, and one generic\.
+
+     It is now possible to change a scalar's value in place, as well as add,
+     remove, and move key/value assignments in a mapping\.
+
+     The new generic method simplifies the writing of type checks\. Instead of
+
+         [$frame type] eq "mapping"
+
+     it is now possible to write
+
+         [$frame is mapping]
+
+     etc\.
+
+## <a name='subsection2'></a>Changes for version 1\.1
 
   1. Extended the __[mustache::frame](mustache\_frame\.md)__ package to
      support the [TclYAML](https://core\.tcl\-lang\.org/akupries/tclyaml)
@@ -90,7 +142,7 @@ __[mustache](mustache\.md)__ underwent from version to version\.
          [TclYAML](https://core\.tcl\-lang\.org/akupries/tclyaml)'s
          __writeTags__ command\.
 
-## <a name='subsection2'></a>Changes for version 1
+## <a name='subsection3'></a>Changes for version 1
 
 This is the first release of mustache\. The changes therefore describe the
 initial features of the system\.

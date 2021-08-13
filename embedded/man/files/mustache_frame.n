@@ -303,6 +303,10 @@ package require \fBmustache::frame \fR
 .sp
 \fB::mustache frame string\fR \fBnew\fR \fIvalue\fR
 .sp
+\fB::mustache frame string!\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
+.sp
+\fB::mustache frame string!\fR \fBnew\fR \fIvalue\fR
+.sp
 \fB::mustache frame sequence\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
 .sp
 \fB::mustache frame sequence\fR \fBnew\fR \fIvalue\fR
@@ -311,21 +315,25 @@ package require \fBmustache::frame \fR
 .sp
 \fB::mustache frame mapping\fR \fBnew\fR \fIvalue\fR
 .sp
-\fB<framecmd>\fR \fBhas?\fR \fIfield\fR
+\fBframeCmd\fR \fBtype\fR
 .sp
-\fB<framecmd>\fR \fBfield\fR \fIfield\fR
+\fBframeCmd\fR \fBis\fR \fItype\fR
 .sp
-\fB<framecmd>\fR \fBiter\fR \fIcontext\fR \fIscript\fR
+\fBframeCmd\fR \fBhas?\fR \fIfield\fR
 .sp
-\fB<framecmd>\fR \fBiterable?\fR
+\fBframeCmd\fR \fBfield\fR \fIfield\fR
 .sp
-\fB<framecmd>\fR \fBnil?\fR
+\fBframeCmd\fR \fBiter\fR \fIcontext\fR \fIscript\fR
 .sp
-\fB<framecmd>\fR \fBvalue\fR
+\fBframeCmd\fR \fBiterable?\fR
 .sp
-\fB<framecmd>\fR \fBas\fR \fItype\fR
+\fBframeCmd\fR \fBnil?\fR
 .sp
-\fB<framecmd>\fR \fBvisit\fR ?\fIword\fR\&.\&.\&.?
+\fBframeCmd\fR \fBvalue\fR
+.sp
+\fBframeCmd\fR \fBas\fR \fItype\fR
+.sp
+\fBframeCmd\fR \fBvisit\fR ?\fIword\fR\&.\&.\&.?
 .sp
 \fB{*}word\&.\&.\&.\fR \fItype\fR \fIframe\fR \fIvalue\fR
 .sp
@@ -336,6 +344,16 @@ package require \fBmustache::frame \fR
 \fB{*}word\&.\&.\&.\fR \fBmapping start\fR \fIframe\fR
 .sp
 \fB{*}word\&.\&.\&.\fR \fBmapping exit\fR \fIframe\fR \fIvalue\fR
+.sp
+\fBscalarCmd\fR \fBset\fR \fIvalue\fR
+.sp
+\fBscalarCmd\fR \fBvalidate\fR \fIvalue\fR
+.sp
+\fBmappingCmd\fR \fBset\fR \fIkey\fR \fIvalue\fR
+.sp
+\fBmappingCmd\fR \fBunset\fR \fIkey\fR
+.sp
+\fBmappingCmd\fR \fBrename\fR \fIkey\fR \fInewkey\fR
 .sp
 .BE
 .SH DESCRIPTION
@@ -394,6 +412,7 @@ The value is null/nil/missing\&.
 .TP
 \fBstring\fR
 The value is an arbitrary string\&.
+Internally it is mapped to \fBstring!\fR frames\&.
 .TP
 \fBsequence\fR
 The value is a Tcl list containing nested specs\&.
@@ -452,9 +471,29 @@ mapping {
 \fB::mustache frame string\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
 .TP
 \fB::mustache frame string\fR \fBnew\fR \fIvalue\fR
+.TP
+\fB::mustache frame string!\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
+.TP
+\fB::mustache frame string!\fR \fBnew\fR \fIvalue\fR
 These constructor commands create a new \fIscalar\fR data frame of
 the given type, initialize it using the \fIvalue\fR and return the
 fully qualified name of that instance\&.
+.sp
+\fIATTENTION\fR
+Of these three, best use \fBstring!\fR over all else\&.
+.sp
+\fIDo not use\fR \fBstring\fR\&. While the disrecommended type is
+the original type for string values it is now present only to pass the
+mustache compatibility tests\&. It comes with auto-magic behaviour
+counter to what is expected from a string type, i\&.e\&. to pass all
+values as they are\&.
+.sp
+\fBstring\fR does not do that\&. Any value which looks like a number it
+"normalizes"\&.
+.sp
+The new type \fBstring!\fR on the other hand does exactly that\&. No
+auto-magic normalization, i\&.e\&. mangling of things looking like
+numbers\&. Just passing values as they are\&.
 .TP
 \fB::mustache frame sequence\fR \fBcreate\fR \fIobj\fR \fIvalue\fR
 .TP
@@ -492,7 +531,14 @@ values\&. It should be noted that it actually does not care about the
 specific type of a value, only about the behaviour it supports, which
 can be queried (See the methods \fBnil?\fR and \fBiterable?\fR)\&.
 .TP
-\fB<framecmd>\fR \fBhas?\fR \fIfield\fR
+\fBframeCmd\fR \fBtype\fR
+Returns the type of the frame\&.
+.TP
+\fBframeCmd\fR \fBis\fR \fItype\fR
+Checks if the frame is of the specified \fItype\fR and returns the
+result as a boolean value\&.
+.TP
+\fBframeCmd\fR \fBhas?\fR \fIfield\fR
 Checks if the value has the named \fIfield\fR\&.
 .sp
 Returns a boolean value indicating either success
@@ -501,14 +547,14 @@ Returns a boolean value indicating either success
 Note that scalars and sequences do not have fields\&. Searching
 them always fails\&.
 .TP
-\fB<framecmd>\fR \fBfield\fR \fIfield\fR
+\fBframeCmd\fR \fBfield\fR \fIfield\fR
 Returns the data frame for the named \fIfield\fR\&.
 .sp
 Scalars and sequences throw an error, as they do not have
 fields\&. A mapping will throw an error only if the named \fIfield\fR
 is not known\&.
 .TP
-\fB<framecmd>\fR \fBiter\fR \fIcontext\fR \fIscript\fR
+\fBframeCmd\fR \fBiter\fR \fIcontext\fR \fIscript\fR
 Iterates over the elements of the frame and invokes the \fIscript\fR
 for each of them\&.
 During the execution of the \fIscript\fR the active element will be
@@ -519,7 +565,7 @@ Returns the empty string\&.
 Scalars and mappings will throw an error, as they cannot be
 iterated over\&.
 .TP
-\fB<framecmd>\fR \fBiterable?\fR
+\fBframeCmd\fR \fBiterable?\fR
 Asks the frame if it can be iterated over\&. In other words, if it is a
 non-empty sequence of values\&.
 .sp
@@ -529,7 +575,7 @@ can be iterated over\&.
 Scalars and mappings always return \fBfalse\fR\&. Sequences
 return \fBfalse\fR only if they are mpty\&.
 .TP
-\fB<framecmd>\fR \fBnil?\fR
+\fBframeCmd\fR \fBnil?\fR
 Asks the frame if it is nil, false, empty, etc\&.
 .sp
 Returns a boolean value\&. \fBtrue\fR signals that the frame's
@@ -545,14 +591,14 @@ nil if they represent \fBfalse\fR\&.
 Sequences and mappings are nil if they are empty, i\&.e of length
 or size \fB0\fR\&.
 .TP
-\fB<framecmd>\fR \fBvalue\fR
+\fBframeCmd\fR \fBvalue\fR
 Returns the Tcl string value of the frame\&. Supported by all types\&.
 .sp
 Sequences and mappings return Tcl stringifications of their
 list or dictionary, respectively\&. This will recurse through nested
 structures\&.
 .TP
-\fB<framecmd>\fR \fBas\fR \fItype\fR
+\fBframeCmd\fR \fBas\fR \fItype\fR
 Returns the string representation of the data frame as per the
 specified \fItype\fR\&.
 .sp
@@ -565,7 +611,7 @@ This command has to be suitable for use with the data frame's
 The \fBas\fR method will invoke \fBvisit\fR with the type
 command to perform the actual conversion\&.
 .TP
-\fB<framecmd>\fR \fBvisit\fR ?\fIword\fR\&.\&.\&.?
+\fBframeCmd\fR \fBvisit\fR ?\fIword\fR\&.\&.\&.?
 This method visits the data frame and its children in interleaved
 pre- and post-order, invoking the command prefix specified by the
 \fIword\fR\&.\&.\&. for each frame once (scalars) or twice (sequences, and
@@ -600,6 +646,45 @@ Called after visiting the value children of a mapping\&. The \fIvalue\fR
 is a dictionary mapping the field names to the results of visiting
 their frames\&.
 .RE
+.PP
+.SH "SCALAR INSTANCE API"
+.PP
+Scalar data frames provide more than just the generic API\&.
+These additional methods should only be used after a type check:
+.TP
+\fBscalarCmd\fR \fBset\fR \fIvalue\fR
+Set the new scalar \fIvalue\fR into the frame\&.
+An error will be thrown if the value does not match the type of the
+frame\&.
+The command returns the empty string\&.
+.TP
+\fBscalarCmd\fR \fBvalidate\fR \fIvalue\fR
+Validates the scalar \fIvalue\fR against the frame\&.
+An error will be thrown if the value does not match the type of the
+frame\&.
+The command returns the normalized value, as per the frame's type\&.
+.PP
+.SH "MAPPING INSTANCE API"
+.PP
+Mapping data frames provide more than just the generic API\&.
+These additional methods should only be used after a type check:
+.TP
+\fBmappingCmd\fR \fBset\fR \fIkey\fR \fIvalue\fR
+Extends or modifies the mapping\&.
+After the call the \fIkey\fR maps to the \fIvalue\fR frame\&.
+A previously existing assignment for the \fIkey\fR is destroyed\&.
+The command returns the empty string\&.
+.TP
+\fBmappingCmd\fR \fBunset\fR \fIkey\fR
+Removes the assignment identified by \fIkey\fR from the mapping\&.
+The associated value frame is destroyed\&.
+The command returns the empty string\&.
+.TP
+\fBmappingCmd\fR \fBrename\fR \fIkey\fR \fInewkey\fR
+Move the assignment of \fIkey\fR to the \fInewky\fR\&.
+An error will be thrown if the \fIkey\fR does not exist\&.
+A previously existing assignment for the \fInewkey\fR is destroyed\&.
+The command returns the empty string\&.
 .PP
 .SH "BUGS, IDEAS, FEEDBACK"
 Both the package(s) and this documentation will undoubtedly contain

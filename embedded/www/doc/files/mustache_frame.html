@@ -116,7 +116,9 @@
 <li class="doctools_section"><a href="#section2">Overview</a></li>
 <li class="doctools_section"><a href="#section3">Class API</a></li>
 <li class="doctools_section"><a href="#section4">Instance API</a></li>
-<li class="doctools_section"><a href="#section5">Bugs, Ideas, Feedback</a></li>
+<li class="doctools_section"><a href="#section5">Scalar Instance API</a></li>
+<li class="doctools_section"><a href="#section6">Mapping Instance API</a></li>
+<li class="doctools_section"><a href="#section7">Bugs, Ideas, Feedback</a></li>
 <li class="doctools_section"><a href="#keywords">Keywords</a></li>
 <li class="doctools_section"><a href="#copyright">Copyright</a></li>
 </ul>
@@ -140,23 +142,32 @@
 <li><a href="#11"><b class="cmd">::mustache frame scalar</b> <b class="method">new</b> <i class="arg">value</i></a></li>
 <li><a href="#12"><b class="cmd">::mustache frame string</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
 <li><a href="#13"><b class="cmd">::mustache frame string</b> <b class="method">new</b> <i class="arg">value</i></a></li>
-<li><a href="#14"><b class="cmd">::mustache frame sequence</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
-<li><a href="#15"><b class="cmd">::mustache frame sequence</b> <b class="method">new</b> <i class="arg">value</i></a></li>
-<li><a href="#16"><b class="cmd">::mustache frame mapping</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
-<li><a href="#17"><b class="cmd">::mustache frame mapping</b> <b class="method">new</b> <i class="arg">value</i></a></li>
-<li><a href="#18"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">has?</b> <i class="arg">field</i></a></li>
-<li><a href="#19"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">field</b> <i class="arg">field</i></a></li>
-<li><a href="#20"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iter</b> <i class="arg">context</i> <i class="arg">script</i></a></li>
-<li><a href="#21"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iterable?</b></a></li>
-<li><a href="#22"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">nil?</b></a></li>
-<li><a href="#23"><b class="method">&lt;framecmd&gt;</b> <b class="cmd"><a href="../../index.html#value">value</a></b></a></li>
-<li><a href="#24"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">as</b> <i class="arg">type</i></a></li>
-<li><a href="#25"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">visit</b> <span class="opt">?<i class="arg">word</i>...?</span></a></li>
-<li><a href="#26"><b class="method">{*}word...</b> <i class="arg">type</i> <i class="arg">frame</i> <i class="arg">value</i></a></li>
-<li><a href="#27"><b class="method">{*}word...</b> <b class="method">sequence start</b> <i class="arg">frame</i></a></li>
-<li><a href="#28"><b class="method">{*}word...</b> <b class="method">sequence exit</b> <i class="arg">frame</i> <i class="arg">value</i></a></li>
-<li><a href="#29"><b class="method">{*}word...</b> <b class="method">mapping start</b> <i class="arg">frame</i></a></li>
-<li><a href="#30"><b class="method">{*}word...</b> <b class="method">mapping exit</b> <i class="arg">frame</i> <i class="arg">value</i></a></li>
+<li><a href="#14"><b class="cmd">::mustache frame string!</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
+<li><a href="#15"><b class="cmd">::mustache frame string!</b> <b class="method">new</b> <i class="arg">value</i></a></li>
+<li><a href="#16"><b class="cmd">::mustache frame sequence</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
+<li><a href="#17"><b class="cmd">::mustache frame sequence</b> <b class="method">new</b> <i class="arg">value</i></a></li>
+<li><a href="#18"><b class="cmd">::mustache frame mapping</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></li>
+<li><a href="#19"><b class="cmd">::mustache frame mapping</b> <b class="method">new</b> <i class="arg">value</i></a></li>
+<li><a href="#20"><b class="method">frameCmd</b> <b class="cmd">type</b></a></li>
+<li><a href="#21"><b class="method">frameCmd</b> <b class="cmd">is</b> <i class="arg">type</i></a></li>
+<li><a href="#22"><b class="method">frameCmd</b> <b class="cmd">has?</b> <i class="arg">field</i></a></li>
+<li><a href="#23"><b class="method">frameCmd</b> <b class="cmd">field</b> <i class="arg">field</i></a></li>
+<li><a href="#24"><b class="method">frameCmd</b> <b class="cmd">iter</b> <i class="arg">context</i> <i class="arg">script</i></a></li>
+<li><a href="#25"><b class="method">frameCmd</b> <b class="cmd">iterable?</b></a></li>
+<li><a href="#26"><b class="method">frameCmd</b> <b class="cmd">nil?</b></a></li>
+<li><a href="#27"><b class="method">frameCmd</b> <b class="cmd"><a href="../../index.html#value">value</a></b></a></li>
+<li><a href="#28"><b class="method">frameCmd</b> <b class="cmd">as</b> <i class="arg">type</i></a></li>
+<li><a href="#29"><b class="method">frameCmd</b> <b class="cmd">visit</b> <span class="opt">?<i class="arg">word</i>...?</span></a></li>
+<li><a href="#30"><b class="method">{*}word...</b> <i class="arg">type</i> <i class="arg">frame</i> <i class="arg">value</i></a></li>
+<li><a href="#31"><b class="method">{*}word...</b> <b class="method">sequence start</b> <i class="arg">frame</i></a></li>
+<li><a href="#32"><b class="method">{*}word...</b> <b class="method">sequence exit</b> <i class="arg">frame</i> <i class="arg">value</i></a></li>
+<li><a href="#33"><b class="method">{*}word...</b> <b class="method">mapping start</b> <i class="arg">frame</i></a></li>
+<li><a href="#34"><b class="method">{*}word...</b> <b class="method">mapping exit</b> <i class="arg">frame</i> <i class="arg">value</i></a></li>
+<li><a href="#35"><b class="method">scalarCmd</b> <b class="cmd">set</b> <i class="arg">value</i></a></li>
+<li><a href="#36"><b class="method">scalarCmd</b> <b class="cmd">validate</b> <i class="arg">value</i></a></li>
+<li><a href="#37"><b class="method">mappingCmd</b> <b class="cmd">set</b> <i class="arg">key</i> <i class="arg">value</i></a></li>
+<li><a href="#38"><b class="method">mappingCmd</b> <b class="cmd">unset</b> <i class="arg">key</i></a></li>
+<li><a href="#39"><b class="method">mappingCmd</b> <b class="cmd">rename</b> <i class="arg">key</i> <i class="arg">newkey</i></a></li>
 </ul>
 </div>
 </div>
@@ -203,7 +214,8 @@ this order. The accepted tags and the associated values are</p>
 <dt><b class="const">scalar</b></dt>
 <dd></dd>
 <dt><b class="const">string</b></dt>
-<dd><p>The value is an arbitrary string.</p></dd>
+<dd><p>The value is an arbitrary string.
+	Internally it is mapped to <b class="type">string!</b> frames.</p></dd>
 <dt><b class="const">sequence</b></dt>
 <dd><p>The value is a Tcl list containing nested specs.</p></dd>
 <dt><b class="const">mapping</b></dt>
@@ -254,12 +266,28 @@ mapping {
 <dt><a name="12"><b class="cmd">::mustache frame string</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
 <dd></dd>
 <dt><a name="13"><b class="cmd">::mustache frame string</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
+<dd></dd>
+<dt><a name="14"><b class="cmd">::mustache frame string!</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
+<dd></dd>
+<dt><a name="15"><b class="cmd">::mustache frame string!</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
 <dd><p>These constructor commands create a new <i class="term">scalar</i> data frame of
 the given type, initialize it using the <i class="arg">value</i> and return the
-fully qualified name of that instance.</p></dd>
-<dt><a name="14"><b class="cmd">::mustache frame sequence</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
+fully qualified name of that instance.</p>
+<p><em>ATTENTION</em>
+Of these three, best use <b class="const">string!</b> over all else.</p>
+<p><em>Do not use</em> <b class="type">string</b>. While the disrecommended type is
+the original type for string values it is now present only to pass the
+mustache compatibility tests. It comes with auto-magic behaviour
+counter to what is expected from a string type, i.e. to pass all
+values as they are.</p>
+<p><b class="type">string</b> does not do that. Any value which looks like a number it
+&quot;normalizes&quot;.</p>
+<p>The new type <b class="type">string!</b> on the other hand does exactly that. No
+auto-magic normalization, i.e. mangling of things looking like
+numbers. Just passing values as they are.</p></dd>
+<dt><a name="16"><b class="cmd">::mustache frame sequence</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
 <dd></dd>
-<dt><a name="15"><b class="cmd">::mustache frame sequence</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
+<dt><a name="17"><b class="cmd">::mustache frame sequence</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
 <dd><p>These constructor commands create a new <i class="term">sequence</i> data frame,
 initialize it using the <i class="arg">value</i> and return the fully qualified
 name of that instance.</p>
@@ -267,9 +295,9 @@ name of that instance.</p>
 <p><em>Attention:</em> The new sequence takes over ownership of the
 data frames in the list, and they will be destroyed when the sequence
 is destroyed.</p></dd>
-<dt><a name="16"><b class="cmd">::mustache frame mapping</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
+<dt><a name="18"><b class="cmd">::mustache frame mapping</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">value</i></a></dt>
 <dd></dd>
-<dt><a name="17"><b class="cmd">::mustache frame mapping</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
+<dt><a name="19"><b class="cmd">::mustache frame mapping</b> <b class="method">new</b> <i class="arg">value</i></a></dt>
 <dd><p>These constructor commands create a new <i class="term">mapping</i> data frame,
 initialize it using the <i class="arg">value</i> and return the fully qualified
 name of that instance.</p>
@@ -288,18 +316,23 @@ values. It should be noted that it actually does not care about the
 specific type of a value, only about the behaviour it supports, which
 can be queried (See the methods <b class="method">nil?</b> and <b class="method">iterable?</b>).</p>
 <dl class="doctools_definitions">
-<dt><a name="18"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">has?</b> <i class="arg">field</i></a></dt>
+<dt><a name="20"><b class="method">frameCmd</b> <b class="cmd">type</b></a></dt>
+<dd><p>Returns the type of the frame.</p></dd>
+<dt><a name="21"><b class="method">frameCmd</b> <b class="cmd">is</b> <i class="arg">type</i></a></dt>
+<dd><p>Checks if the frame is of the specified <i class="arg">type</i> and returns the
+result as a boolean value.</p></dd>
+<dt><a name="22"><b class="method">frameCmd</b> <b class="cmd">has?</b> <i class="arg">field</i></a></dt>
 <dd><p>Checks if the value has the named <i class="arg">field</i>.</p>
 <p>Returns a boolean value indicating either success
 (<b class="const">true</b>) or failure (<b class="const">false</b>) of the search.</p>
 <p>Note that scalars and sequences do not have fields. Searching
 them always fails.</p></dd>
-<dt><a name="19"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">field</b> <i class="arg">field</i></a></dt>
+<dt><a name="23"><b class="method">frameCmd</b> <b class="cmd">field</b> <i class="arg">field</i></a></dt>
 <dd><p>Returns the data frame for the named <i class="arg">field</i>.</p>
 <p>Scalars and sequences throw an error, as they do not have
 fields. A mapping will throw an error only if the named <i class="arg">field</i>
 is not known.</p></dd>
-<dt><a name="20"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iter</b> <i class="arg">context</i> <i class="arg">script</i></a></dt>
+<dt><a name="24"><b class="method">frameCmd</b> <b class="cmd">iter</b> <i class="arg">context</i> <i class="arg">script</i></a></dt>
 <dd><p>Iterates over the elements of the frame and invokes the <i class="arg">script</i>
 for each of them.
 During the execution of the <i class="arg">script</i> the active element will be
@@ -307,14 +340,14 @@ pushed into the <i class="arg">context</i>, and popped again after.</p>
 <p>Returns the empty string.</p>
 <p>Scalars and mappings will throw an error, as they cannot be
 iterated over.</p></dd>
-<dt><a name="21"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">iterable?</b></a></dt>
+<dt><a name="25"><b class="method">frameCmd</b> <b class="cmd">iterable?</b></a></dt>
 <dd><p>Asks the frame if it can be iterated over. In other words, if it is a
 non-empty sequence of values.</p>
 <p>Returns a boolean value. <b class="const">true</b> signals that the frame
 can be iterated over.</p>
 <p>Scalars and mappings always return <b class="const">false</b>. Sequences
 return <b class="const">false</b> only if they are mpty.</p></dd>
-<dt><a name="22"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">nil?</b></a></dt>
+<dt><a name="26"><b class="method">frameCmd</b> <b class="cmd">nil?</b></a></dt>
 <dd><p>Asks the frame if it is nil, false, empty, etc.</p>
 <p>Returns a boolean value. <b class="const">true</b> signals that the frame's
 value is indeed nil, empty, false, etc.</p>
@@ -325,12 +358,12 @@ value can be interpreted as a boolean value, and is representing
 nil if they represent <b class="const">false</b>.</p>
 <p>Sequences and mappings are nil if they are empty, i.e of length
 or size <b class="const">0</b>.</p></dd>
-<dt><a name="23"><b class="method">&lt;framecmd&gt;</b> <b class="cmd"><a href="../../index.html#value">value</a></b></a></dt>
+<dt><a name="27"><b class="method">frameCmd</b> <b class="cmd"><a href="../../index.html#value">value</a></b></a></dt>
 <dd><p>Returns the Tcl string value of the frame. Supported by all types.</p>
 <p>Sequences and mappings return Tcl stringifications of their
 list or dictionary, respectively. This will recurse through nested
 structures.</p></dd>
-<dt><a name="24"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">as</b> <i class="arg">type</i></a></dt>
+<dt><a name="28"><b class="method">frameCmd</b> <b class="cmd">as</b> <i class="arg">type</i></a></dt>
 <dd><p>Returns the string representation of the data frame as per the
 specified <i class="arg">type</i>.</p>
 <p>It is expected that the <i class="arg">type</i> is backed by a package named
@@ -340,7 +373,7 @@ the same name.</p>
 <b class="method">visit</b> method.
 The <b class="method">as</b> method will invoke <b class="method">visit</b> with the type
 command to perform the actual conversion.</p></dd>
-<dt><a name="25"><b class="method">&lt;framecmd&gt;</b> <b class="cmd">visit</b> <span class="opt">?<i class="arg">word</i>...?</span></a></dt>
+<dt><a name="29"><b class="method">frameCmd</b> <b class="cmd">visit</b> <span class="opt">?<i class="arg">word</i>...?</span></a></dt>
 <dd><p>This method visits the data frame and its children in interleaved
 pre- and post-order, invoking the command prefix specified by the
 <i class="arg">word</i>... for each frame once (scalars) or twice (sequences, and
@@ -351,26 +384,62 @@ of the command prefix for the top data frame.</p>
 expected to support the signatures below. The <i class="arg">frame</i> argument is
 always the object command of the data frame the call is for.</p>
 <dl class="doctools_definitions">
-<dt><a name="26"><b class="method">{*}word...</b> <i class="arg">type</i> <i class="arg">frame</i> <i class="arg">value</i></a></dt>
+<dt><a name="30"><b class="method">{*}word...</b> <i class="arg">type</i> <i class="arg">frame</i> <i class="arg">value</i></a></dt>
 <dd><p>Called for all scalar frames, once. The <i class="arg">value</i> is the Tcl value
 of the scalar. The <i class="arg">type</i> is one of the possible scalar type tags.</p></dd>
-<dt><a name="27"><b class="method">{*}word...</b> <b class="method">sequence start</b> <i class="arg">frame</i></a></dt>
+<dt><a name="31"><b class="method">{*}word...</b> <b class="method">sequence start</b> <i class="arg">frame</i></a></dt>
 <dd><p>Called at the beginning of a sequence, enables initializations in the
 converter.  The return value, if any, is ignored.</p></dd>
-<dt><a name="28"><b class="method">{*}word...</b> <b class="method">sequence exit</b> <i class="arg">frame</i> <i class="arg">value</i></a></dt>
+<dt><a name="32"><b class="method">{*}word...</b> <b class="method">sequence exit</b> <i class="arg">frame</i> <i class="arg">value</i></a></dt>
 <dd><p>Called after visiting the children of a sequence. The <i class="arg">value</i> is a
 list containing the results of visiting the sequence's elements.</p></dd>
-<dt><a name="29"><b class="method">{*}word...</b> <b class="method">mapping start</b> <i class="arg">frame</i></a></dt>
+<dt><a name="33"><b class="method">{*}word...</b> <b class="method">mapping start</b> <i class="arg">frame</i></a></dt>
 <dd><p>Called at the beginning of a mapping, enables initializations in the
 converter.  The return value, if any, is ignored.</p></dd>
-<dt><a name="30"><b class="method">{*}word...</b> <b class="method">mapping exit</b> <i class="arg">frame</i> <i class="arg">value</i></a></dt>
+<dt><a name="34"><b class="method">{*}word...</b> <b class="method">mapping exit</b> <i class="arg">frame</i> <i class="arg">value</i></a></dt>
 <dd><p>Called after visiting the value children of a mapping. The <i class="arg">value</i>
 is a dictionary mapping the field names to the results of visiting
 their frames.</p></dd>
 </dl></dd>
 </dl>
 </div>
-<div id="section5" class="doctools_section"><h2><a name="section5">Bugs, Ideas, Feedback</a></h2>
+<div id="section5" class="doctools_section"><h2><a name="section5">Scalar Instance API</a></h2>
+<p>Scalar data frames provide more than just the generic API.
+These additional methods should only be used after a type check:</p>
+<dl class="doctools_definitions">
+<dt><a name="35"><b class="method">scalarCmd</b> <b class="cmd">set</b> <i class="arg">value</i></a></dt>
+<dd><p>Set the new scalar <i class="arg">value</i> into the frame.
+An error will be thrown if the value does not match the type of the
+frame.
+The command returns the empty string.</p></dd>
+<dt><a name="36"><b class="method">scalarCmd</b> <b class="cmd">validate</b> <i class="arg">value</i></a></dt>
+<dd><p>Validates the scalar <i class="arg">value</i> against the frame.
+An error will be thrown if the value does not match the type of the
+frame.
+The command returns the normalized value, as per the frame's type.</p></dd>
+</dl>
+</div>
+<div id="section6" class="doctools_section"><h2><a name="section6">Mapping Instance API</a></h2>
+<p>Mapping data frames provide more than just the generic API.
+These additional methods should only be used after a type check:</p>
+<dl class="doctools_definitions">
+<dt><a name="37"><b class="method">mappingCmd</b> <b class="cmd">set</b> <i class="arg">key</i> <i class="arg">value</i></a></dt>
+<dd><p>Extends or modifies the mapping.
+After the call the <i class="arg">key</i> maps to the <i class="arg">value</i> frame.
+A previously existing assignment for the <i class="arg">key</i> is destroyed.
+The command returns the empty string.</p></dd>
+<dt><a name="38"><b class="method">mappingCmd</b> <b class="cmd">unset</b> <i class="arg">key</i></a></dt>
+<dd><p>Removes the assignment identified by <i class="arg">key</i> from the mapping.
+The associated value frame is destroyed.
+The command returns the empty string.</p></dd>
+<dt><a name="39"><b class="method">mappingCmd</b> <b class="cmd">rename</b> <i class="arg">key</i> <i class="arg">newkey</i></a></dt>
+<dd><p>Move the assignment of <i class="arg">key</i> to the <i class="arg">newky</i>.
+An error will be thrown if the <i class="arg">key</i> does not exist.
+A previously existing assignment for the <i class="arg">newkey</i> is destroyed.
+The command returns the empty string.</p></dd>
+</dl>
+</div>
+<div id="section7" class="doctools_section"><h2><a name="section7">Bugs, Ideas, Feedback</a></h2>
 <p>Both the package(s) and this documentation will undoubtedly contain
 bugs and other problems.
 Please report such at <a href="https://core.tcl-lang.org/akupries/mustache">Mustache Tracker</a>.</p>

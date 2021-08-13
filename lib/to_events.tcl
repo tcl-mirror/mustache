@@ -28,7 +28,7 @@ package provide mustache::frame::as::events 1
 # # ## ### ##### ######## ############# #####################
 
 namespace eval ::mustache::frame::as::events {
-    namespace export bool float int null string scalar sequence mapping
+    namespace export bool float int null string string! scalar sequence mapping
     namespace ensemble create
 }
 namespace eval ::mustache::frame::as::events::sequence {
@@ -76,6 +76,11 @@ proc ::mustache::frame::as::events::null {self value} {
 }
 
 proc ::mustache::frame::as::events::string {self value} {
+    debug.mustache/frame/as/events {}
+    list [list string $value]
+}
+
+proc ::mustache::frame::as::events::string! {self value} {
     debug.mustache/frame/as/events {}
     list [list string $value]
 }
